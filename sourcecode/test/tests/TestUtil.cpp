@@ -1,7 +1,7 @@
 #include "catch.hpp"
 #include "pen/util.h"
 
-using namespace etude;
+using namespace pen;
 
 TEST_CASE( "util test001", "util" )
 {

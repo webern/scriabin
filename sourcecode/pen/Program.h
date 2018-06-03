@@ -4,7 +4,7 @@
 #include "pen/InstrumentConfig.h"
 #include "ezxml/ezxml.h"
 
-namespace etude
+namespace pen
 {
     struct Program
     {

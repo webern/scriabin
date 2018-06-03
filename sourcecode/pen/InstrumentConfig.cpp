@@ -2,7 +2,7 @@
 #include "ezxml/ezxml.h"
 #include "pen/constants.h"
 
-namespace etude
+namespace pen
 {
     InstrumentConfig::InstrumentConfig()
     : mySpecies{}

@@ -1,7 +1,7 @@
 #pragma once
 #include "pen/CommandLineParser.h"
 
-namespace etude
+namespace pen
 {
     inline const zeus::CommandLineParser
     cmd( int argc, const char* argv[] )

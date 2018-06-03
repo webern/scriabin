@@ -13,7 +13,7 @@
 int inline etude1( int argc, const char* argv[] )
 {
     using namespace mx::api;
-    using namespace etude;
+    using namespace pen;
     Program program{ argc, argv };
     
     Etude etude{ program.instrumentConfig };

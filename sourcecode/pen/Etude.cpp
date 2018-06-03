@@ -1,6 +1,6 @@
 #include "pen/Etude.h"
 
-namespace etude
+namespace pen
 {
     Etude::Etude()
     : myConfig{}

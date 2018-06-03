@@ -9,7 +9,7 @@ namespace ezxml
     class XElementIterator;
 }
 
-namespace etude
+namespace pen
 {
     class InstrumentConfig
     {
