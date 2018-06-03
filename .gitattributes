@@ -9,3 +9,4 @@
 *.musx filter=lfs diff=lfs merge=lfs -text
 **/*musx/** filter=lfs diff=lfs merge=lfs -text
 *.xml.large filter=lfs diff=lfs merge=lfs -text
+*.large.xml filter=lfs diff=lfs merge=lfs -text
