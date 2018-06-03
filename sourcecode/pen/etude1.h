@@ -30,20 +30,20 @@ int inline etude1( int argc, const char* argv[] )
 
     // TODO - put this in a singleton
     std::map<DurationName, int> ticks = {
-        { etude::Q, tpq },
-        { etude::H, tpq * 2 },
-        { etude::W, tpq * 4 },
-        { etude::E, tpq / 2 },
-        { etude::S, tpq / 4 },
+        { pen::Q, tpq },
+        { pen::H, tpq * 2 },
+        { pen::W, tpq * 4 },
+        { pen::E, tpq / 2 },
+        { pen::S, tpq / 4 },
     };
     
     // TODO - put this in a singleton
     std::map<int, DurationName> timeSignatureDenominatorDurationName = {
-        { 4, etude::Q },
-        { 2, etude::H },
-        { 1, etude::W },
-        { 8, etude::E },
-        { 16, etude::S },
+        { 4, pen::Q },
+        { 2, pen::H },
+        { 1, pen::W },
+        { 8, pen::E },
+        { 16, pen::S },
     };
     
     const int BEATS_PER_MEASURE = 4;

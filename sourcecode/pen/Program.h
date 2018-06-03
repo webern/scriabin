@@ -40,7 +40,7 @@ namespace pen
         inline void
         setParser(  int argc, const char* argv[] )
         {
-            parser = etude::cmd( argc, argv );
+            parser = pen::cmd( argc, argv );
         }
         
         inline void
