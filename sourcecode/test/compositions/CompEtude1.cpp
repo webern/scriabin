@@ -8,8 +8,8 @@ using namespace zeus;
 
 TEST_CASE( "etude1", "Comp" )
 {
-    const auto& iConfig = INSTRUMENT_CONFIG_FILEPATH();
-    const auto& oDir = OUTPUT_DIRECTORY();
+    const auto& iConfig = pen::INSTRUMENT_CONFIG_FILEPATH();
+    const auto& oDir = pen::OUTPUT_DIRECTORY();
     const std::string oPath = oDir + std::string{ "etude1.actual.xml" };
     constexpr const int argc = 5;
     const char * argv[argc] =
@@ -27,7 +27,7 @@ TEST_CASE( "etude1", "Comp" )
     const auto actualScore = dmgr.getData( outDocId );
     dmgr.destroyDocument( outDocId );
     
-    const auto inDocId = dmgr.createFromFile( TEST_FILES_DIRECTORY() + std::string{ "etude1.expected.xml" } );
+    const auto inDocId = dmgr.createFromFile( pen::TEST_FILES_DIRECTORY() + std::string{ "etude1.expected.xml" } );
     const auto expectedScore = dmgr.getData( inDocId );
     dmgr.destroyDocument( inDocId );
     

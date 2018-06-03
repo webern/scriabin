@@ -2,7 +2,7 @@
 #include "mx/api/PitchData.h"
 #include <vector>
 
-namespace etude
+namespace pen
 {
     class PitchPattern
     {

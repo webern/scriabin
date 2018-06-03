@@ -1,6 +1,6 @@
 #include "pen/InstrumentSpecies.h"
 
-namespace etude
+namespace pen
 {
     InstrumentSpecies::InstrumentSpecies( std::string inID )
     : myID{ std::move( inID ) }
