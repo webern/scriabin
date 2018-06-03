@@ -1,0 +1,394 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		29CA496620BCCC1F00F0B643 /* CommandLineParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 29CA495120BCCC1E00F0B643 /* CommandLineParser.cpp */; };
+		29CA496720BCCC1F00F0B643 /* InstrumentSpecies.h in Headers */ = {isa = PBXBuildFile; fileRef = 29CA495220BCCC1E00F0B643 /* InstrumentSpecies.h */; };
+		29CA496820BCCC1F00F0B643 /* CommandLineParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 29CA495320BCCC1E00F0B643 /* CommandLineParser.h */; };
+		29CA496920BCCC1F00F0B643 /* Etude.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 29CA495420BCCC1E00F0B643 /* Etude.cpp */; };
+		29CA496A20BCCC1F00F0B643 /* etude1.h in Sources */ = {isa = PBXBuildFile; fileRef = 29CA495520BCCC1E00F0B643 /* etude1.h */; };
+		29CA496B20BCCC1F00F0B643 /* CommandLineValue.h in Headers */ = {isa = PBXBuildFile; fileRef = 29CA495620BCCC1E00F0B643 /* CommandLineValue.h */; };
+		29CA496C20BCCC1F00F0B643 /* PitchPattern.h in Headers */ = {isa = PBXBuildFile; fileRef = 29CA495720BCCC1E00F0B643 /* PitchPattern.h */; };
+		29CA496D20BCCC1F00F0B643 /* addMarimbaNotes.h in Headers */ = {isa = PBXBuildFile; fileRef = 29CA495820BCCC1E00F0B643 /* addMarimbaNotes.h */; };
+		29CA496E20BCCC1F00F0B643 /* InstrumentConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = 29CA495920BCCC1E00F0B643 /* InstrumentConfig.h */; };
+		29CA496F20BCCC1F00F0B643 /* Program.h in Headers */ = {isa = PBXBuildFile; fileRef = 29CA495A20BCCC1F00F0B643 /* Program.h */; };
+		29CA497020BCCC1F00F0B643 /* CommandLineArgumentPrototype.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 29CA495B20BCCC1F00F0B643 /* CommandLineArgumentPrototype.cpp */; };
+		29CA497120BCCC1F00F0B643 /* constants.h in Headers */ = {isa = PBXBuildFile; fileRef = 29CA495C20BCCC1F00F0B643 /* constants.h */; };
+		29CA497220BCCC1F00F0B643 /* util.h in Headers */ = {isa = PBXBuildFile; fileRef = 29CA495D20BCCC1F00F0B643 /* util.h */; };
+		29CA497320BCCC1F00F0B643 /* PitchPattern.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 29CA495E20BCCC1F00F0B643 /* PitchPattern.cpp */; };
+		29CA497420BCCC1F00F0B643 /* InstrumentSpecies.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 29CA495F20BCCC1F00F0B643 /* InstrumentSpecies.cpp */; };
+		29CA497520BCCC1F00F0B643 /* CommandLineValue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 29CA496020BCCC1F00F0B643 /* CommandLineValue.cpp */; };
+		29CA497620BCCC1F00F0B643 /* Etude.h in Headers */ = {isa = PBXBuildFile; fileRef = 29CA496120BCCC1F00F0B643 /* Etude.h */; };
+		29CA497720BCCC1F00F0B643 /* addViolinNotes.h in Headers */ = {isa = PBXBuildFile; fileRef = 29CA496220BCCC1F00F0B643 /* addViolinNotes.h */; };
+		29CA497820BCCC1F00F0B643 /* cmd.h in Headers */ = {isa = PBXBuildFile; fileRef = 29CA496320BCCC1F00F0B643 /* cmd.h */; };
+		29CA497920BCCC1F00F0B643 /* InstrumentConfig.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 29CA496420BCCC1F00F0B643 /* InstrumentConfig.cpp */; };
+		29CA497A20BCCC1F00F0B643 /* CommandLineArgumentPrototype.h in Headers */ = {isa = PBXBuildFile; fileRef = 29CA496520BCCC1F00F0B643 /* CommandLineArgumentPrototype.h */; };
+		29CA499820BCEE4F00F0B643 /* libezxml.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 29CA499720BCEE4F00F0B643 /* libezxml.a */; };
+		29CA49A320BCF4EC00F0B643 /* libMx.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 29CA49A220BCF4EC00F0B643 /* libMx.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		29CA481D20BCC28E00F0B643 /* libpen.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libpen.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		29CA495120BCCC1E00F0B643 /* CommandLineParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CommandLineParser.cpp; sourceTree = "<group>"; };
+		29CA495220BCCC1E00F0B643 /* InstrumentSpecies.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstrumentSpecies.h; sourceTree = "<group>"; };
+		29CA495320BCCC1E00F0B643 /* CommandLineParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommandLineParser.h; sourceTree = "<group>"; };
+		29CA495420BCCC1E00F0B643 /* Etude.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Etude.cpp; sourceTree = "<group>"; };
+		29CA495520BCCC1E00F0B643 /* etude1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = etude1.h; sourceTree = "<group>"; };
+		29CA495620BCCC1E00F0B643 /* CommandLineValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommandLineValue.h; sourceTree = "<group>"; };
+		29CA495720BCCC1E00F0B643 /* PitchPattern.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PitchPattern.h; sourceTree = "<group>"; };
+		29CA495820BCCC1E00F0B643 /* addMarimbaNotes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = addMarimbaNotes.h; sourceTree = "<group>"; };
+		29CA495920BCCC1E00F0B643 /* InstrumentConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstrumentConfig.h; sourceTree = "<group>"; };
+		29CA495A20BCCC1F00F0B643 /* Program.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Program.h; sourceTree = "<group>"; };
+		29CA495B20BCCC1F00F0B643 /* CommandLineArgumentPrototype.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CommandLineArgumentPrototype.cpp; sourceTree = "<group>"; };
+		29CA495C20BCCC1F00F0B643 /* constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = constants.h; sourceTree = "<group>"; };
+		29CA495D20BCCC1F00F0B643 /* util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = util.h; sourceTree = "<group>"; };
+		29CA495E20BCCC1F00F0B643 /* PitchPattern.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PitchPattern.cpp; sourceTree = "<group>"; };
+		29CA495F20BCCC1F00F0B643 /* InstrumentSpecies.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InstrumentSpecies.cpp; sourceTree = "<group>"; };
+		29CA496020BCCC1F00F0B643 /* CommandLineValue.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CommandLineValue.cpp; sourceTree = "<group>"; };
+		29CA496120BCCC1F00F0B643 /* Etude.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Etude.h; sourceTree = "<group>"; };
+		29CA496220BCCC1F00F0B643 /* addViolinNotes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = addViolinNotes.h; sourceTree = "<group>"; };
+		29CA496320BCCC1F00F0B643 /* cmd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cmd.h; sourceTree = "<group>"; };
+		29CA496420BCCC1F00F0B643 /* InstrumentConfig.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InstrumentConfig.cpp; sourceTree = "<group>"; };
+		29CA496520BCCC1F00F0B643 /* CommandLineArgumentPrototype.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommandLineArgumentPrototype.h; sourceTree = "<group>"; };
+		29CA499720BCEE4F00F0B643 /* libezxml.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libezxml.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		29CA49A220BCF4EC00F0B643 /* libMx.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libMx.a; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		29CA481A20BCC28E00F0B643 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				29CA49A320BCF4EC00F0B643 /* libMx.a in Frameworks */,
+				29CA499820BCEE4F00F0B643 /* libezxml.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		29CA481420BCC28E00F0B643 = {
+			isa = PBXGroup;
+			children = (
+				29CA492520BCCA2800F0B643 /* sourcecode */,
+				29CA481E20BCC28E00F0B643 /* Products */,
+				29CA499620BCEE4F00F0B643 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		29CA481E20BCC28E00F0B643 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				29CA481D20BCC28E00F0B643 /* libpen.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		29CA492520BCCA2800F0B643 /* sourcecode */ = {
+			isa = PBXGroup;
+			children = (
+				29CA492620BCCA7200F0B643 /* pen */,
+			);
+			name = sourcecode;
+			path = ../sourcecode;
+			sourceTree = SOURCE_ROOT;
+		};
+		29CA492620BCCA7200F0B643 /* pen */ = {
+			isa = PBXGroup;
+			children = (
+				29CA495820BCCC1E00F0B643 /* addMarimbaNotes.h */,
+				29CA496220BCCC1F00F0B643 /* addViolinNotes.h */,
+				29CA496320BCCC1F00F0B643 /* cmd.h */,
+				29CA495B20BCCC1F00F0B643 /* CommandLineArgumentPrototype.cpp */,
+				29CA496520BCCC1F00F0B643 /* CommandLineArgumentPrototype.h */,
+				29CA495120BCCC1E00F0B643 /* CommandLineParser.cpp */,
+				29CA495320BCCC1E00F0B643 /* CommandLineParser.h */,
+				29CA496020BCCC1F00F0B643 /* CommandLineValue.cpp */,
+				29CA495620BCCC1E00F0B643 /* CommandLineValue.h */,
+				29CA495C20BCCC1F00F0B643 /* constants.h */,
+				29CA495420BCCC1E00F0B643 /* Etude.cpp */,
+				29CA496120BCCC1F00F0B643 /* Etude.h */,
+				29CA496420BCCC1F00F0B643 /* InstrumentConfig.cpp */,
+				29CA495920BCCC1E00F0B643 /* InstrumentConfig.h */,
+				29CA495F20BCCC1F00F0B643 /* InstrumentSpecies.cpp */,
+				29CA495220BCCC1E00F0B643 /* InstrumentSpecies.h */,
+				29CA495520BCCC1E00F0B643 /* etude1.h */,
+				29CA495E20BCCC1F00F0B643 /* PitchPattern.cpp */,
+				29CA495720BCCC1E00F0B643 /* PitchPattern.h */,
+				29CA495A20BCCC1F00F0B643 /* Program.h */,
+				29CA495D20BCCC1F00F0B643 /* util.h */,
+			);
+			path = pen;
+			sourceTree = "<group>";
+		};
+		29CA499620BCEE4F00F0B643 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				29CA499720BCEE4F00F0B643 /* libezxml.a */,
+				29CA49A220BCF4EC00F0B643 /* libMx.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		29CA481B20BCC28E00F0B643 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				29CA497720BCCC1F00F0B643 /* addViolinNotes.h in Headers */,
+				29CA497A20BCCC1F00F0B643 /* CommandLineArgumentPrototype.h in Headers */,
+				29CA497620BCCC1F00F0B643 /* Etude.h in Headers */,
+				29CA497220BCCC1F00F0B643 /* util.h in Headers */,
+				29CA497820BCCC1F00F0B643 /* cmd.h in Headers */,
+				29CA496720BCCC1F00F0B643 /* InstrumentSpecies.h in Headers */,
+				29CA496820BCCC1F00F0B643 /* CommandLineParser.h in Headers */,
+				29CA496C20BCCC1F00F0B643 /* PitchPattern.h in Headers */,
+				29CA496B20BCCC1F00F0B643 /* CommandLineValue.h in Headers */,
+				29CA496D20BCCC1F00F0B643 /* addMarimbaNotes.h in Headers */,
+				29CA496E20BCCC1F00F0B643 /* InstrumentConfig.h in Headers */,
+				29CA497120BCCC1F00F0B643 /* constants.h in Headers */,
+				29CA496F20BCCC1F00F0B643 /* Program.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		29CA481C20BCC28E00F0B643 /* pen */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 29CA482120BCC28E00F0B643 /* Build configuration list for PBXNativeTarget "pen" */;
+			buildPhases = (
+				29CA481920BCC28E00F0B643 /* Sources */,
+				29CA481A20BCC28E00F0B643 /* Frameworks */,
+				29CA481B20BCC28E00F0B643 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = pen;
+			productName = pen;
+			productReference = 29CA481D20BCC28E00F0B643 /* libpen.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		29CA481520BCC28E00F0B643 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0930;
+				ORGANIZATIONNAME = mjb;
+				TargetAttributes = {
+					29CA481C20BCC28E00F0B643 = {
+						CreatedOnToolsVersion = 9.3.1;
+					};
+				};
+			};
+			buildConfigurationList = 29CA481820BCC28E00F0B643 /* Build configuration list for PBXProject "pen" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 29CA481420BCC28E00F0B643;
+			productRefGroup = 29CA481E20BCC28E00F0B643 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				29CA481C20BCC28E00F0B643 /* pen */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		29CA481920BCC28E00F0B643 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				29CA497320BCCC1F00F0B643 /* PitchPattern.cpp in Sources */,
+				29CA497520BCCC1F00F0B643 /* CommandLineValue.cpp in Sources */,
+				29CA497420BCCC1F00F0B643 /* InstrumentSpecies.cpp in Sources */,
+				29CA496620BCCC1F00F0B643 /* CommandLineParser.cpp in Sources */,
+				29CA497920BCCC1F00F0B643 /* InstrumentConfig.cpp in Sources */,
+				29CA496920BCCC1F00F0B643 /* Etude.cpp in Sources */,
+				29CA497020BCCC1F00F0B643 /* CommandLineArgumentPrototype.cpp in Sources */,
+				29CA496A20BCCC1F00F0B643 /* etude1.h in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		29CA481F20BCC28E00F0B643 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					$PROJECT_DIR/../sourcecode/submodules/mx/Sourcecode,
+					$PROJECT_DIR/../sourcecode/submodules/ezxml/include,
+					$PROJECT_DIR/../sourcecode,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		29CA482020BCC28E00F0B643 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					$PROJECT_DIR/../sourcecode/submodules/mx/Sourcecode,
+					$PROJECT_DIR/../sourcecode/submodules/ezxml/include,
+					$PROJECT_DIR/../sourcecode,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		29CA482220BCC28E00F0B643 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				EXECUTABLE_PREFIX = lib;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		29CA482320BCC28E00F0B643 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				EXECUTABLE_PREFIX = lib;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		29CA481820BCC28E00F0B643 /* Build configuration list for PBXProject "pen" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				29CA481F20BCC28E00F0B643 /* Debug */,
+				29CA482020BCC28E00F0B643 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		29CA482120BCC28E00F0B643 /* Build configuration list for PBXNativeTarget "pen" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				29CA482220BCC28E00F0B643 /* Debug */,
+				29CA482320BCC28E00F0B643 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 29CA481520BCC28E00F0B643 /* Project object */;
+}

@@ -1,0 +1,6 @@
+[submodule "sourcecode/submodules/mx"]
+	path = sourcecode/submodules/mx
+	url = https://github.com/Webern/MusicXML-Class-Library.git
+[submodule "sourcecode/submodules/ezxml"]
+	path = sourcecode/submodules/ezxml
+	url = https://github.com/Webern/EzXml.git

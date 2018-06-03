@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "group:../sourcecode/submodules/mx/Xcode/Mx.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:../sourcecode/submodules/ezxml/ezxml.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:pen.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:pen-test.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "container:../in">
+   </FileRef>
+   <FileRef
+      location = "container:../out">
+   </FileRef>
+</Workspace>

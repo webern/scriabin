@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<instrument-config xmlns="instrument-config" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://fakeurl.com instrument-config.xsd">
+  <middle-c-octave>4</middle-c-octave>
+  <middle-c-note-number>72</middle-c-note-number>
+  <kingdom>
+    <name>Standard</name>
+    <id>kingdom.standard</id>
+    <phylum>
+      <name>Strings</name>
+      <id>phylum.strings</id>
+      <order>
+        <name>Bowed Strings</name>
+        <id>order.bowed.strings</id>
+        <family>
+          <name>Orchestral Strings</name>
+          <id>family.orchestral.strings</id>
+          <genus>
+            <name>Violins</name>
+            <id>genus.violins</id>
+            <species>
+              <name>Violin</name>
+              <id>species.violin</id>
+              <range>
+                <lowest-note>1</lowest-note>
+                <highest-note>2</highest-note>
+              </range>
+              <transposition>0</transposition>
+            </species>
+          </genus>
+        </family>
+      </order>
+    </phylum>
+    <phylum>
+      <name>Percussion</name>
+      <id>phylum.percussion</id>
+      <order>
+        <name>Keyboard Percussion</name>
+        <id>order.keyboard.percussion</id>
+        <family>
+          <name>Wooden Keyboards</name>
+          <id>family.wooden.keyboards</id>
+          <genus>
+            <name>Marimbas</name>
+            <id>genus.marimbas</id>
+            <species>
+              <name>Marimba 4.3</name>
+              <id>species.marimba.4.3</id>
+              <range>
+                <lowest-note>1</lowest-note>
+                <highest-note>2</highest-note>
+              </range>
+              <transposition>0</transposition>
+            </species>
+          </genus>
+        </family>
+      </order>
+    </phylum>
+  </kingdom>
+</instrument-config>
