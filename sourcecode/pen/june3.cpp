@@ -1,6 +1,8 @@
 #include "pen/june3.h"
 #include "../test/PEN_PATH.h"
 #include "mx/api/DocumentManager.h"
+#include <vector>
+#include <map>
 
 namespace pen
 {
@@ -12,144 +14,88 @@ namespace pen
         const auto inFilepath = MUSIC_FILES_DIRECTORY() + "/" + c.inFilename;
         const auto outFilepath = OUTPUT_DIRECTORY() + "/" + c.outFilename;
         const auto inID = dmgr.createFromFile( inFilepath );
-        auto input = dmgr.getData( inID );
+        const auto input = dmgr.getData( inID );
         dmgr.destroyDocument( inID );
         
-        if( input.parts.size() == 8 )
+        int partIndex = 0;
+        std::map<int, std::vector<mx::api::NoteData>> partNoteStreams;
+        for( const auto& part : input.parts )
         {
-            // remove the keyswitches
-            input.parts.erase( input.parts.cbegin() + 7 );
-            input.parts.erase( input.parts.cbegin() + 5 );
-            input.parts.erase( input.parts.cbegin() + 3 );
-            input.parts.erase( input.parts.cbegin() + 1 );
-            input.systems.clear();
-            input.layout = mx::api::LayoutData{};
-            input.encoding = mx::api::EncodingData{};
-            input.partGroups.clear();
-            input.pageTextItems.clear();
-            
-            int partIndex = 0;
-            for( auto& part : input.parts )
+            for( const auto& measure : part.measures )
             {
-                int measureIndex = 0;
-                for( auto& measure : part.measures )
+                const auto& staff = measure.staves.at( 0 );
+                const auto& voice = staff.voices.at( 0 );
+                const auto& notes = voice.notes;
+                
+                for( const auto& note : notes )
                 {
-                    if( measureIndex == 0 || measure.staves.at( 0 ).clefs.size() > 0 )
+                    partNoteStreams[partIndex].push_back( note );
+                }
+            }
+            ++partIndex;
+        }
+        
+        std::map<int, std::vector<Atom>> partAtomsStreams;
+        
+        for( const auto& origPair : partNoteStreams )
+        {
+            for( const auto& note : origPair.second )
+            {
+                Atom a;
+                if( !note.isRest )
+                {
+                    a.octave = note.pitchData.octave;
+                    a.alter = note.pitchData.alter;
+                    switch ( note.pitchData.step )
                     {
-                        mx::api::ClefData clef;
-                        clef.setTreble();
-                        
-                        if( partIndex == 2 )
-                        {
-                            clef.setAlto();
-                        }
-                        
-                        if( partIndex == 3 )
-                        {
-                            clef.setBass();
-                        }
+                        case mx::api::Step::c:
+                            a.step = 0;
+                            break;
+                        case mx::api::Step::d:
+                            a.step = 1;
+                            break;
+                        case mx::api::Step::e:
+                            a.step = 2;
+                            break;
+                        case mx::api::Step::f:
+                            a.step = 3;
+                            break;
+                        case mx::api::Step::g:
+                            a.step = 4;
+                            break;
+                        case mx::api::Step::a:
+                            a.step = 5;
+                            break;
+                        case mx::api::Step::b:
+                            a.step = 6;
+                            break;
+                        default:
+                            a.step = 7;
+                            break;
+                    }
+                    a.setName();
+                }
+                
+                int numNotes = 1;
+                if( note.durationData.durationName == mx::api::DurationName::quarter )
+                {
+                    numNotes = 2;
+                    if( note.durationData.durationDots == 1 )
+                    {
+                        numNotes = 3;
+                    }
+                }
+                
+                for( int i = 0; i < numNotes; ++i )
+                {
+                    partAtomsStreams[origPair.first].push_back( a );
+                }
+            }
+        }
 
-                        if( measure.staves.at( 0 ).clefs.empty() )
-                        {
-                            measure.staves.at( 0 ).clefs.push_back( clef );
-                        }
-                        else
-                        {
-                            measure.staves.at( 0 ).clefs.at( 0 ) = clef;
-                        }
-                    }
-                    
-                    if( measure.staves.size() == 2 )
-                    {
-                        measure.staves.erase( measure.staves.cbegin() + 1 );
-                    }
-                    
-                    for( auto& staff : measure.staves )
-                    {
-                        for( auto& voice : staff.voices )
-                        {
-                            for( auto& note: voice.second.notes )
-                            {
-                                if( note.pitchData.step == mx::api::Step::a )
-                                {
-                                    if( note.pitchData.alter == -1 )
-                                    {
-                                        note.pitchData.step = mx::api::Step::g;
-                                        note.pitchData.alter = 1;
-                                    }
-                                }
-                                if( note.pitchData.alter == -1 )
-                                {
-                                    note.pitchData.accidental = mx::api::Accidental::flat;
-                                }
-                                else if( note.pitchData.alter == 1 )
-                                {
-                                    note.pitchData.accidental = mx::api::Accidental::sharp;
-                                }
-                            }
-                        }
-                    }
-                
-                    ++measureIndex;
-                }
-                
-                ++partIndex;
-            }
-            
-            const auto resaveID = dmgr.createFromScore( input );
-            dmgr.writeToFile( resaveID, inFilepath );
-        }
-        
-        mx::api::ScoreData score = createEmptyScore( "June 3 Input" );
+        // TODO - write the notes into the score
+        mx::api::ScoreData score = createEmptyScore( "June 3 Coalescence Practice" );
         appendMeasures( score, 7 );
-        
-        const size_t start = 114;
-        
-        for( size_t i = 0; i < 8; ++i )
-        {
-            const auto oldMeasureIndex = start + i;
-            for( size_t partIndex = 0; partIndex < 4; ++partIndex )
-            {
-                const auto& oldPart = input.parts.at( partIndex );
-                auto& newPart = score.parts.at( partIndex );
-                const auto& oldMeasure = oldPart.measures.at( oldMeasureIndex );
-                auto& newMeasure = newPart.measures.at( i );
-                newMeasure.staves.at( 0 ).voices.at( 0 ).notes = oldMeasure.staves.at( 0 ).voices.at( 0 ).notes;
-            }
-        }
-        
-        for( auto& part : score.parts )
-        {
-            for( auto& measure : part.measures )
-            {
-                for( auto& staff : measure.staves )
-                {
-                    for( auto& voice : staff.voices )
-                    {
-                        for( auto& note: voice.second.notes )
-                        {
-                            if( note.pitchData.step == mx::api::Step::a )
-                            {
-                                if( note.pitchData.alter == -1 )
-                                {
-                                    note.pitchData.step = mx::api::Step::g;
-                                    note.pitchData.alter = 1;
-                                }
-                            }
-                            if( note.pitchData.alter == -1 )
-                            {
-                                note.pitchData.accidental = mx::api::Accidental::flat;
-                            }
-                            else if( note.pitchData.alter == 1 )
-                            {
-                                note.pitchData.accidental = mx::api::Accidental::sharp;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        
         const auto oID = dmgr.createFromScore( score );
         dmgr.writeToFile( oID, outFilepath );
     }
@@ -169,6 +115,11 @@ namespace pen
         addInstrument( score, "VN2", "Violin 2", "Vln 2", mx::api::SoundID::stringsViolin, treble );
         addInstrument( score, "VLA", "Viola", "Vla", mx::api::SoundID::stringsViola, alto );
         addInstrument( score, "VLC", "Cello", "Vlc", mx::api::SoundID::stringsCello, bass );
+        mx::api::PartGroupData grp;
+        grp.firstPartIndex = 0;
+        grp.lastPartIndex = 3;
+        grp.bracketType = mx::api::BracketType::bracket;
+        score.partGroups.push_back( grp );
         return score;
     }
     
