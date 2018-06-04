@@ -15,14 +15,74 @@ namespace pen
         auto input = dmgr.getData( inID );
         dmgr.destroyDocument( inID );
         
-        const int start = 117;
-        const int end = start + 8;
+        if( input.parts.size() == 8 )
+        {
+            // remove the keyswitches
+            input.parts.erase( input.parts.cbegin() + 7 );
+            input.parts.erase( input.parts.cbegin() + 5 );
+            input.parts.erase( input.parts.cbegin() + 3 );
+            input.parts.erase( input.parts.cbegin() + 1 );
+            input.systems.clear();
+            input.layout = mx::api::LayoutData{};
+            input.encoding = mx::api::EncodingData{};
+            input.partGroups.clear();
+            input.pageTextItems.clear();
+            const auto resaveID = dmgr.createFromScore( input );
+            dmgr.writeToFile( resaveID, inFilepath );
+        }
         
         mx::api::ScoreData score = createEmptyScore( "June 3 Input" );
         appendMeasures( score, 7 );
+        
+        const size_t start = 114;
+        
+        for( size_t i = 0; i < 8; ++i )
+        {
+            const auto oldMeasureIndex = start + i;
+            for( size_t partIndex = 0; partIndex < 4; ++partIndex )
+            {
+                const auto& oldPart = input.parts.at( partIndex );
+                auto& newPart = score.parts.at( partIndex );
+                const auto& oldMeasure = oldPart.measures.at( oldMeasureIndex );
+                auto& newMeasure = newPart.measures.at( i );
+                newMeasure.staves.at( 0 ).voices.at( 0 ).notes = oldMeasure.staves.at( 0 ).voices.at( 0 ).notes;
+            }
+        }
+        
+        for( auto& part : score.parts )
+        {
+            for( auto& measure : part.measures )
+            {
+                for( auto& staff : measure.staves )
+                {
+                    for( auto& voice : staff.voices )
+                    {
+                        for( auto& note: voice.second.notes )
+                        {
+                            if( note.pitchData.step == mx::api::Step::a )
+                            {
+                                if( note.pitchData.alter == -1 )
+                                {
+                                    note.pitchData.step = mx::api::Step::g;
+                                    note.pitchData.alter = 1;
+                                }
+                            }
+                            if( note.pitchData.alter == -1 )
+                            {
+                                note.pitchData.accidental = mx::api::Accidental::flat;
+                            }
+                            else if( note.pitchData.alter == 1 )
+                            {
+                                note.pitchData.accidental = mx::api::Accidental::sharp;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
         const auto oID = dmgr.createFromScore( score );
         dmgr.writeToFile( oID, outFilepath );
-        
     }
     
     mx::api::ScoreData
