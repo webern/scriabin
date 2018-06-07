@@ -92,6 +92,35 @@ namespace pen
                 }
             }
         }
+        
+        // reverse the stream
+        for( auto& pair : partAtomsStreams )
+        {
+            std::reverse(std::begin( pair.second ), std::end( pair.second ) );
+        }
+
+        const std::vector<bool> randVec = { true, true, false, false, true, false, true, false, false, false, true, true, true, true, false, true, true, false, false, false, false, false, true, false, false, false, false, true, true, true, false, false, false, true, true, true, false, false, true, true, false, false, true, false, false, true, true, true, true, true, true, false, true, false, true, false, true, false, false, true, true, false, false, true, false, true, false, false, false, false, false, false, true, false, true };
+        auto rand = std::cbegin( randVec );
+        const auto rend = std::cend( randVec );
+
+        for( auto& pair : partAtomsStreams )
+        {
+            auto& stream = pair.second;
+            decltype( pair.second ) writer;
+            std::copy( std::cbegin( stream ), std::cend( stream ), std::back_inserter( writer ) );
+            for( int i = 0; i < 7; ++i )
+            {
+                std::copy( std::begin( writer ), std::end( writer ), std::back_inserter( stream ) );
+            }
+
+        }
+        
+        
+        // reverse the again to put it back into frontwards order stream
+        for( auto& pair : partAtomsStreams )
+        {
+            std::reverse(std::begin( pair.second ), std::end( pair.second ) );
+        }
 
         // TODO - write the notes into the score
         mx::api::ScoreData score = createEmptyScore( "June 3 Coalescence Practice" );
