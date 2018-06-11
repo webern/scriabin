@@ -1,7 +1,7 @@
 #include "mx/api/PitchData.h"
 #include "mx/api/DurationData.h"
 
-namespace etude
+namespace pen
 {
     constexpr const int MIDI_NOTE_ZERO_OCTAVE = -2;
     constexpr const int MIDDLE_C_OCTAVE = 4;

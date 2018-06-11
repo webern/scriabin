@@ -1,6 +1,6 @@
 #include "pen/PitchPattern.h"
 
-namespace etude
+namespace pen
 {
     
 }

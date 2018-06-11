@@ -78,6 +78,7 @@
 		29CA49A120BCF16900F0B643 /* TestCommandLineParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 29CA499E20BCF16900F0B643 /* TestCommandLineParser.cpp */; };
 		29CA49A620BCF50000F0B643 /* libpen.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 29CA49A520BCF50000F0B643 /* libpen.a */; };
 		29CA49A820BCF89600F0B643 /* CompEtude1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 29CA49A720BCF89600F0B643 /* CompEtude1.cpp */; };
+		29DE36B920C469880090ED98 /* CompJune3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 29DE36B820C469880090ED98 /* CompJune3.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -257,6 +258,7 @@
 		29CA49A520BCF50000F0B643 /* libpen.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libpen.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		29CA49A720BCF89600F0B643 /* CompEtude1.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CompEtude1.cpp; sourceTree = "<group>"; };
 		29CA49A920BCFB6000F0B643 /* PEN_PATH.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PEN_PATH.h; sourceTree = "<group>"; };
+		29DE36B820C469880090ED98 /* CompJune3.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CompJune3.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -510,6 +512,7 @@
 			isa = PBXGroup;
 			children = (
 				29CA49A720BCF89600F0B643 /* CompEtude1.cpp */,
+				29DE36B820C469880090ED98 /* CompJune3.cpp */,
 			);
 			path = compositions;
 			sourceTree = "<group>";
@@ -615,6 +618,7 @@
 				29CA48F920BCC70300F0B643 /* catch_interfaces_exception.cpp in Sources */,
 				29CA491920BCC70300F0B643 /* catch_errno_guard.cpp in Sources */,
 				29CA49A820BCF89600F0B643 /* CompEtude1.cpp in Sources */,
+				29DE36B920C469880090ED98 /* CompJune3.cpp in Sources */,
 				29CA490420BCC70300F0B643 /* catch_fatal_condition.cpp in Sources */,
 				29CA490F20BCC70300F0B643 /* catch_reporter_registry.cpp in Sources */,
 				29CA491220BCC70300F0B643 /* catch_interfaces_registry_hub.cpp in Sources */,

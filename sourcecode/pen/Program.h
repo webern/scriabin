@@ -4,7 +4,7 @@
 #include "pen/InstrumentConfig.h"
 #include "ezxml/ezxml.h"
 
-namespace etude
+namespace pen
 {
     struct Program
     {
@@ -40,7 +40,7 @@ namespace etude
         inline void
         setParser(  int argc, const char* argv[] )
         {
-            parser = etude::cmd( argc, argv );
+            parser = pen::cmd( argc, argv );
         }
         
         inline void

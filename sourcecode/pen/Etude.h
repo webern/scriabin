@@ -2,7 +2,7 @@
 #include "mx/api/ScoreData.h"
 #include "pen/InstrumentConfig.h"
 
-namespace etude
+namespace pen
 {
     class Etude
     {

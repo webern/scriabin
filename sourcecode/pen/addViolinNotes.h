@@ -7,7 +7,7 @@
 #include "pen/Etude.h"
 #include "pen/Program.h"
 
-namespace etude
+namespace pen
 {
     inline void
     addViolinNote( const mx::api::NoteData& NOTE_PROTO,
