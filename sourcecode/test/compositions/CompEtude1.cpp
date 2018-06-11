@@ -9,7 +9,7 @@ using namespace zeus;
 TEST_CASE( "etude1", "Comp" )
 {
     const auto& iConfig = pen::INSTRUMENT_CONFIG_FILEPATH();
-    const auto& oDir = pen::OUTPUT_DIRECTORY();
+    const auto& oDir = pen::MUSIC_OUTPUT_FILES_DIRECTORY();
     const std::string oPath = oDir + std::string{ "etude1.actual.xml" };
     constexpr const int argc = 5;
     const char * argv[argc] =

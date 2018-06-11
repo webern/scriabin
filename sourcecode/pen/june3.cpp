@@ -11,8 +11,8 @@ namespace pen
     {
         const June3Constants c;
         auto& dmgr = mx::api::DocumentManager::getInstance();
-        const auto inFilepath = MUSIC_FILES_DIRECTORY() + "/" + c.inFilename;
-        const auto outFilepath = OUTPUT_DIRECTORY() + "/" + c.outFilename;
+        const auto inFilepath = MUSIC_INPUT_FILES_DIRECTORY() + "/" + c.inFilename;
+        const auto outFilepath = MUSIC_OUTPUT_FILES_DIRECTORY() + "/" + c.outFilename;
         const auto inID = dmgr.createFromFile( inFilepath );
         const auto input = dmgr.getData( inID );
         dmgr.destroyDocument( inID );

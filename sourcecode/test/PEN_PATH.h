@@ -30,9 +30,15 @@ namespace pen
         return result;
     }
 
-    inline const std::string MUSIC_FILES_DIRECTORY()
+    inline const std::string MUSIC_INPUT_FILES_DIRECTORY()
     {
         static const std::string& result = INPUT_DIRECTORY() + std::string{ "music-files/" };
+        return result;
+    }
+    
+    inline const std::string MUSIC_OUTPUT_FILES_DIRECTORY()
+    {
+        static const std::string& result = OUTPUT_DIRECTORY() + std::string{ "comp/" };
         return result;
     }
 }

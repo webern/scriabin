@@ -10,7 +10,7 @@ namespace pen
     struct June3Constants
     {
         const std::string outFilename = "coalescence.large.xml";
-        const std::string inFilename = "coalescence.input.xml.xml";
+        const std::string inFilename = "coalescence.input.xml";
         
     };
     
