@@ -8,7 +8,7 @@ DerivedData/
 .TemporaryItems
 .Trashes
 .fseventsd
-out/
+out/test
 Meta/
 Xcode/bin
 *.xcbkptlist

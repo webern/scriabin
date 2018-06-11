@@ -9,8 +9,8 @@ namespace pen
 {
     struct June3Constants
     {
-        const std::string outFilename = "june3-coalescence.xml";
-        const std::string inFilename = "homo-sapiens-june-3-extract-1.xml";
+        const std::string outFilename = "june3-coalescence.large.xml";
+        const std::string inFilename = "june-3-extract-2.xml";
         
     };
     

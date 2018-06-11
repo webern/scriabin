@@ -93,6 +93,14 @@ namespace pen
             }
         }
         
+        // fix a problem
+        partAtomsStreams.at( 2 ) = partAtomsStreams.at( 0 );
+        
+        for( auto& note : partAtomsStreams.at( 2 ) )
+        {
+            note.octave = note.octave - 1;
+        }
+        
         // reverse the stream
         for( auto& pair : partAtomsStreams )
         {
@@ -100,21 +108,100 @@ namespace pen
         }
 
         const std::vector<bool> randVec = { true, true, false, false, true, false, true, false, false, false, true, true, true, true, false, true, true, false, false, false, false, false, true, false, false, false, false, true, true, true, false, false, false, true, true, true, false, false, true, true, false, false, true, false, false, true, true, true, true, true, true, false, true, false, true, false, true, false, false, true, true, false, false, true, false, true, false, false, false, false, false, false, true, false, true };
-        auto rand = std::cbegin( randVec );
-        const auto rend = std::cend( randVec );
+        auto randIter = std::cbegin( randVec );
+        const auto randEnd = std::cend( randVec );
 
+        const auto rand = [&]()
+        {
+            const bool val = *randIter;
+            if( randIter == randEnd )
+            {
+                randIter = std::cbegin( randVec );
+            }
+            else
+            {
+                ++randIter;
+            }
+            
+            return val;
+        };
+        
+        int masterIndex = 0;
+        
         for( auto& pair : partAtomsStreams )
         {
             auto& stream = pair.second;
             decltype( pair.second ) writer;
             std::copy( std::cbegin( stream ), std::cend( stream ), std::back_inserter( writer ) );
-            for( int i = 0; i < 7; ++i )
+            
+            // final repeats, eight times
+            for( int i = 0; i < 7; ++i, ++masterIndex )
             {
                 std::copy( std::begin( writer ), std::end( writer ), std::back_inserter( stream ) );
             }
 
+            // eight times with increasing rests
+            for( int i = 0; i < 8; ++i, ++masterIndex )
+            {
+                for( auto& note : writer )
+                {
+                    if( masterIndex % 37 == 0 && rand() )
+                    {
+                        note.alter = 0;
+                        note.octave = 0;
+                        note.step = -1;
+                        note.name = "rest";
+                    }
+                    
+                    ++masterIndex;
+                    std::copy( std::begin( writer ), std::end( writer ), std::back_inserter( stream ) );
+                }
+            }
+            
+            // eight times with increasing augmentation
+            for( int i = 0; i < 8; ++i, ++masterIndex )
+            {
+                for( auto noteIter = writer.begin(); noteIter != writer.end(); ++noteIter, ++masterIndex )
+                {
+                    if( masterIndex % 3 == 0 && rand() )
+                    {
+                        auto reps = ( masterIndex % ( i + 2 ) + 1 );
+                        const auto note = *noteIter;
+                        for( int j = 0; j < reps; ++j )
+                        {
+                            noteIter = writer.insert( noteIter, note );
+                            ++noteIter;
+                            
+                            if( noteIter == writer.end() )
+                            {
+                                break;
+                            }
+                        }
+                    }
+                }
+                std::copy( std::begin( writer ), std::end( writer ), std::back_inserter( stream ) );
+            }
         }
         
+        // find the smallest stream
+        int smallest = -1;
+        
+        for( const auto& pait : partAtomsStreams )
+        {
+            if( smallest == -1 || pait.second.size() < smallest )
+            {
+                smallest = pait.second.size();
+            }
+        }
+        
+        // delete extra notes based on smallest
+        for( auto& pair : partAtomsStreams )
+        {
+            if( pair.second.size() > smallest )
+            {
+                pair.second.resize( smallest );
+            }
+        }
         
         // reverse the again to put it back into frontwards order stream
         for( auto& pair : partAtomsStreams )
@@ -122,9 +209,93 @@ namespace pen
             std::reverse(std::begin( pair.second ), std::end( pair.second ) );
         }
 
-        // TODO - write the notes into the score
+        
         mx::api::ScoreData score = createEmptyScore( "June 3 Coalescence Practice" );
         appendMeasures( score, 7 );
+        
+        // write notes into score
+        
+        for( int partIndex = 0; partIndex < partAtomsStreams.size(); ++partIndex )
+        {
+            int measureIndex = 0;
+            int eighthIndex = 0;
+            const auto& noteStream = partAtomsStreams.at( partIndex );
+            auto& outPart = score.parts.at( partIndex );
+            
+            for( const auto& note : noteStream )
+            {
+                while( measureIndex > outPart.measures.size() - 1 )
+                {
+                    appendMeasures( score, 1 );
+                }
+                
+                auto& measure = outPart.measures.at( measureIndex );
+                mx::api::NoteData theNote;
+                theNote.tickTimePosition = eighthIndex * ( score.ticksPerQuarter / 2 );
+                theNote.durationData.durationTimeTicks = score.ticksPerQuarter / 2;
+                theNote.durationData.durationName = mx::api::DurationName::eighth;
+                
+                if( note.step == -1 )
+                {
+                    theNote.isRest = true;
+                }
+                else
+                {
+                    theNote.pitchData.alter = note.alter;
+                    theNote.pitchData.octave = note.octave;
+                    switch ( note.step )
+                    {
+                        case 0:
+                            theNote.pitchData.step = mx::api::Step::c;
+                            break;
+                        case 1:
+                            theNote.pitchData.step = mx::api::Step::d;
+                            break;
+                        case 2:
+                            theNote.pitchData.step = mx::api::Step::e;
+                            break;
+                        case 3:
+                            theNote.pitchData.step = mx::api::Step::f;
+                            break;
+                        case 4:
+                            theNote.pitchData.step = mx::api::Step::g;
+                            break;
+                        case 5:
+                            theNote.pitchData.step = mx::api::Step::a;
+                            break;
+                        case 6:
+                            theNote.pitchData.step = mx::api::Step::b;
+                            break;
+                        default:
+                            theNote.pitchData.step = mx::api::Step::c;
+                            break;
+                    }
+                    
+                    if( note.alter < 0 )
+                    {
+                        theNote.pitchData.accidental = mx::api::Accidental::flat;
+                    }
+                    else if ( note.alter > 0 )
+                    {
+                        theNote.pitchData.accidental = mx::api::Accidental::sharp;
+                    }
+                }
+                
+                measure.staves.at( 0 ).voices.at( 0 ).notes.push_back( theNote );
+                
+                if( ( eighthIndex + 1 ) % 6 == 0 )
+                {
+                    ++measureIndex;
+                    eighthIndex = 0;
+                }
+                else
+                {
+                    ++eighthIndex;
+                }
+            }
+            
+        }
+        
         const auto oID = dmgr.createFromScore( score );
         dmgr.writeToFile( oID, outFilepath );
     }
