@@ -30,8 +30,8 @@
 		29CA497A20BCCC1F00F0B643 /* CommandLineArgumentPrototype.h in Headers */ = {isa = PBXBuildFile; fileRef = 29CA496520BCCC1F00F0B643 /* CommandLineArgumentPrototype.h */; };
 		29CA499820BCEE4F00F0B643 /* libezxml.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 29CA499720BCEE4F00F0B643 /* libezxml.a */; };
 		29CA49A320BCF4EC00F0B643 /* libMx.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 29CA49A220BCF4EC00F0B643 /* libMx.a */; };
-		29DE36BD20C477FA0090ED98 /* june3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 29DE36BB20C477FA0090ED98 /* june3.cpp */; };
-		29DE36BE20C477FA0090ED98 /* june3.h in Headers */ = {isa = PBXBuildFile; fileRef = 29DE36BC20C477FA0090ED98 /* june3.h */; };
+		29DE36BD20C477FA0090ED98 /* Coalescence.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 29DE36BB20C477FA0090ED98 /* Coalescence.cpp */; };
+		29DE36BE20C477FA0090ED98 /* Coalescence.h in Headers */ = {isa = PBXBuildFile; fileRef = 29DE36BC20C477FA0090ED98 /* Coalescence.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -59,8 +59,8 @@
 		29CA496520BCCC1F00F0B643 /* CommandLineArgumentPrototype.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommandLineArgumentPrototype.h; sourceTree = "<group>"; };
 		29CA499720BCEE4F00F0B643 /* libezxml.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libezxml.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		29CA49A220BCF4EC00F0B643 /* libMx.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libMx.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		29DE36BB20C477FA0090ED98 /* june3.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = june3.cpp; sourceTree = "<group>"; };
-		29DE36BC20C477FA0090ED98 /* june3.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = june3.h; sourceTree = "<group>"; };
+		29DE36BB20C477FA0090ED98 /* Coalescence.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Coalescence.cpp; sourceTree = "<group>"; };
+		29DE36BC20C477FA0090ED98 /* Coalescence.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Coalescence.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,6 +108,8 @@
 				29CA495820BCCC1E00F0B643 /* addMarimbaNotes.h */,
 				29CA496220BCCC1F00F0B643 /* addViolinNotes.h */,
 				29CA496320BCCC1F00F0B643 /* cmd.h */,
+				29DE36BB20C477FA0090ED98 /* Coalescence.cpp */,
+				29DE36BC20C477FA0090ED98 /* Coalescence.h */,
 				29CA495B20BCCC1F00F0B643 /* CommandLineArgumentPrototype.cpp */,
 				29CA496520BCCC1F00F0B643 /* CommandLineArgumentPrototype.h */,
 				29CA495120BCCC1E00F0B643 /* CommandLineParser.cpp */,
@@ -117,17 +119,15 @@
 				29CA495C20BCCC1F00F0B643 /* constants.h */,
 				29CA495420BCCC1E00F0B643 /* Etude.cpp */,
 				29CA496120BCCC1F00F0B643 /* Etude.h */,
+				29CA495520BCCC1E00F0B643 /* etude1.h */,
 				29CA496420BCCC1F00F0B643 /* InstrumentConfig.cpp */,
 				29CA495920BCCC1E00F0B643 /* InstrumentConfig.h */,
 				29CA495F20BCCC1F00F0B643 /* InstrumentSpecies.cpp */,
 				29CA495220BCCC1E00F0B643 /* InstrumentSpecies.h */,
-				29CA495520BCCC1E00F0B643 /* etude1.h */,
 				29CA495E20BCCC1F00F0B643 /* PitchPattern.cpp */,
 				29CA495720BCCC1E00F0B643 /* PitchPattern.h */,
 				29CA495A20BCCC1F00F0B643 /* Program.h */,
 				29CA495D20BCCC1F00F0B643 /* util.h */,
-				29DE36BB20C477FA0090ED98 /* june3.cpp */,
-				29DE36BC20C477FA0090ED98 /* june3.h */,
 			);
 			path = pen;
 			sourceTree = "<group>";
@@ -158,7 +158,7 @@
 				29CA496C20BCCC1F00F0B643 /* PitchPattern.h in Headers */,
 				29CA496B20BCCC1F00F0B643 /* CommandLineValue.h in Headers */,
 				29CA496D20BCCC1F00F0B643 /* addMarimbaNotes.h in Headers */,
-				29DE36BE20C477FA0090ED98 /* june3.h in Headers */,
+				29DE36BE20C477FA0090ED98 /* Coalescence.h in Headers */,
 				29CA496E20BCCC1F00F0B643 /* InstrumentConfig.h in Headers */,
 				29CA497120BCCC1F00F0B643 /* constants.h in Headers */,
 				29CA496F20BCCC1F00F0B643 /* Program.h in Headers */,
@@ -227,7 +227,7 @@
 				29CA496620BCCC1F00F0B643 /* CommandLineParser.cpp in Sources */,
 				29CA497920BCCC1F00F0B643 /* InstrumentConfig.cpp in Sources */,
 				29CA496920BCCC1F00F0B643 /* Etude.cpp in Sources */,
-				29DE36BD20C477FA0090ED98 /* june3.cpp in Sources */,
+				29DE36BD20C477FA0090ED98 /* Coalescence.cpp in Sources */,
 				29CA497020BCCC1F00F0B643 /* CommandLineArgumentPrototype.cpp in Sources */,
 				29CA496A20BCCC1F00F0B643 /* etude1.h in Sources */,
 			);

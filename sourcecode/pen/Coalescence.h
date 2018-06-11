@@ -7,14 +7,14 @@
 
 namespace pen
 {
-    struct June3Constants
+    struct CoalescenceConsts
     {
         const std::string outFilename = "coalescence.large.xml";
         const std::string inFilename = "coalescence.input.xml";
         
     };
     
-    class June3
+    class Coalescence
     {
     public:
         void doEverthing();

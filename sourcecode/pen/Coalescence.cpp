@@ -1,4 +1,4 @@
-#include "pen/june3.h"
+#include "pen/Coalescence.h"
 #include "../test/PEN_PATH.h"
 #include "mx/api/DocumentManager.h"
 #include <vector>
@@ -7,9 +7,9 @@
 namespace pen
 {
     void
-    June3::doEverthing()
+    Coalescence::doEverthing()
     {
-        const June3Constants c;
+        const CoalescenceConsts c;
         auto& dmgr = mx::api::DocumentManager::getInstance();
         const auto inFilepath = MUSIC_INPUT_FILES_DIRECTORY() + "/" + c.inFilename;
         const auto outFilepath = MUSIC_OUTPUT_FILES_DIRECTORY() + "/" + c.outFilename;
@@ -301,7 +301,7 @@ namespace pen
     }
     
     mx::api::ScoreData
-    June3::createEmptyScore( const std::string& title )
+    Coalescence::createEmptyScore( const std::string& title )
     {
         mx::api::ScoreData score;
         score.workTitle = title;
@@ -324,7 +324,7 @@ namespace pen
     }
     
     void
-    June3::addInstrument( mx::api::ScoreData& ioScore,
+    Coalescence::addInstrument( mx::api::ScoreData& ioScore,
                           const std::string& id,
                           const std::string& name,
                           const std::string& abbr,
@@ -353,7 +353,7 @@ namespace pen
     }
     
     void
-    June3::appendMeasures( mx::api::ScoreData& ioScore, int numMeasures )
+    Coalescence::appendMeasures( mx::api::ScoreData& ioScore, int numMeasures )
     {
         for( int x = 0; x < numMeasures; ++x )
         {
