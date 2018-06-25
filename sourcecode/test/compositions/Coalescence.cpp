@@ -13,7 +13,7 @@ TEST_CASE( "coalescence", "Comp" )
     const std::string inFilename = "coalescence.input.xml";
     const auto inFilepath = pen::MUSIC_INPUT_FILES_DIRECTORY() + "/" + inFilename;
     const auto outFilepath = pen::MUSIC_OUTPUT_FILES_DIRECTORY() + "/" + outFilename;
-    
-    pen::Coalescence coalescence{ inFilepath, outFilepath };
+    //inFilepath, outFilepath
+    pen::Coalescence coalescence{  };
     coalescence.doEverthing();
 }

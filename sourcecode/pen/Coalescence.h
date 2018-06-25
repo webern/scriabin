@@ -8,16 +8,20 @@
 
 namespace pen
 {
+    struct CoalescenceConsts
+    {
+        const std::string outFilename = "coalescence.large.xml";
+        const std::string inFilename = "coalescence.input.xml";
+        
+    };
+    
     class Coalescence
     {
     public:
-        Coalescence( std::string inputFilepath, std::string outputFilepath );
         void doEverthing();
         
     private:
-        std::string myInputPath;
-        std::string myOutputPath;
-        mx::api::ScoreData myScore;
+        
         
     private:
         static mx::api::ScoreData createEmptyScore( const std::string& title );
