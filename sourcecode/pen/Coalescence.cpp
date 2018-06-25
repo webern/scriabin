@@ -69,8 +69,10 @@ namespace pen
                     }
                 }
                 
+                a.updateName();
+                
                 for( int i = 0; i < numNotes; ++i )
-                {
+                {                    
                     partAtomsStreams[origPair.first].push_back( a );
                 }
             }

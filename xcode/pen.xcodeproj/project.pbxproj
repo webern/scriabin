@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		29474DC820E1B389009BF7C9 /* Atom.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 29474DC720E1B389009BF7C9 /* Atom.cpp */; };
 		29CA496620BCCC1F00F0B643 /* CommandLineParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 29CA495120BCCC1E00F0B643 /* CommandLineParser.cpp */; };
 		29CA496720BCCC1F00F0B643 /* InstrumentSpecies.h in Headers */ = {isa = PBXBuildFile; fileRef = 29CA495220BCCC1E00F0B643 /* InstrumentSpecies.h */; };
 		29CA496820BCCC1F00F0B643 /* CommandLineParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 29CA495320BCCC1E00F0B643 /* CommandLineParser.h */; };
@@ -34,6 +35,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		29474DC720E1B389009BF7C9 /* Atom.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Atom.cpp; sourceTree = "<group>"; };
 		297F254720E08C0200256E73 /* Atom.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Atom.h; sourceTree = "<group>"; };
 		29CA481D20BCC28E00F0B643 /* libpen.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libpen.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		29CA495120BCCC1E00F0B643 /* CommandLineParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CommandLineParser.cpp; sourceTree = "<group>"; };
@@ -129,6 +131,7 @@
 				29CA495A20BCCC1F00F0B643 /* Program.h */,
 				29CA495D20BCCC1F00F0B643 /* util.h */,
 				297F254720E08C0200256E73 /* Atom.h */,
+				29474DC720E1B389009BF7C9 /* Atom.cpp */,
 			);
 			path = pen;
 			sourceTree = "<group>";
@@ -222,6 +225,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				29474DC820E1B389009BF7C9 /* Atom.cpp in Sources */,
 				29CA497320BCCC1F00F0B643 /* PitchPattern.cpp in Sources */,
 				29CA497520BCCC1F00F0B643 /* CommandLineValue.cpp in Sources */,
 				29CA497420BCCC1F00F0B643 /* InstrumentSpecies.cpp in Sources */,
