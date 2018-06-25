@@ -171,18 +171,18 @@ namespace pen
         
         for( const auto& pait : partAtomsStreams )
         {
-            if( smallest == -1 || pait.second.size() < smallest )
+            if( smallest == -1 || static_cast<int>( pait.second.size() ) < smallest )
             {
-                smallest = pait.second.size();
+                smallest = static_cast<int>( pait.second.size() );
             }
         }
         
         // delete extra notes based on smallest
         for( auto& pair : partAtomsStreams )
         {
-            if( pair.second.size() > smallest )
+            if( static_cast<int>( pair.second.size() ) > smallest )
             {
-                pair.second.resize( smallest );
+                pair.second.resize( static_cast<size_t>( smallest ) );
             }
         }
         
@@ -193,26 +193,26 @@ namespace pen
         }
 
         myScore = mx::api::ScoreData{};
-        mx::api::ScoreData myScore = createEmptyScore( "June 3 Coalescence Practice" );
+        myScore = createEmptyScore( "June 3 Coalescence Practice" );
         appendMeasures( myScore, 7 );
         
         // write notes into score
         
-        for( int partIndex = 0; partIndex < partAtomsStreams.size(); ++partIndex )
+        for( int thePartIndexRightHere = 0; thePartIndexRightHere < static_cast<int>( partAtomsStreams.size() ); ++thePartIndexRightHere )
         {
             int measureIndex = 0;
             int eighthIndex = 0;
-            const auto& noteStream = partAtomsStreams.at( partIndex );
-            auto& outPart = myScore.parts.at( partIndex );
+            const auto& noteStream = partAtomsStreams.at( thePartIndexRightHere );
+            auto& outPart = myScore.parts.at( static_cast<size_t>( thePartIndexRightHere ) );
             
             for( const auto& note : noteStream )
             {
-                while( measureIndex > outPart.measures.size() - 1 )
+                while( measureIndex > static_cast<int>( outPart.measures.size() ) - 1 )
                 {
                     appendMeasures( myScore, 1 );
                 }
                 
-                auto& measure = outPart.measures.at( measureIndex );
+                auto& measure = outPart.measures.at( static_cast<size_t>( measureIndex ) );
                 mx::api::NoteData theNote;
                 theNote.tickTimePosition = eighthIndex * ( myScore.ticksPerQuarter / 2 );
                 theNote.durationData.durationTimeTicks = myScore.ticksPerQuarter / 2;
