@@ -9,6 +9,11 @@ using namespace zeus;
 
 TEST_CASE( "coalescence", "Comp" )
 {
-    pen::Coalescence coalescence;
+    const std::string outFilename = "coalescence.large.xml";
+    const std::string inFilename = "coalescence.input.xml";
+    const auto inFilepath = pen::MUSIC_INPUT_FILES_DIRECTORY() + "/" + inFilename;
+    const auto outFilepath = pen::MUSIC_OUTPUT_FILES_DIRECTORY() + "/" + outFilename;
+    
+    pen::Coalescence coalescence{ inFilepath, outFilepath };
     coalescence.doEverthing();
 }

@@ -6,14 +6,19 @@
 
 namespace pen
 {
+    Coalescence::Coalescence( std::string inputFilepath, std::string outputFilepath )
+    : myInputPath{ std::move( inputFilepath ) }
+    , myOutputPath{ std::move( outputFilepath ) }
+    , myScore{}
+    {
+        
+    }
+    
     void
     Coalescence::doEverthing()
     {
-        const CoalescenceConsts c;
         auto& dmgr = mx::api::DocumentManager::getInstance();
-        const auto inFilepath = MUSIC_INPUT_FILES_DIRECTORY() + "/" + c.inFilename;
-        const auto outFilepath = MUSIC_OUTPUT_FILES_DIRECTORY() + "/" + c.outFilename;
-        const auto inID = dmgr.createFromFile( inFilepath );
+        const auto inID = dmgr.createFromFile( myInputPath );
         const auto input = dmgr.getData( inID );
         dmgr.destroyDocument( inID );
         
@@ -164,7 +169,7 @@ namespace pen
         {
             if( smallest == -1 || pait.second.size() < smallest )
             {
-                smallest = pait.second.size();
+                smallest = static_cast<int>( pait.second.size() );
             }
         }
         
@@ -183,30 +188,30 @@ namespace pen
             std::reverse(std::begin( pair.second ), std::end( pair.second ) );
         }
 
+        myScore = mx::api::ScoreData{};
+        mx::api::ScoreData myScore = createEmptyScore( "Coalescence" );
+        appendMeasures( myScore, 7 );
         
-        mx::api::ScoreData score = createEmptyScore( "June 3 Coalescence Practice" );
-        appendMeasures( score, 7 );
-        
-        // write notes into score
+        // write notes into myScore
         
         for( int partIndex = 0; partIndex < partAtomsStreams.size(); ++partIndex )
         {
             int measureIndex = 0;
             int eighthIndex = 0;
             const auto& noteStream = partAtomsStreams.at( partIndex );
-            auto& outPart = score.parts.at( partIndex );
+            auto& outPart = myScore.parts.at( partIndex );
             
             for( const auto& note : noteStream )
             {
                 while( measureIndex > outPart.measures.size() - 1 )
                 {
-                    appendMeasures( score, 1 );
+                    appendMeasures( myScore, 1 );
                 }
                 
                 auto& measure = outPart.measures.at( measureIndex );
                 mx::api::NoteData theNote;
-                theNote.tickTimePosition = eighthIndex * ( score.ticksPerQuarter / 2 );
-                theNote.durationData.durationTimeTicks = score.ticksPerQuarter / 2;
+                theNote.tickTimePosition = eighthIndex * ( myScore.ticksPerQuarter / 2 );
+                theNote.durationData.durationTimeTicks = myScore.ticksPerQuarter / 2;
                 theNote.durationData.durationName = mx::api::DurationName::eighth;
                 
                 if( note.step == -1 )
@@ -244,8 +249,8 @@ namespace pen
             
         }
         
-        const auto oID = dmgr.createFromScore( score );
-        dmgr.writeToFile( oID, outFilepath );
+        const auto oID = dmgr.createFromScore( myScore );
+        dmgr.writeToFile( oID, myOutputPath );
     }
     
     mx::api::ScoreData
@@ -253,6 +258,8 @@ namespace pen
     {
         mx::api::ScoreData score;
         score.workTitle = title;
+        score.composer = "Matthew James Briggs";
+        score.copyright = "© 2018 by Matthew James Briggs (ASCAP)";
         mx::api::ClefData treble;
         treble.setTreble();
         mx::api::ClefData alto;
