@@ -254,7 +254,7 @@ namespace pen
         }
         
         const auto oID = dmgr.createFromScore( myScore );
-        dmgr.writeToFile( oID, outFilepath );
+        dmgr.writeToFile( oID, myOutFilepath );
     }
     
     mx::api::ScoreData
