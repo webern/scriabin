@@ -8,13 +8,6 @@
 
 namespace pen
 {
-    struct CoalescenceConsts
-    {
-        const std::string outFilename = "coalescence.large.xml";
-        const std::string inFilename = "coalescence.input.xml";
-        
-    };
-    
     class Coalescence
     {
     public:
