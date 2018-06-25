@@ -22,7 +22,7 @@ namespace pen
         auto& dmgr = mx::api::DocumentManager::getInstance();
         const auto inFilepath = MUSIC_INPUT_FILES_DIRECTORY() + "/" + c.inFilename;
         const auto outFilepath = MUSIC_OUTPUT_FILES_DIRECTORY() + "/" + c.outFilename;
-        const auto inID = dmgr.createFromFile( inFilepath );
+        const auto inID = dmgr.createFromFile( myInFilepath );
         const auto input = dmgr.getData( inID );
         dmgr.destroyDocument( inID );
         
