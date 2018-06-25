@@ -18,11 +18,13 @@ namespace pen
     class Coalescence
     {
     public:
-        Coalescence();
+        Coalescence( std::string inputFilepath, std::string outputFilepath );
         void doEverthing();
         
     private:
         mx::api::ScoreData myScore;
+        std::string myInFilepath;
+        std::string myOutFilepath;
         
     private:
         static mx::api::ScoreData createEmptyScore( const std::string& title );

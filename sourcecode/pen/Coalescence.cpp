@@ -6,8 +6,10 @@
 
 namespace pen
 {
-    Coalescence::Coalescence()
+    Coalescence::Coalescence( std::string inputFilepath, std::string outputFilepath )
     : myScore{}
+    , myInFilepath{ std::move( inputFilepath ) }
+    , myOutFilepath{ std::move( outputFilepath ) }
     {
         
     }
