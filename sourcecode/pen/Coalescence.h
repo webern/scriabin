@@ -18,6 +18,7 @@ namespace pen
     class Coalescence
     {
     public:
+        Coalescence();
         void doEverthing();
         
     private:

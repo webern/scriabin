@@ -6,6 +6,12 @@
 
 namespace pen
 {
+    Coalescence::Coalescence()
+    {
+        
+    }
+    
+    
     void
     Coalescence::doEverthing()
     {
