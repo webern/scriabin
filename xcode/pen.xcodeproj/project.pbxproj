@@ -35,6 +35,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		297F254720E08C0200256E73 /* Atom.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Atom.h; sourceTree = "<group>"; };
 		29CA481D20BCC28E00F0B643 /* libpen.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libpen.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		29CA495120BCCC1E00F0B643 /* CommandLineParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CommandLineParser.cpp; sourceTree = "<group>"; };
 		29CA495220BCCC1E00F0B643 /* InstrumentSpecies.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstrumentSpecies.h; sourceTree = "<group>"; };
@@ -128,6 +129,7 @@
 				29CA495720BCCC1E00F0B643 /* PitchPattern.h */,
 				29CA495A20BCCC1F00F0B643 /* Program.h */,
 				29CA495D20BCCC1F00F0B643 /* util.h */,
+				297F254720E08C0200256E73 /* Atom.h */,
 			);
 			path = pen;
 			sourceTree = "<group>";

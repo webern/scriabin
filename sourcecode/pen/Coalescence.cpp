@@ -46,37 +46,11 @@ namespace pen
                 {
                     a.octave = note.pitchData.octave;
                     a.alter = note.pitchData.alter;
-                    switch ( note.pitchData.step )
-                    {
-                        case mx::api::Step::c:
-                            a.step = 0;
-                            break;
-                        case mx::api::Step::d:
-                            a.step = 1;
-                            break;
-                        case mx::api::Step::e:
-                            a.step = 2;
-                            break;
-                        case mx::api::Step::f:
-                            a.step = 3;
-                            break;
-                        case mx::api::Step::g:
-                            a.step = 4;
-                            break;
-                        case mx::api::Step::a:
-                            a.step = 5;
-                            break;
-                        case mx::api::Step::b:
-                            a.step = 6;
-                            break;
-                        default:
-                            a.step = 7;
-                            break;
-                    }
-                    a.setName();
+                    a.setStep( note.pitchData.step );
                 }
                 
                 int numNotes = 1;
+                
                 if( note.durationData.durationName == mx::api::DurationName::quarter )
                 {
                     numNotes = 2;
@@ -243,33 +217,7 @@ namespace pen
                 {
                     theNote.pitchData.alter = note.alter;
                     theNote.pitchData.octave = note.octave;
-                    switch ( note.step )
-                    {
-                        case 0:
-                            theNote.pitchData.step = mx::api::Step::c;
-                            break;
-                        case 1:
-                            theNote.pitchData.step = mx::api::Step::d;
-                            break;
-                        case 2:
-                            theNote.pitchData.step = mx::api::Step::e;
-                            break;
-                        case 3:
-                            theNote.pitchData.step = mx::api::Step::f;
-                            break;
-                        case 4:
-                            theNote.pitchData.step = mx::api::Step::g;
-                            break;
-                        case 5:
-                            theNote.pitchData.step = mx::api::Step::a;
-                            break;
-                        case 6:
-                            theNote.pitchData.step = mx::api::Step::b;
-                            break;
-                        default:
-                            theNote.pitchData.step = mx::api::Step::c;
-                            break;
-                    }
+                    theNote.pitchData.step = note.getMxStep();
                     
                     if( note.alter < 0 )
                     {
