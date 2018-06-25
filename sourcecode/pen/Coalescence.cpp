@@ -7,6 +7,7 @@
 namespace pen
 {
     Coalescence::Coalescence()
+    : myScore{}
     {
         
     }
@@ -189,9 +190,9 @@ namespace pen
             std::reverse(std::begin( pair.second ), std::end( pair.second ) );
         }
 
-        
-        mx::api::ScoreData score = createEmptyScore( "June 3 Coalescence Practice" );
-        appendMeasures( score, 7 );
+        myScore = mx::api::ScoreData{};
+        mx::api::ScoreData myScore = createEmptyScore( "June 3 Coalescence Practice" );
+        appendMeasures( myScore, 7 );
         
         // write notes into score
         
@@ -200,19 +201,19 @@ namespace pen
             int measureIndex = 0;
             int eighthIndex = 0;
             const auto& noteStream = partAtomsStreams.at( partIndex );
-            auto& outPart = score.parts.at( partIndex );
+            auto& outPart = myScore.parts.at( partIndex );
             
             for( const auto& note : noteStream )
             {
                 while( measureIndex > outPart.measures.size() - 1 )
                 {
-                    appendMeasures( score, 1 );
+                    appendMeasures( myScore, 1 );
                 }
                 
                 auto& measure = outPart.measures.at( measureIndex );
                 mx::api::NoteData theNote;
-                theNote.tickTimePosition = eighthIndex * ( score.ticksPerQuarter / 2 );
-                theNote.durationData.durationTimeTicks = score.ticksPerQuarter / 2;
+                theNote.tickTimePosition = eighthIndex * ( myScore.ticksPerQuarter / 2 );
+                theNote.durationData.durationTimeTicks = myScore.ticksPerQuarter / 2;
                 theNote.durationData.durationName = mx::api::DurationName::eighth;
                 
                 if( note.step == -1 )
@@ -250,7 +251,7 @@ namespace pen
             
         }
         
-        const auto oID = dmgr.createFromScore( score );
+        const auto oID = dmgr.createFromScore( myScore );
         dmgr.writeToFile( oID, outFilepath );
     }
     

@@ -22,7 +22,7 @@ namespace pen
         void doEverthing();
         
     private:
-        
+        mx::api::ScoreData myScore;
         
     private:
         static mx::api::ScoreData createEmptyScore( const std::string& title );
