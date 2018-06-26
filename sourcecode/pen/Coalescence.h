@@ -8,6 +8,9 @@
 
 namespace pen
 {
+    using MxNoteStreams = std::map<int, std::vector<mx::api::NoteData>>;
+    using AtomStreams = std::map<int, std::vector<Atom>>;
+    
     class Coalescence
     {
     public:
@@ -20,6 +23,11 @@ namespace pen
         std::string myOutFilepath;
         
     private:
+        void initSelfScore();
+        MxNoteStreams getInputNotes() const;
+        
+    private:
+        
         static mx::api::ScoreData createEmptyScore( const std::string& title );
         static void addInstrument( mx::api::ScoreData& ioScore,
                                    const std::string& id,

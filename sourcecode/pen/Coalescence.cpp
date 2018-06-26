@@ -16,15 +16,25 @@ namespace pen
     
     
     void
+    Coalescence::initSelfScore()
+    {
+        myScore = mx::api::ScoreData{};
+        myScore = createEmptyScore( "June 3 Coalescence Practice" );
+    }
+    
+    
+    void
     Coalescence::doEverthing()
     {
+        initSelfScore();
+        
         auto& dmgr = mx::api::DocumentManager::getInstance();
         const auto inID = dmgr.createFromFile( myInFilepath );
         const auto input = dmgr.getData( inID );
         dmgr.destroyDocument( inID );
         
         int partIndex = 0;
-        std::map<int, std::vector<mx::api::NoteData>> partNoteStreams;
+        MxNoteStreams inputNotes;
         for( const auto& part : input.parts )
         {
             for( const auto& measure : part.measures )
@@ -35,15 +45,15 @@ namespace pen
                 
                 for( const auto& note : notes )
                 {
-                    partNoteStreams[partIndex].push_back( note );
+                    inputNotes[partIndex].push_back( note );
                 }
             }
             ++partIndex;
         }
         
-        std::map<int, std::vector<Atom>> partAtomsStreams;
+        AtomStreams streams;
         
-        for( const auto& origPair : partNoteStreams )
+        for( const auto& origPair : inputNotes )
         {
             for( const auto& note : origPair.second )
             {
@@ -70,21 +80,21 @@ namespace pen
                 
                 for( int i = 0; i < numNotes; ++i )
                 {                    
-                    partAtomsStreams[origPair.first].push_back( a );
+                    streams[origPair.first].push_back( a );
                 }
             }
         }
         
         // fix a problem
-        partAtomsStreams.at( 2 ) = partAtomsStreams.at( 0 );
+        streams.at( 2 ) = streams.at( 0 );
         
-        for( auto& note : partAtomsStreams.at( 2 ) )
+        for( auto& note : streams.at( 2 ) )
         {
             note.octave = note.octave - 1;
         }
         
         // reverse the stream
-        for( auto& pair : partAtomsStreams )
+        for( auto& pair : streams )
         {
             std::reverse(std::begin( pair.second ), std::end( pair.second ) );
         }
@@ -110,7 +120,7 @@ namespace pen
         
         int masterIndex = 0;
         
-        for( auto& pair : partAtomsStreams )
+        for( auto& pair : streams )
         {
             auto& stream = pair.second;
             decltype( pair.second ) writer;
@@ -168,7 +178,7 @@ namespace pen
         // find the smallest stream
         int smallest = -1;
         
-        for( const auto& pait : partAtomsStreams )
+        for( const auto& pait : streams )
         {
             if( smallest == -1 || static_cast<int>( pait.second.size() ) < smallest )
             {
@@ -177,7 +187,7 @@ namespace pen
         }
         
         // delete extra notes based on smallest
-        for( auto& pair : partAtomsStreams )
+        for( auto& pair : streams )
         {
             if( static_cast<int>( pair.second.size() ) > smallest )
             {
@@ -186,22 +196,18 @@ namespace pen
         }
         
         // reverse the again to put it back into frontwards order stream
-        for( auto& pair : partAtomsStreams )
+        for( auto& pair : streams )
         {
             std::reverse(std::begin( pair.second ), std::end( pair.second ) );
         }
-
-        myScore = mx::api::ScoreData{};
-        myScore = createEmptyScore( "June 3 Coalescence Practice" );
-        appendMeasures( myScore, 7 );
         
         // write notes into score
         
-        for( int thePartIndexRightHere = 0; thePartIndexRightHere < static_cast<int>( partAtomsStreams.size() ); ++thePartIndexRightHere )
+        for( int thePartIndexRightHere = 0; thePartIndexRightHere < static_cast<int>( streams.size() ); ++thePartIndexRightHere )
         {
             int measureIndex = 0;
             int eighthIndex = 0;
-            const auto& noteStream = partAtomsStreams.at( thePartIndexRightHere );
+            const auto& noteStream = streams.at( thePartIndexRightHere );
             auto& outPart = myScore.parts.at( static_cast<size_t>( thePartIndexRightHere ) );
             
             for( const auto& note : noteStream )
