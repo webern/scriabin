@@ -20,6 +20,16 @@ namespace pen
     
     
     void
+    Atom::setRest()
+    {
+        step = -1;
+        octave = 4;
+        alter = 0;
+        updateName();
+    }
+    
+    
+    void
     Atom::updateName()
     {
         std::stringstream ss;
@@ -108,6 +118,7 @@ namespace pen
         }
         
         step = inStep;
+        updateName();
     }
 
     
@@ -115,6 +126,54 @@ namespace pen
     Atom::getStep() const
     {
         return step;
+    }
+    
+    
+    void
+    Atom::setOctave( int inOctave )
+    {
+        if( inOctave < -2 )
+        {
+            throw std::runtime_error("Atom::setOctave out of range, < -2");
+        }
+        else if( inOctave > 9 )
+        {
+            throw std::runtime_error("Atom::setOctave out of range, > 9");
+        }
+        
+        octave = inOctave;
+        updateName();
+    }
+    
+    
+    int
+    Atom::getOctave() const
+    {
+        return octave;
+    }
+    
+    
+    void
+    Atom::setAlter( int inAlter )
+    {
+        if( inAlter < -2 )
+        {
+            throw std::runtime_error("Atom::setAlter out of range, < -2");
+        }
+        else if( inAlter > 2 )
+        {
+            throw std::runtime_error("Atom::setAlter out of range, > 2");
+        }
+        
+        alter = inAlter;
+        updateName();
+    }
+    
+    
+    int
+    Atom::getAlter() const
+    {
+        return alter;
     }
 
     

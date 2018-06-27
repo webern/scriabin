@@ -65,9 +65,7 @@ namespace pen
                 Atom a;
                 if( !note.isRest )
                 {
-                    a.octave = note.pitchData.octave;
-                    a.alter = note.pitchData.alter;
-                    a.setStep( note.pitchData.step );
+                    a.setFromMx( note.pitchData );
                 }
                 
                 int numNotes = 1;
@@ -96,7 +94,7 @@ namespace pen
         
         for( auto& note : streams.at( 2 ) )
         {
-            note.octave = note.octave - 1;
+            note.setOctave( note.getOctave() - 1 );
         }
         
         return streams;
@@ -168,10 +166,7 @@ namespace pen
                 {
                     if( masterIndex % 37 == 0 && rand() )
                     {
-                        note.alter = 0;
-                        note.octave = 0;
-                        note.step = -1;
-                        note.name = "rest";
+                        note.setRest();
                     }
                     
                     ++masterIndex;
@@ -248,24 +243,13 @@ namespace pen
                 theNote.durationData.durationTimeTicks = myScore.ticksPerQuarter / 2;
                 theNote.durationData.durationName = mx::api::DurationName::eighth;
                 
-                if( note.step == -1 )
+                if( note.getStep() == -1 )
                 {
                     theNote.isRest = true;
                 }
                 else
                 {
-                    theNote.pitchData.alter = note.alter;
-                    theNote.pitchData.octave = note.octave;
-                    theNote.pitchData.step = note.getMxStep();
-                    
-                    if( note.alter < 0 )
-                    {
-                        theNote.pitchData.accidental = mx::api::Accidental::flat;
-                    }
-                    else if ( note.alter > 0 )
-                    {
-                        theNote.pitchData.accidental = mx::api::Accidental::sharp;
-                    }
+                    theNote.pitchData = note.getMxPitchData();
                 }
                 
                 measure.staves.at( 0 ).voices.at( 0 ).notes.push_back( theNote );
