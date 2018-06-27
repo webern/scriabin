@@ -26,8 +26,9 @@ namespace pen
         void initSelfScore();
         MxNoteStreams getInputNotes() const;
         
-    private:
         
+    private:
+        static AtomStreams extractStreams( const MxNoteStreams& inNotes );
         static mx::api::ScoreData createEmptyScore( const std::string& title );
         static void addInstrument( mx::api::ScoreData& ioScore,
                                    const std::string& id,

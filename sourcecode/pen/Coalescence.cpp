@@ -23,18 +23,16 @@ namespace pen
     }
     
     
-    void
-    Coalescence::doEverthing()
+    MxNoteStreams
+    Coalescence::getInputNotes() const
     {
-        initSelfScore();
-        
         auto& dmgr = mx::api::DocumentManager::getInstance();
         const auto inID = dmgr.createFromFile( myInFilepath );
         const auto input = dmgr.getData( inID );
         dmgr.destroyDocument( inID );
-        
-        int partIndex = 0;
         MxNoteStreams inputNotes;
+        int partIndex = 0;
+        
         for( const auto& part : input.parts )
         {
             for( const auto& measure : part.measures )
@@ -51,9 +49,16 @@ namespace pen
             ++partIndex;
         }
         
+        return inputNotes;
+    }
+    
+    
+    AtomStreams
+    Coalescence::extractStreams( const MxNoteStreams& inNotes )
+    {
         AtomStreams streams;
         
-        for( const auto& origPair : inputNotes )
+        for( const auto& origPair : inNotes )
         {
             for( const auto& note : origPair.second )
             {
@@ -79,13 +84,14 @@ namespace pen
                 a.updateName();
                 
                 for( int i = 0; i < numNotes; ++i )
-                {                    
+                {
                     streams[origPair.first].push_back( a );
                 }
             }
         }
         
-        // fix a problem
+        // fix a problem with the viola part by copying violin 1
+        // and transposing it down two octaves
         streams.at( 2 ) = streams.at( 0 );
         
         for( auto& note : streams.at( 2 ) )
@@ -93,6 +99,17 @@ namespace pen
             note.octave = note.octave - 1;
         }
         
+        return streams;
+    }
+    
+    
+    void
+    Coalescence::doEverthing()
+    {
+        initSelfScore();
+        MxNoteStreams inputNotes = getInputNotes();
+        AtomStreams streams = extractStreams( inputNotes );
+
         // reverse the stream
         for( auto& pair : streams )
         {
@@ -258,6 +275,7 @@ namespace pen
             
         }
         
+        auto& dmgr = mx::api::DocumentManager::getInstance();
         const auto oID = dmgr.createFromScore( myScore );
         dmgr.writeToFile( oID, myOutFilepath );
     }
