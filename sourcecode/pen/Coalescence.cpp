@@ -223,12 +223,8 @@ namespace pen
                 pair.second.resize( static_cast<size_t>( smallest ) );
             }
         }
-        
-        // reverse the again to put it back into frontwards order stream
-        for( auto& pair : streams )
-        {
-            std::reverse(std::begin( pair.second ), std::end( pair.second ) );
-        }
+
+        reverseStreams( streams );
         
         // write notes into score
         
