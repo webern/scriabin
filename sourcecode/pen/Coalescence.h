@@ -22,10 +22,14 @@ namespace pen
         mx::api::ScoreData myScore;
         std::string myInFilepath;
         std::string myOutFilepath;
+        std::vector<bool> myRandVec;
+        std::vector<bool>::const_iterator myRandIter;
+        std::vector<bool>::const_iterator myRandEnd;
         
     private:
         void initSelfScore();
         MxNoteStreams getInputNotes() const;
+        bool rbool();
         
     private:
         static void reverseAtoms( Atoms& ioAtoms );

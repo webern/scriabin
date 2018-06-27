@@ -10,8 +10,12 @@ namespace pen
     : myScore{}
     , myInFilepath{ std::move( inputFilepath ) }
     , myOutFilepath{ std::move( outputFilepath ) }
+    , myRandVec{ true, true, false, false, true, false, true, false, false, false, true, true, true, true, false, true, true, false, false, false, false, false, true, false, false, false, false, true, true, true, false, false, false, true, true, true, false, false, true, true, false, false, true, false, false, true, true, true, true, true, true, false, true, false, true, false, true, false, false, true, true, false, false, true, false, true, false, false, false, false, false, false, true, false, true }
+    , myRandIter{}
+    , myRandEnd{}
     {
-        
+        myRandIter = myRandVec.cbegin();
+        myRandEnd = myRandVec.cend();
     }
     
     
@@ -19,7 +23,7 @@ namespace pen
     Coalescence::initSelfScore()
     {
         myScore = mx::api::ScoreData{};
-        myScore = createEmptyScore( "June 3 Coalescence Practice" );
+        myScore = createEmptyScore( "Coalescence" );
     }
     
     
@@ -118,6 +122,21 @@ namespace pen
     }
     
     
+    bool
+    Coalescence::rbool()
+    {
+        const bool val = *myRandIter;
+        ++myRandIter;
+        
+        if( myRandIter == myRandEnd )
+        {
+            myRandIter = std::cbegin( myRandVec );
+        }
+        
+        return val;
+    }
+    
+    
     void
     Coalescence::doEverthing()
     {
@@ -125,25 +144,6 @@ namespace pen
         MxNoteStreams inputNotes = getInputNotes();
         AtomStreams streams = extractStreams( inputNotes );
         reverseStreams( streams );
-
-        const std::vector<bool> randVec = { true, true, false, false, true, false, true, false, false, false, true, true, true, true, false, true, true, false, false, false, false, false, true, false, false, false, false, true, true, true, false, false, false, true, true, true, false, false, true, true, false, false, true, false, false, true, true, true, true, true, true, false, true, false, true, false, true, false, false, true, true, false, false, true, false, true, false, false, false, false, false, false, true, false, true };
-        auto randIter = std::cbegin( randVec );
-        const auto randEnd = std::cend( randVec );
-
-        const auto rand = [&]()
-        {
-            const bool val = *randIter;
-            if( randIter == randEnd )
-            {
-                randIter = std::cbegin( randVec );
-            }
-            else
-            {
-                ++randIter;
-            }
-            
-            return val;
-        };
         
         int masterIndex = 0;
         
@@ -164,7 +164,7 @@ namespace pen
             {
                 for( auto& note : writer )
                 {
-                    if( masterIndex % 37 == 0 && rand() )
+                    if( masterIndex % 37 == 0 && rbool() )
                     {
                         note.setRest();
                     }
@@ -179,7 +179,7 @@ namespace pen
             {
                 for( auto noteIter = writer.begin(); noteIter != writer.end(); ++noteIter, ++masterIndex )
                 {
-                    if( masterIndex % 3 == 0 && rand() )
+                    if( masterIndex % 3 == 0 && rbool() )
                     {
                         auto reps = ( masterIndex % ( i + 2 ) + 1 );
                         const auto note = *noteIter;
