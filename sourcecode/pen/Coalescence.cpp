@@ -104,17 +104,29 @@ namespace pen
     
     
     void
+    Coalescence::reverseAtoms( Atoms& ioAtoms )
+    {
+        std::reverse(std::begin( ioAtoms ), std::end( ioAtoms ) );
+    }
+    
+    
+    void
+    Coalescence::reverseStreams( AtomStreams& ioStreams )
+    {
+        for( auto& pair : ioStreams )
+        {
+            reverseAtoms( pair.second );
+        }
+    }
+    
+    
+    void
     Coalescence::doEverthing()
     {
         initSelfScore();
         MxNoteStreams inputNotes = getInputNotes();
         AtomStreams streams = extractStreams( inputNotes );
-
-        // reverse the stream
-        for( auto& pair : streams )
-        {
-            std::reverse(std::begin( pair.second ), std::end( pair.second ) );
-        }
+        reverseStreams( streams );
 
         const std::vector<bool> randVec = { true, true, false, false, true, false, true, false, false, false, true, true, true, true, false, true, true, false, false, false, false, false, true, false, false, false, false, true, true, true, false, false, false, true, true, true, false, false, true, true, false, false, true, false, false, true, true, true, true, true, true, false, true, false, true, false, true, false, false, true, true, false, false, true, false, true, false, false, false, false, false, false, true, false, true };
         auto randIter = std::cbegin( randVec );

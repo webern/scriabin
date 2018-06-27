@@ -9,7 +9,8 @@
 namespace pen
 {
     using MxNoteStreams = std::map<int, std::vector<mx::api::NoteData>>;
-    using AtomStreams = std::map<int, std::vector<Atom>>;
+    using Atoms = std::vector<Atom>;
+    using AtomStreams = std::map<int, Atoms>;
     
     class Coalescence
     {
@@ -26,8 +27,9 @@ namespace pen
         void initSelfScore();
         MxNoteStreams getInputNotes() const;
         
-        
     private:
+        static void reverseAtoms( Atoms& ioAtoms );
+        static void reverseStreams( AtomStreams& ioStreams );
         static AtomStreams extractStreams( const MxNoteStreams& inNotes );
         static mx::api::ScoreData createEmptyScore( const std::string& title );
         static void addInstrument( mx::api::ScoreData& ioScore,
