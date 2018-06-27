@@ -8,12 +8,20 @@ namespace pen
 {
     struct Atom
     {
-        int step = -1; // -1 for rest
-        int alter = 0;
-        int octave = 4;
-        std::string name = "rest";
-        void updateName();
+    public:
+        Atom();
+        Atom( const mx::api::PitchData& inPitchData );
+        
+        int step; // -1 for rest
+        int alter;
+        int octave;
+        std::string name;
         void setStep( mx::api::Step inMxStep);
         mx::api::Step getMxStep() const;
+        void setFromMx( const mx::api::PitchData& inPitchData );
+        mx::api::PitchData getMxPitchData() const;
+        
+    public:
+        void updateName();
     };
 }

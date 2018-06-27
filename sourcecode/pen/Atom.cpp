@@ -2,6 +2,23 @@
 
 namespace pen
 {
+    Atom::Atom()
+    : step{ -1 }
+    , alter{ 0 }
+    , octave{ 4 }
+    , name{ "rest" }
+    {
+        
+    }
+    
+    
+    Atom::Atom( const mx::api::PitchData& inPitchData )
+    : Atom{}
+    {
+        setFromMx( inPitchData );
+    }
+    
+    
     void
     Atom::updateName()
     {
@@ -146,5 +163,27 @@ namespace pen
         }
         
         return outStep;
+    }
+    
+    
+    void
+    Atom::setFromMx( const mx::api::PitchData& inPitchData )
+    {
+        setStep( inPitchData.step );
+        alter = inPitchData.alter;
+        octave = inPitchData.octave;
+        updateName();
+    }
+    
+    
+    mx::api::PitchData
+    Atom::getMxPitchData() const
+    {
+        mx::api::PitchData result;
+        result.step = getMxStep();
+        result.octave = octave;
+        result.alter = alter;
+        result.showAccidental();
+        return result;
     }
 }
