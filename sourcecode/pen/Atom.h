@@ -16,7 +16,9 @@ namespace pen
         int alter;
         int octave;
         std::string name;
-        void setStep( mx::api::Step inMxStep);
+        void setStep( int inStep );
+        int getStep() const;
+        void setStep( mx::api::Step inMxStep );
         mx::api::Step getMxStep() const;
         void setFromMx( const mx::api::PitchData& inPitchData );
         mx::api::PitchData getMxPitchData() const;

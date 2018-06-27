@@ -96,6 +96,29 @@ namespace pen
     
     
     void
+    Atom::setStep( int inStep )
+    {
+        if( inStep < -1 )
+        {
+            throw std::runtime_error("Atom::setStep out of range, < -1");
+        }
+        else if( inStep > 6 )
+        {
+            throw std::runtime_error("Atom::setStep out of range, > 6");
+        }
+        
+        step = inStep;
+    }
+
+    
+    int
+    Atom::getStep() const
+    {
+        return step;
+    }
+
+    
+    void
     Atom::setStep( mx::api::Step inMxStep)
     {
         switch ( inMxStep )
