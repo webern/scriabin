@@ -1,4 +1,5 @@
 #include "pen/Coalescence.h"
+#include "pen/Prob.h"
 #include "../test/PEN_PATH.h"
 #include "mx/api/DocumentManager.h"
 #include <vector>
@@ -6,19 +7,37 @@
 
 namespace pen
 {
-    void
-    Coalescence::doEverthing()
+    Coalescence::Coalescence( std::string inputFilepath, std::string outputFilepath )
+    : myScore{}
+    , myInFilepath{ std::move( inputFilepath ) }
+    , myOutFilepath{ std::move( outputFilepath ) }
+    , myRandVec{ true, true, false, false, true, false, true, false, false, false, true, true, true, true, false, true, true, false, false, false, false, false, true, false, false, false, false, true, true, true, false, false, false, true, true, true, false, false, true, true, false, false, true, false, false, true, true, true, true, true, true, false, true, false, true, false, true, false, false, true, true, false, false, true, false, true, false, false, false, false, false, false, true, false, true }
+    , myRandIter{}
+    , myRandEnd{}
     {
-        const CoalescenceConsts c;
+        myRandIter = myRandVec.cbegin();
+        myRandEnd = myRandVec.cend();
+    }
+    
+    
+    void
+    Coalescence::initSelfScore()
+    {
+        myScore = mx::api::ScoreData{};
+        myScore = createEmptyScore( "Coalescence" );
+    }
+    
+    
+    MxNoteStreams
+    Coalescence::getInputNotes() const
+    {
         auto& dmgr = mx::api::DocumentManager::getInstance();
-        const auto inFilepath = MUSIC_INPUT_FILES_DIRECTORY() + "/" + c.inFilename;
-        const auto outFilepath = MUSIC_OUTPUT_FILES_DIRECTORY() + "/" + c.outFilename;
-        const auto inID = dmgr.createFromFile( inFilepath );
+        const auto inID = dmgr.createFromFile( myInFilepath );
         const auto input = dmgr.getData( inID );
         dmgr.destroyDocument( inID );
-        
+        MxNoteStreams inputNotes;
         int partIndex = 0;
-        std::map<int, std::vector<mx::api::NoteData>> partNoteStreams;
+        
         for( const auto& part : input.parts )
         {
             for( const auto& measure : part.measures )
@@ -29,54 +48,33 @@ namespace pen
                 
                 for( const auto& note : notes )
                 {
-                    partNoteStreams[partIndex].push_back( note );
+                    inputNotes[partIndex].push_back( note );
                 }
             }
             ++partIndex;
         }
         
-        std::map<int, std::vector<Atom>> partAtomsStreams;
+        return inputNotes;
+    }
+    
+    
+    AtomStreams
+    Coalescence::extractStreams( const MxNoteStreams& inNotes )
+    {
+        AtomStreams streams;
         
-        for( const auto& origPair : partNoteStreams )
+        for( const auto& origPair : inNotes )
         {
             for( const auto& note : origPair.second )
             {
                 Atom a;
                 if( !note.isRest )
                 {
-                    a.octave = note.pitchData.octave;
-                    a.alter = note.pitchData.alter;
-                    switch ( note.pitchData.step )
-                    {
-                        case mx::api::Step::c:
-                            a.step = 0;
-                            break;
-                        case mx::api::Step::d:
-                            a.step = 1;
-                            break;
-                        case mx::api::Step::e:
-                            a.step = 2;
-                            break;
-                        case mx::api::Step::f:
-                            a.step = 3;
-                            break;
-                        case mx::api::Step::g:
-                            a.step = 4;
-                            break;
-                        case mx::api::Step::a:
-                            a.step = 5;
-                            break;
-                        case mx::api::Step::b:
-                            a.step = 6;
-                            break;
-                        default:
-                            a.step = 7;
-                            break;
-                    }
-                    a.setName();
+                    a.setFromMx( note.pitchData );
                 }
                 
                 int numNotes = 1;
+                
                 if( note.durationData.durationName == mx::api::DurationName::quarter )
                 {
                     numNotes = 2;
@@ -86,219 +84,345 @@ namespace pen
                     }
                 }
                 
+                a.updateName();
+                
                 for( int i = 0; i < numNotes; ++i )
                 {
-                    partAtomsStreams[origPair.first].push_back( a );
+                    streams[origPair.first].push_back( a );
                 }
             }
         }
         
-        // fix a problem
-        partAtomsStreams.at( 2 ) = partAtomsStreams.at( 0 );
+        // fix a problem with the viola part by copying violin 1
+        // and transposing it down two octaves
+        streams.at( 2 ) = streams.at( 0 );
         
-        for( auto& note : partAtomsStreams.at( 2 ) )
+        for( auto& note : streams.at( 2 ) )
         {
-            note.octave = note.octave - 1;
+            note.setOctave( note.getOctave() - 1 );
         }
         
-        // reverse the stream
-        for( auto& pair : partAtomsStreams )
+        return streams;
+    }
+    
+    
+    void
+    Coalescence::reverseAtoms( Atoms& ioAtoms )
+    {
+        std::reverse(std::begin( ioAtoms ), std::end( ioAtoms ) );
+    }
+    
+    
+    void
+    Coalescence::reverseStreams( AtomStreams& ioStreams )
+    {
+        for( auto& pair : ioStreams )
         {
-            std::reverse(std::begin( pair.second ), std::end( pair.second ) );
+            reverseAtoms( pair.second );
         }
-
-        const std::vector<bool> randVec = { true, true, false, false, true, false, true, false, false, false, true, true, true, true, false, true, true, false, false, false, false, false, true, false, false, false, false, true, true, true, false, false, false, true, true, true, false, false, true, true, false, false, true, false, false, true, true, true, true, true, true, false, true, false, true, false, true, false, false, true, true, false, false, true, false, true, false, false, false, false, false, false, true, false, true };
-        auto randIter = std::cbegin( randVec );
-        const auto randEnd = std::cend( randVec );
-
-        const auto rand = [&]()
-        {
-            const bool val = *randIter;
-            if( randIter == randEnd )
-            {
-                randIter = std::cbegin( randVec );
-            }
-            else
-            {
-                ++randIter;
-            }
-            
-            return val;
-        };
+    }
+    
+    
+    bool
+    Coalescence::rbool()
+    {
+        const bool val = *myRandIter;
+        ++myRandIter;
         
-        int masterIndex = 0;
-        
-        for( auto& pair : partAtomsStreams )
+        if( myRandIter == myRandEnd )
         {
-            auto& stream = pair.second;
-            decltype( pair.second ) writer;
-            std::copy( std::cbegin( stream ), std::cend( stream ), std::back_inserter( writer ) );
-            
-            // final repeats, eight times
-            for( int i = 0; i < 7; ++i, ++masterIndex )
-            {
-                std::copy( std::begin( writer ), std::end( writer ), std::back_inserter( stream ) );
-            }
+            myRandIter = std::cbegin( myRandVec );
+        }
+        
+        return val;
+    }
+    
+    
+    void
+    Coalescence::writeMusic( const Atoms& inAtomsToWrite, Atoms& ioAtomsToAppendTo, int numTimes )
+    {
+        for( int i = 0; i < numTimes; ++i )
+        {
+            std::copy( std::cbegin( inAtomsToWrite ), std::cend( inAtomsToWrite ), std::back_inserter( ioAtomsToAppendTo ) );
+        }
+    }
+    
+    
+    void
+    Coalescence::writeMusic( const AtomStreams& inStreamsToWrite, AtomStreams& ioStreamsToAppendTo, int numTimes )
+    {
+        if( inStreamsToWrite.size() != ioStreamsToAppendTo.size() )
+        {
+            std::runtime_error( "Coalescence::writeMusic: maps must be same size" );
+        }
+        
+        auto inIter = inStreamsToWrite.cbegin();
+        auto outIter = ioStreamsToAppendTo.begin();
+        const auto e = inStreamsToWrite.cend();
+        
+        for( ; inIter != e; ++inIter, ++outIter )
+        {
+            writeMusic( inIter->second, outIter->second, numTimes );
+        }
+    }
+    
+    
+    void
+    Coalescence::doPenultimateCoalescing( AtomStreams& ioPatternStreams, AtomStreams& ioOutputStreams )
+    {
+        // add one rest to the cello
+        {
+            const int pidx = 3;
+            const auto insertLoc = ioPatternStreams.at( pidx ).cbegin();
+            ioPatternStreams.at( pidx ).insert( insertLoc, Atom{} );
+        }
+        
+        writeMusic( ioPatternStreams, ioOutputStreams, 2 );
+        
+        // add two rests to the first violin
+        {
+            const int pidx = 0;
+            auto insertLoc = ioPatternStreams.at( pidx ).cbegin();
+            insertLoc = ioPatternStreams.at( pidx ).insert( insertLoc, Atom{} );
+            insertLoc = ioPatternStreams.at( pidx ).insert( insertLoc, Atom{} );
+        }
+        
+        writeMusic( ioPatternStreams, ioOutputStreams, 2 );
+        
+        // add three rests to the second violin
+        {
+            const int pidx = 1;
+            auto insertLoc = ioPatternStreams.at( pidx ).cbegin();
+            insertLoc = ioPatternStreams.at( pidx ).insert( insertLoc, Atom{} );
+            insertLoc = ioPatternStreams.at( pidx ).insert( insertLoc, Atom{} );
+            insertLoc = ioPatternStreams.at( pidx ).insert( insertLoc, Atom{} );
+        }
+        
+        writeMusic( ioPatternStreams, ioOutputStreams, 2 );
+        
+        // add four rests to the viola
+        {
+            const int pidx = 2;
+            auto insertLoc = ioPatternStreams.at( pidx ).cbegin();
+            insertLoc = ioPatternStreams.at( pidx ).insert( insertLoc, Atom{} );
+            insertLoc = ioPatternStreams.at( pidx ).insert( insertLoc, Atom{} );
+            insertLoc = ioPatternStreams.at( pidx ).insert( insertLoc, Atom{} );
+            insertLoc = ioPatternStreams.at( pidx ).insert( insertLoc, Atom{} );
+        }
+        
+        writeMusic( ioPatternStreams, ioOutputStreams, 2 );
+    }
+    
+    
+    void
+    Coalescence::doEverthing()
+    {
+        initSelfScore();
+        const MxNoteStreams inputNotes = getInputNotes();
+        const AtomStreams originalMusic = extractStreams( inputNotes );
+        AtomStreams outMusic = originalMusic;
+        reverseStreams( outMusic );
+        const AtomStreams originalReversedMusic = outMusic;
+        AtomStreams patternStreams = originalReversedMusic;
+//        doPenultimateCoalescing( patternStreams, outMusic );
 
-            // eight times with increasing rests
-            for( int i = 0; i < 8; ++i, ++masterIndex )
+        Prob boolGen{ DIGITS_DAT_PATH() };
+        CoalescenceParams params;
+        params.minR = 0;
+        params.maxR = 0;
+        params.rInc = 0;
+        params.rTier = 0;
+        
+        params.minP = 1;
+        params.maxP = 1;
+        params.pInc = 0;
+        params.pTier = 1;
+        params.numLoops = 10;
+        
+        doCoalescingLoop( params, patternStreams, outMusic, boolGen );
+        
+        params.minR = 1;
+        params.maxR = 1;
+        params.rInc = 0;
+        params.rTier = 0;
+        
+        params.minP = 0;
+        params.maxP = 0;
+        params.pInc = 0;
+        params.pTier = 0;
+        params.numLoops = 10;
+        
+        doCoalescingLoop( params, patternStreams, outMusic, boolGen );
+        
+        params.minR = 0;
+        params.maxR = 0;
+        params.rInc = 0;
+        params.rTier = 0;
+
+        params.minP = 20;
+        params.maxP = 35;
+        params.pInc = 0;
+        params.pTier = 0;
+        params.numLoops = 15;
+
+        doCoalescingLoop( params, patternStreams, outMusic, boolGen );
+
+        
+        shortenStreamsToMatchLengthOfShortestStream( outMusic );
+        reverseStreams( outMusic );
+        writeMusic( originalMusic, outMusic, 32 );
+        writeStreamsToScore( outMusic, myScore );
+        auto& dmgr = mx::api::DocumentManager::getInstance();
+        const auto oID = dmgr.createFromScore( myScore );
+        dmgr.writeToFile( oID, myOutFilepath );
+    }
+    
+    
+    void
+    Coalescence::doCoalescingLoop( const CoalescenceParams& params,
+                                   AtomStreams& ioPatternStreams,
+                                   AtomStreams& ioOutputStreams,
+                                   Prob& ioProb )
+    {
+        int rCurrent = params.minR;
+        int pCurrent = params.minP;
+        
+        for( int loopCounter = 0; loopCounter < params.numLoops; ++loopCounter )
+        {
+            for( int p = 0; p < 4; ++p )
             {
-                for( auto& note : writer )
+                const int restProb = rCurrent + ( params.rTier * p );
+                const int repeatProb = pCurrent + ( params.pTier * p );
+                
+                for( auto it = ioPatternStreams.at( p ).begin(); it != ioPatternStreams.at( p ).end(); ++it )
                 {
-                    if( masterIndex % 37 == 0 && rand() )
+                    const bool doRest = ioProb.get( restProb );
+                    const bool doRepeat = ioProb.get( repeatProb );
+                    
+                    if( doRest )
                     {
-                        note.alter = 0;
-                        note.octave = 0;
-                        note.step = -1;
-                        note.name = "rest";
+                        it = ioPatternStreams.at( p ).insert( it, Atom{} );
                     }
                     
-                    ++masterIndex;
-                    std::copy( std::begin( writer ), std::end( writer ), std::back_inserter( stream ) );
+                    if( doRepeat )
+                    {
+                        it = ioPatternStreams.at( p ).insert( it, *it );
+                    }
                 }
             }
             
-            // eight times with increasing augmentation
-            for( int i = 0; i < 8; ++i, ++masterIndex )
+            writeMusic( ioPatternStreams, ioOutputStreams, 1 );
+            
+            rCurrent += params.rInc;
+            pCurrent += params.pInc;
+            
+            if( rCurrent > params.maxR )
             {
-                for( auto noteIter = writer.begin(); noteIter != writer.end(); ++noteIter, ++masterIndex )
-                {
-                    if( masterIndex % 3 == 0 && rand() )
-                    {
-                        auto reps = ( masterIndex % ( i + 2 ) + 1 );
-                        const auto note = *noteIter;
-                        for( int j = 0; j < reps; ++j )
-                        {
-                            noteIter = writer.insert( noteIter, note );
-                            ++noteIter;
-                            
-                            if( noteIter == writer.end() )
-                            {
-                                break;
-                            }
-                        }
-                    }
-                }
-                std::copy( std::begin( writer ), std::end( writer ), std::back_inserter( stream ) );
+                rCurrent = params.maxR;
+            }
+            
+            if( pCurrent > params.maxP )
+            {
+                rCurrent = params.maxP;
             }
         }
+    }
+    
+    void
+    Coalescence::shortenStreamsToMatchLengthOfShortestStream( AtomStreams& ioStreams )
+    {
+        int smallest = findIndexOfShortestStream( ioStreams );
         
+        // delete extra notes based on smallest
+        for( auto& pair : ioStreams )
+        {
+            if( static_cast<int>( pair.second.size() ) > smallest )
+            {
+                pair.second.resize( static_cast<size_t>( smallest ) );
+            }
+        }
+    }
+    
+    
+    int
+    Coalescence::findIndexOfShortestStream( const AtomStreams& inStreams )
+    {
         // find the smallest stream
         int smallest = -1;
         
-        for( const auto& pait : partAtomsStreams )
+        for( const auto& streamPair : inStreams )
         {
-            if( smallest == -1 || pait.second.size() < smallest )
+            if( smallest == -1 || static_cast<int>( streamPair.second.size() ) < smallest )
             {
-                smallest = pait.second.size();
+                smallest = static_cast<int>( streamPair.second.size() );
             }
         }
         
-        // delete extra notes based on smallest
-        for( auto& pair : partAtomsStreams )
-        {
-            if( pair.second.size() > smallest )
-            {
-                pair.second.resize( smallest );
-            }
-        }
-        
-        // reverse the again to put it back into frontwards order stream
-        for( auto& pair : partAtomsStreams )
-        {
-            std::reverse(std::begin( pair.second ), std::end( pair.second ) );
-        }
-
-        
-        mx::api::ScoreData score = createEmptyScore( "June 3 Coalescence Practice" );
-        appendMeasures( score, 7 );
-        
-        // write notes into score
-        
-        for( int partIndex = 0; partIndex < partAtomsStreams.size(); ++partIndex )
+        return smallest;
+    }
+    
+    
+    void
+    Coalescence::writeStreamsToScore( const AtomStreams& inStreams, mx::api::ScoreData& ioScore )
+    {
+        for( int p = 0; p < static_cast<int>( inStreams.size() ); ++p )
         {
             int measureIndex = 0;
             int eighthIndex = 0;
-            const auto& noteStream = partAtomsStreams.at( partIndex );
-            auto& outPart = score.parts.at( partIndex );
+            const auto& noteStream = inStreams.at( p );
+            writeStream( p, measureIndex, eighthIndex, noteStream, ioScore );
+        }
+    }
+    
+    
+    void
+    Coalescence::writeStream( int partIndex,
+                              int startingMeasureIndex,
+                              int startingEighthIndex,
+                              const Atoms& inAtoms,
+                              mx::api::ScoreData& ioScore )
+    {
+        auto measureIndex = startingMeasureIndex;
+        auto eighthIndex = startingEighthIndex;
+        
+        for( const auto& atom : inAtoms )
+        {
+            auto& part = ioScore.parts.at( static_cast<size_t>( partIndex) );
             
-            for( const auto& note : noteStream )
+            while( measureIndex > static_cast<int>( part.measures.size() ) - 1 )
             {
-                while( measureIndex > outPart.measures.size() - 1 )
-                {
-                    appendMeasures( score, 1 );
-                }
-                
-                auto& measure = outPart.measures.at( measureIndex );
-                mx::api::NoteData theNote;
-                theNote.tickTimePosition = eighthIndex * ( score.ticksPerQuarter / 2 );
-                theNote.durationData.durationTimeTicks = score.ticksPerQuarter / 2;
-                theNote.durationData.durationName = mx::api::DurationName::eighth;
-                
-                if( note.step == -1 )
-                {
-                    theNote.isRest = true;
-                }
-                else
-                {
-                    theNote.pitchData.alter = note.alter;
-                    theNote.pitchData.octave = note.octave;
-                    switch ( note.step )
-                    {
-                        case 0:
-                            theNote.pitchData.step = mx::api::Step::c;
-                            break;
-                        case 1:
-                            theNote.pitchData.step = mx::api::Step::d;
-                            break;
-                        case 2:
-                            theNote.pitchData.step = mx::api::Step::e;
-                            break;
-                        case 3:
-                            theNote.pitchData.step = mx::api::Step::f;
-                            break;
-                        case 4:
-                            theNote.pitchData.step = mx::api::Step::g;
-                            break;
-                        case 5:
-                            theNote.pitchData.step = mx::api::Step::a;
-                            break;
-                        case 6:
-                            theNote.pitchData.step = mx::api::Step::b;
-                            break;
-                        default:
-                            theNote.pitchData.step = mx::api::Step::c;
-                            break;
-                    }
-                    
-                    if( note.alter < 0 )
-                    {
-                        theNote.pitchData.accidental = mx::api::Accidental::flat;
-                    }
-                    else if ( note.alter > 0 )
-                    {
-                        theNote.pitchData.accidental = mx::api::Accidental::sharp;
-                    }
-                }
-                
-                measure.staves.at( 0 ).voices.at( 0 ).notes.push_back( theNote );
-                
-                if( ( eighthIndex + 1 ) % 6 == 0 )
-                {
-                    ++measureIndex;
-                    eighthIndex = 0;
-                }
-                else
-                {
-                    ++eighthIndex;
-                }
+                appendMeasures( ioScore, 1 );
             }
             
+            auto& measure = part.measures.at( static_cast<size_t>( measureIndex ) );
+            mx::api::NoteData theNote;
+            theNote.tickTimePosition = eighthIndex * ( ioScore.ticksPerQuarter / 2 );
+            theNote.durationData.durationTimeTicks = ioScore.ticksPerQuarter / 2;
+            theNote.durationData.durationName = mx::api::DurationName::eighth;
+            
+            if( atom.getStep() == -1 )
+            {
+                theNote.isRest = true;
+            }
+            else
+            {
+                theNote.pitchData = atom.getMxPitchData();
+            }
+            
+            measure.staves.at( 0 ).voices.at( 0 ).notes.push_back( theNote );
+            
+            if( ( eighthIndex + 1 ) % 6 == 0 )
+            {
+                ++measureIndex;
+                eighthIndex = 0;
+            }
+            else
+            {
+                ++eighthIndex;
+            }
         }
-        
-        const auto oID = dmgr.createFromScore( score );
-        dmgr.writeToFile( oID, outFilepath );
     }
+    
     
     mx::api::ScoreData
     Coalescence::createEmptyScore( const std::string& title )
@@ -322,6 +446,7 @@ namespace pen
         score.partGroups.push_back( grp );
         return score;
     }
+    
     
     void
     Coalescence::addInstrument( mx::api::ScoreData& ioScore,
@@ -351,6 +476,7 @@ namespace pen
         ioScore.parts.back().measures.back().staves.back().clefs.push_back( clef );
         ioScore.parts.back().measures.back().staves.back().voices[0] = mx::api::VoiceData{};
     }
+    
     
     void
     Coalescence::appendMeasures( mx::api::ScoreData& ioScore, int numMeasures )

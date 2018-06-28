@@ -22,6 +22,7 @@ Proj/
 */project.xcworkspace/
 cmake-build-debug/
 cmake-build-release/
+*.sublime-workspace
 
 #########################################
 # Ignore Test Output and Expected Files #

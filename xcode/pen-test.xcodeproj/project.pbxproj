@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		29BEE1B520E4B46800B5276B /* TestProp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 29BEE1B420E4B46800B5276B /* TestProp.cpp */; };
 		29CA48E120BCC69A00F0B643 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 29CA48E020BCC69A00F0B643 /* main.cpp */; };
 		29CA48E220BCC70300F0B643 /* catch_assertionhandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 29CA484620BCC67500F0B643 /* catch_assertionhandler.cpp */; };
 		29CA48E320BCC70300F0B643 /* catch_tag_alias_autoregistrar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 29CA484B20BCC67500F0B643 /* catch_tag_alias_autoregistrar.cpp */; };
@@ -78,7 +79,7 @@
 		29CA49A120BCF16900F0B643 /* TestCommandLineParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 29CA499E20BCF16900F0B643 /* TestCommandLineParser.cpp */; };
 		29CA49A620BCF50000F0B643 /* libpen.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 29CA49A520BCF50000F0B643 /* libpen.a */; };
 		29CA49A820BCF89600F0B643 /* CompEtude1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 29CA49A720BCF89600F0B643 /* CompEtude1.cpp */; };
-		29DE36B920C469880090ED98 /* CompJune3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 29DE36B820C469880090ED98 /* CompJune3.cpp */; };
+		29DE36B920C469880090ED98 /* Coalescence.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 29DE36B820C469880090ED98 /* Coalescence.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -94,6 +95,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		29BEE1B420E4B46800B5276B /* TestProp.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TestProp.cpp; sourceTree = "<group>"; };
 		29CA482D20BCC2E200F0B643 /* pen-test */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "pen-test"; sourceTree = BUILT_PRODUCTS_DIR; };
 		29CA484120BCC67500F0B643 /* catch_with_main.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = catch_with_main.hpp; sourceTree = "<group>"; };
 		29CA484320BCC67500F0B643 /* clara.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = clara.hpp; sourceTree = "<group>"; };
@@ -258,7 +260,7 @@
 		29CA49A520BCF50000F0B643 /* libpen.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libpen.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		29CA49A720BCF89600F0B643 /* CompEtude1.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CompEtude1.cpp; sourceTree = "<group>"; };
 		29CA49A920BCFB6000F0B643 /* PEN_PATH.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PEN_PATH.h; sourceTree = "<group>"; };
-		29DE36B820C469880090ED98 /* CompJune3.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CompJune3.cpp; sourceTree = "<group>"; };
+		29DE36B820C469880090ED98 /* Coalescence.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Coalescence.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -504,6 +506,7 @@
 				29CA499E20BCF16900F0B643 /* TestCommandLineParser.cpp */,
 				29CA499D20BCF16900F0B643 /* TestProgram.cpp */,
 				29CA499C20BCF16900F0B643 /* TestUtil.cpp */,
+				29BEE1B420E4B46800B5276B /* TestProp.cpp */,
 			);
 			path = tests;
 			sourceTree = "<group>";
@@ -512,7 +515,7 @@
 			isa = PBXGroup;
 			children = (
 				29CA49A720BCF89600F0B643 /* CompEtude1.cpp */,
-				29DE36B820C469880090ED98 /* CompJune3.cpp */,
+				29DE36B820C469880090ED98 /* Coalescence.cpp */,
 			);
 			path = compositions;
 			sourceTree = "<group>";
@@ -587,6 +590,7 @@
 				29CA491420BCC70300F0B643 /* catch_assertionresult.cpp in Sources */,
 				29CA49A120BCF16900F0B643 /* TestCommandLineParser.cpp in Sources */,
 				29CA492220BCC70900F0B643 /* catch_reporter_listening.cpp in Sources */,
+				29BEE1B520E4B46800B5276B /* TestProp.cpp in Sources */,
 				29CA48EC20BCC70300F0B643 /* catch_benchmark.cpp in Sources */,
 				29CA491D20BCC70900F0B643 /* catch_reporter_junit.cpp in Sources */,
 				29CA48FB20BCC70300F0B643 /* catch_test_case_tracker.cpp in Sources */,
@@ -618,7 +622,7 @@
 				29CA48F920BCC70300F0B643 /* catch_interfaces_exception.cpp in Sources */,
 				29CA491920BCC70300F0B643 /* catch_errno_guard.cpp in Sources */,
 				29CA49A820BCF89600F0B643 /* CompEtude1.cpp in Sources */,
-				29DE36B920C469880090ED98 /* CompJune3.cpp in Sources */,
+				29DE36B920C469880090ED98 /* Coalescence.cpp in Sources */,
 				29CA490420BCC70300F0B643 /* catch_fatal_condition.cpp in Sources */,
 				29CA490F20BCC70300F0B643 /* catch_reporter_registry.cpp in Sources */,
 				29CA491220BCC70300F0B643 /* catch_interfaces_registry_hub.cpp in Sources */,
@@ -784,6 +788,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -792,6 +797,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

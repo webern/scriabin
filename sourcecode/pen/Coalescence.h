@@ -1,97 +1,86 @@
 #pragma once
 
 #include "mx/api/ScoreData.h"
+#include "pen/Atom.h"
+#include "pen/Prob.h"
 #include <string>
 #include <vector>
 #include <sstream>
 
 namespace pen
 {
-    struct CoalescenceConsts
+    using MxNoteStreams = std::map<int, std::vector<mx::api::NoteData>>;
+    using Atoms = std::vector<Atom>;
+    using AtomStreams = std::map<int, Atoms>;
+    
+    struct CoalescenceParams
     {
-        const std::string outFilename = "coalescence.large.xml";
-        const std::string inFilename = "coalescence.input.xml";
+        // rest probabilities
         
+        // the starting probability that a note will become a rest
+        int minR = 0;
+        
+        // the maximum probability that a note will become a rest
+        int maxR = 1;
+        
+        // the amount that we will increment the rest probability
+        // on each iteration of the coalescing loop
+        int rInc = 1;
+        
+        // the amount that we will add to the rest probability
+        // for each subsequent part in the inner loop
+        int rTier = 0;
+        
+        // repeat probabilities
+        
+        // the starting probability that a note will be repeated
+        int minP = 0;
+        
+        // the maximum probability that a note will be repeated
+        int maxP = 25;
+        
+        // the amount that we will increment the repeat probability
+        // on each iteration of the coalescing loop
+        int pInc = 1;
+        
+        // the amout that we will add to the repeat probability
+        // for each subsequent part in the inner loop
+        int pTier = 2;
+        
+        // number of times to run the coalescing procedure
+        int numLoops = 0;
     };
     
     class Coalescence
     {
     public:
+        Coalescence( std::string inputFilepath, std::string outputFilepath );
         void doEverthing();
         
     private:
-        struct Atom
-        {
-            int step = -1; // -1 for rest
-            int alter = 0;
-            int octave = 4;
-            std::string name = "rest";
-            void setName()
-            {
-                std::stringstream ss;
-                switch ( step )
-                {
-                    case -1:
-                    {
-                        this->name = "rest";
-                        return;
-                    }
-                    case 0:
-                    {
-                        ss << "C";
-                        break;
-                    }
-                    case 1:
-                    {
-                        ss << "D";
-                        break;
-                    }
-                    case 2:
-                    {
-                        ss << "E";
-                        break;
-                    }
-                    case 3:
-                    {
-                        ss << "F";
-                        break;
-                    }
-                    case 4:
-                    {
-                        ss << "G";
-                        break;
-                    }
-                    case 5:
-                    {
-                        ss << "A";
-                        break;
-                    }
-                    case 6:
-                    {
-                        ss << "B";
-                        break;
-                    }
-                    default:
-                    {
-                        this->name = "rest";
-                        return;
-                    }
-                }
-                
-                if( alter == -1 )
-                {
-                    ss << "b";
-                }
-                else if( alter == 1 )
-                {
-                    ss << "#";
-                }
-                ss << octave;
-                this->name = ss.str();
-            }
-        };
+        mx::api::ScoreData myScore;
+        std::string myInFilepath;
+        std::string myOutFilepath;
+        std::vector<bool> myRandVec;
+        std::vector<bool>::const_iterator myRandIter;
+        std::vector<bool>::const_iterator myRandEnd;
         
     private:
+        void initSelfScore();
+        MxNoteStreams getInputNotes() const;
+        bool rbool();
+        
+    private:
+        static void doCoalescingLoop( const CoalescenceParams& p,
+                                      AtomStreams& ioPatternStreams,
+                                      AtomStreams& ioOutputStreams,
+                                      Prob& ioProb );
+        static void doPenultimateCoalescing( AtomStreams& ioPatternStreams, AtomStreams& ioOutputStreams );
+        static void writeMusic( const AtomStreams& inStreamsToWrite, AtomStreams& ioStreamsToAppendTo, int numTimes );
+        static void writeMusic( const Atoms& inAtomsToWrite, Atoms& ioAtomsToAppendTo, int numTimes );
+        static void reverseAtoms( Atoms& ioAtoms );
+        static void reverseStreams( AtomStreams& ioStreams );
+        static AtomStreams extractStreams( const MxNoteStreams& inNotes );
         static mx::api::ScoreData createEmptyScore( const std::string& title );
         static void addInstrument( mx::api::ScoreData& ioScore,
                                    const std::string& id,
@@ -100,5 +89,13 @@ namespace pen
                                    mx::api::SoundID soundID,
                                    const mx::api::ClefData clef );
         static void appendMeasures( mx::api::ScoreData& ioScore, int numMeasures );
+        static void writeStream( int partIndex,
+                                 int startingMeasureIndex,
+                                 int startingEighthIndex,
+                                 const Atoms& inAtoms,
+                                 mx::api::ScoreData& ioScore );
+        static void writeStreamsToScore( const AtomStreams& inStreams, mx::api::ScoreData& ioScore );
+        static int findIndexOfShortestStream( const AtomStreams& inStreams );
+        static void shortenStreamsToMatchLengthOfShortestStream( AtomStreams& ioStreams );
     };
 }
