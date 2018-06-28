@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		29474DC820E1B389009BF7C9 /* Atom.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 29474DC720E1B389009BF7C9 /* Atom.cpp */; };
+		29BEE1B220E4B12400B5276B /* Prob.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 29BEE1B020E4B12400B5276B /* Prob.cpp */; };
+		29BEE1B320E4B12400B5276B /* Prob.h in Headers */ = {isa = PBXBuildFile; fileRef = 29BEE1B120E4B12400B5276B /* Prob.h */; };
 		29CA496620BCCC1F00F0B643 /* CommandLineParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 29CA495120BCCC1E00F0B643 /* CommandLineParser.cpp */; };
 		29CA496720BCCC1F00F0B643 /* InstrumentSpecies.h in Headers */ = {isa = PBXBuildFile; fileRef = 29CA495220BCCC1E00F0B643 /* InstrumentSpecies.h */; };
 		29CA496820BCCC1F00F0B643 /* CommandLineParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 29CA495320BCCC1E00F0B643 /* CommandLineParser.h */; };
@@ -37,6 +39,8 @@
 /* Begin PBXFileReference section */
 		29474DC720E1B389009BF7C9 /* Atom.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Atom.cpp; sourceTree = "<group>"; };
 		297F254720E08C0200256E73 /* Atom.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Atom.h; sourceTree = "<group>"; };
+		29BEE1B020E4B12400B5276B /* Prob.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Prob.cpp; sourceTree = "<group>"; };
+		29BEE1B120E4B12400B5276B /* Prob.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Prob.h; sourceTree = "<group>"; };
 		29CA481D20BCC28E00F0B643 /* libpen.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libpen.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		29CA495120BCCC1E00F0B643 /* CommandLineParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CommandLineParser.cpp; sourceTree = "<group>"; };
 		29CA495220BCCC1E00F0B643 /* InstrumentSpecies.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstrumentSpecies.h; sourceTree = "<group>"; };
@@ -132,6 +136,8 @@
 				29CA495D20BCCC1F00F0B643 /* util.h */,
 				297F254720E08C0200256E73 /* Atom.h */,
 				29474DC720E1B389009BF7C9 /* Atom.cpp */,
+				29BEE1B020E4B12400B5276B /* Prob.cpp */,
+				29BEE1B120E4B12400B5276B /* Prob.h */,
 			);
 			path = pen;
 			sourceTree = "<group>";
@@ -156,6 +162,7 @@
 				29CA497A20BCCC1F00F0B643 /* CommandLineArgumentPrototype.h in Headers */,
 				29CA497620BCCC1F00F0B643 /* Etude.h in Headers */,
 				29CA497220BCCC1F00F0B643 /* util.h in Headers */,
+				29BEE1B320E4B12400B5276B /* Prob.h in Headers */,
 				29CA497820BCCC1F00F0B643 /* cmd.h in Headers */,
 				29CA496720BCCC1F00F0B643 /* InstrumentSpecies.h in Headers */,
 				29CA496820BCCC1F00F0B643 /* CommandLineParser.h in Headers */,
@@ -229,6 +236,7 @@
 				29CA497320BCCC1F00F0B643 /* PitchPattern.cpp in Sources */,
 				29CA497520BCCC1F00F0B643 /* CommandLineValue.cpp in Sources */,
 				29CA497420BCCC1F00F0B643 /* InstrumentSpecies.cpp in Sources */,
+				29BEE1B220E4B12400B5276B /* Prob.cpp in Sources */,
 				29CA496620BCCC1F00F0B643 /* CommandLineParser.cpp in Sources */,
 				29CA497920BCCC1F00F0B643 /* InstrumentConfig.cpp in Sources */,
 				29CA496920BCCC1F00F0B643 /* Etude.cpp in Sources */,

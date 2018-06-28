@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		29BEE1B520E4B46800B5276B /* TestProp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 29BEE1B420E4B46800B5276B /* TestProp.cpp */; };
 		29CA48E120BCC69A00F0B643 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 29CA48E020BCC69A00F0B643 /* main.cpp */; };
 		29CA48E220BCC70300F0B643 /* catch_assertionhandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 29CA484620BCC67500F0B643 /* catch_assertionhandler.cpp */; };
 		29CA48E320BCC70300F0B643 /* catch_tag_alias_autoregistrar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 29CA484B20BCC67500F0B643 /* catch_tag_alias_autoregistrar.cpp */; };
@@ -94,6 +95,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		29BEE1B420E4B46800B5276B /* TestProp.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TestProp.cpp; sourceTree = "<group>"; };
 		29CA482D20BCC2E200F0B643 /* pen-test */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "pen-test"; sourceTree = BUILT_PRODUCTS_DIR; };
 		29CA484120BCC67500F0B643 /* catch_with_main.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = catch_with_main.hpp; sourceTree = "<group>"; };
 		29CA484320BCC67500F0B643 /* clara.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = clara.hpp; sourceTree = "<group>"; };
@@ -504,6 +506,7 @@
 				29CA499E20BCF16900F0B643 /* TestCommandLineParser.cpp */,
 				29CA499D20BCF16900F0B643 /* TestProgram.cpp */,
 				29CA499C20BCF16900F0B643 /* TestUtil.cpp */,
+				29BEE1B420E4B46800B5276B /* TestProp.cpp */,
 			);
 			path = tests;
 			sourceTree = "<group>";
@@ -587,6 +590,7 @@
 				29CA491420BCC70300F0B643 /* catch_assertionresult.cpp in Sources */,
 				29CA49A120BCF16900F0B643 /* TestCommandLineParser.cpp in Sources */,
 				29CA492220BCC70900F0B643 /* catch_reporter_listening.cpp in Sources */,
+				29BEE1B520E4B46800B5276B /* TestProp.cpp in Sources */,
 				29CA48EC20BCC70300F0B643 /* catch_benchmark.cpp in Sources */,
 				29CA491D20BCC70900F0B643 /* catch_reporter_junit.cpp in Sources */,
 				29CA48FB20BCC70300F0B643 /* catch_test_case_tracker.cpp in Sources */,

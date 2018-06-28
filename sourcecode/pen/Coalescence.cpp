@@ -1,4 +1,5 @@
 #include "pen/Coalescence.h"
+#include "pen/Prob.h"
 #include "../test/PEN_PATH.h"
 #include "mx/api/DocumentManager.h"
 #include <vector>
@@ -224,12 +225,61 @@ namespace pen
         const AtomStreams originalReversedMusic = outMusic;
         AtomStreams patternStreams = originalReversedMusic;
         doPenultimateCoalescing( patternStreams, outMusic );
+
+        Prob boolGen{ DIGITS_DAT_PATH() };
+        int beginningRestProbability = 0;
+        int endingRestProbability = 1;
+        int restIncrement = 1;
+        int restTieringAmount = 0;
         
+        int beginningRepeatProbability = 0;
+        int endingRepeatProbability = 25;
+        int repeatIncrement = 1;
+        int repeatTieringAmount = 2;
         
+        int currentBaseRestProbability = beginningRestProbability;
+        int currentBaseRepeatProbability = beginningRepeatProbability;
+        
+        while( currentBaseRestProbability < endingRestProbability || currentBaseRepeatProbability < endingRepeatProbability )
+        {
+            for( int p = 0; p < 4; ++p )
+            {
+                const int restProb = currentBaseRestProbability + ( restTieringAmount * p );
+                const int repeatProb = currentBaseRepeatProbability + ( repeatTieringAmount * p );
+                
+                for( auto it = patternStreams.at( p ).begin(); it != patternStreams.at( p ).end(); ++it )
+                {
+                    const bool doRest = boolGen.get( restProb );
+                    const bool doRepeat = boolGen.get( repeatProb );
+                    
+                    if( doRest )
+                    {
+                        *it = Atom{};
+                    }
+                    
+                    if( doRepeat )
+                    {
+                        it = patternStreams.at( p ).insert( it, *it );
+                    }
+                }
+            }
+            
+            writeMusic( patternStreams, outMusic, 1 );
+            
+            if( currentBaseRestProbability < endingRestProbability )
+            {
+                currentBaseRestProbability += restIncrement;
+            }
+            
+            if( currentBaseRepeatProbability < endingRepeatProbability )
+            {
+                currentBaseRepeatProbability += repeatIncrement;
+            }
+        }
+
         shortenStreamsToMatchLengthOfShortestStream( outMusic );
         reverseStreams( outMusic );
         writeStreamsToScore( outMusic, myScore );
-
         auto& dmgr = mx::api::DocumentManager::getInstance();
         const auto oID = dmgr.createFromScore( myScore );
         dmgr.writeToFile( oID, myOutFilepath );
