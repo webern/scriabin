@@ -167,6 +167,53 @@ namespace pen
     
     
     void
+    Coalescence::doPenultimateCoalescing( AtomStreams& ioPatternStreams, AtomStreams& ioOutputStreams )
+    {
+        // add one rest to the cello
+        {
+            const int pidx = 3;
+            const auto insertLoc = ioPatternStreams.at( pidx ).cbegin();
+            ioPatternStreams.at( pidx ).insert( insertLoc, Atom{} );
+        }
+        
+        writeMusic( ioPatternStreams, ioOutputStreams, 2 );
+        
+        // add two rests to the first violin
+        {
+            const int pidx = 0;
+            auto insertLoc = ioPatternStreams.at( pidx ).cbegin();
+            insertLoc = ioPatternStreams.at( pidx ).insert( insertLoc, Atom{} );
+            insertLoc = ioPatternStreams.at( pidx ).insert( insertLoc, Atom{} );
+        }
+        
+        writeMusic( ioPatternStreams, ioOutputStreams, 2 );
+        
+        // add three rests to the second violin
+        {
+            const int pidx = 1;
+            auto insertLoc = ioPatternStreams.at( pidx ).cbegin();
+            insertLoc = ioPatternStreams.at( pidx ).insert( insertLoc, Atom{} );
+            insertLoc = ioPatternStreams.at( pidx ).insert( insertLoc, Atom{} );
+            insertLoc = ioPatternStreams.at( pidx ).insert( insertLoc, Atom{} );
+        }
+        
+        writeMusic( ioPatternStreams, ioOutputStreams, 2 );
+        
+        // add four rests to the viola
+        {
+            const int pidx = 2;
+            auto insertLoc = ioPatternStreams.at( pidx ).cbegin();
+            insertLoc = ioPatternStreams.at( pidx ).insert( insertLoc, Atom{} );
+            insertLoc = ioPatternStreams.at( pidx ).insert( insertLoc, Atom{} );
+            insertLoc = ioPatternStreams.at( pidx ).insert( insertLoc, Atom{} );
+            insertLoc = ioPatternStreams.at( pidx ).insert( insertLoc, Atom{} );
+        }
+        
+        writeMusic( ioPatternStreams, ioOutputStreams, 2 );
+    }
+    
+    
+    void
     Coalescence::doEverthing()
     {
         initSelfScore();
@@ -176,48 +223,8 @@ namespace pen
         reverseStreams( outMusic );
         const AtomStreams originalReversedMusic = outMusic;
         AtomStreams patternStreams = originalReversedMusic;
+        doPenultimateCoalescing( patternStreams, outMusic );
         
-        // add one rest to the cello
-        {
-            const int pidx = 3;
-            const auto insertLoc = patternStreams.at( pidx ).cbegin();
-            patternStreams.at( pidx ).insert( insertLoc, Atom{} );
-        }
-        
-        writeMusic( patternStreams, outMusic, 2 );
-        
-        // add two rests to the first violin
-        {
-            const int pidx = 0;
-            auto insertLoc = patternStreams.at( pidx ).cbegin();
-            insertLoc = patternStreams.at( pidx ).insert( insertLoc, Atom{} );
-            insertLoc = patternStreams.at( pidx ).insert( insertLoc, Atom{} );
-        }
-        
-        writeMusic( patternStreams, outMusic, 2 );
-        
-        // add three rests to the second violin
-        {
-            const int pidx = 1;
-            auto insertLoc = patternStreams.at( pidx ).cbegin();
-            insertLoc = patternStreams.at( pidx ).insert( insertLoc, Atom{} );
-            insertLoc = patternStreams.at( pidx ).insert( insertLoc, Atom{} );
-            insertLoc = patternStreams.at( pidx ).insert( insertLoc, Atom{} );
-        }
-        
-        writeMusic( patternStreams, outMusic, 2 );
-        
-        // add four rests to the viola
-        {
-            const int pidx = 2;
-            auto insertLoc = patternStreams.at( pidx ).cbegin();
-            insertLoc = patternStreams.at( pidx ).insert( insertLoc, Atom{} );
-            insertLoc = patternStreams.at( pidx ).insert( insertLoc, Atom{} );
-            insertLoc = patternStreams.at( pidx ).insert( insertLoc, Atom{} );
-            insertLoc = patternStreams.at( pidx ).insert( insertLoc, Atom{} );
-        }
-        
-        writeMusic( patternStreams, outMusic, 2 );
         
         shortenStreamsToMatchLengthOfShortestStream( outMusic );
         reverseStreams( outMusic );
