@@ -279,6 +279,7 @@ namespace pen
 
         shortenStreamsToMatchLengthOfShortestStream( outMusic );
         reverseStreams( outMusic );
+        writeMusic( originalMusic, outMusic, 32 );
         writeStreamsToScore( outMusic, myScore );
         auto& dmgr = mx::api::DocumentManager::getInstance();
         const auto oID = dmgr.createFromScore( myScore );
