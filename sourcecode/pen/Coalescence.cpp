@@ -283,10 +283,11 @@ namespace pen
                               const Atoms& inAtoms,
                               mx::api::ScoreData& ioScore )
     {
+        auto measureIndex = startingMeasureIndex;
+        auto eighthIndex = startingEighthIndex;
+        
         for( const auto& atom : inAtoms )
         {
-            auto measureIndex = startingMeasureIndex;
-            auto eighthIndex = startingEighthIndex;
             auto& part = ioScore.parts.at( static_cast<size_t>( partIndex) );
             
             while( measureIndex > static_cast<int>( part.measures.size() ) - 1 )
