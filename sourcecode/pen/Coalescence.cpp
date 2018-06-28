@@ -224,22 +224,49 @@ namespace pen
         reverseStreams( outMusic );
         const AtomStreams originalReversedMusic = outMusic;
         AtomStreams patternStreams = originalReversedMusic;
-        doPenultimateCoalescing( patternStreams, outMusic );
+//        doPenultimateCoalescing( patternStreams, outMusic );
 
         Prob boolGen{ DIGITS_DAT_PATH() };
         CoalescenceParams params;
         params.minR = 0;
+        params.maxR = 0;
+        params.rInc = 0;
+        params.rTier = 0;
+        
+        params.minP = 1;
+        params.maxP = 1;
+        params.pInc = 0;
+        params.pTier = 1;
+        params.numLoops = 10;
+        
+        doCoalescingLoop( params, patternStreams, outMusic, boolGen );
+        
+        params.minR = 1;
         params.maxR = 1;
-        params.rInc = 1;
+        params.rInc = 0;
         params.rTier = 0;
         
         params.minP = 0;
-        params.maxP = 25;
-        params.pInc = 1;
-        params.pTier = 2;
-        params.numLoops = 8;
+        params.maxP = 0;
+        params.pInc = 0;
+        params.pTier = 0;
+        params.numLoops = 10;
         
         doCoalescingLoop( params, patternStreams, outMusic, boolGen );
+        
+        params.minR = 0;
+        params.maxR = 0;
+        params.rInc = 0;
+        params.rTier = 0;
+
+        params.minP = 20;
+        params.maxP = 35;
+        params.pInc = 0;
+        params.pTier = 0;
+        params.numLoops = 15;
+
+        doCoalescingLoop( params, patternStreams, outMusic, boolGen );
+
         
         shortenStreamsToMatchLengthOfShortestStream( outMusic );
         reverseStreams( outMusic );
@@ -274,7 +301,7 @@ namespace pen
                     
                     if( doRest )
                     {
-                        *it = Atom{};
+                        it = ioPatternStreams.at( p ).insert( it, Atom{} );
                     }
                     
                     if( doRepeat )
