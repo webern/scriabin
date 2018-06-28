@@ -227,25 +227,26 @@ namespace pen
         doPenultimateCoalescing( patternStreams, outMusic );
 
         Prob boolGen{ DIGITS_DAT_PATH() };
-        int beginningRestProbability = 0;
-        int endingRestProbability = 1;
-        int restIncrement = 1;
-        int restTieringAmount = 0;
+        CoalescenceParams params;
+        params.minR = 0;
+        params.maxR = 1;
+        params.rInc = 1;
+        params.rTier = 0;
         
-        int beginningRepeatProbability = 0;
-        int endingRepeatProbability = 25;
-        int repeatIncrement = 1;
-        int repeatTieringAmount = 2;
+        params.minP = 0;
+        params.maxP = 25;
+        params.pInc = 1;
+        params.pTier = 2;
         
-        int currentBaseRestProbability = beginningRestProbability;
-        int currentBaseRepeatProbability = beginningRepeatProbability;
+        int rCurrent = params.minR;
+        int pCurrent = params.minP;
         
-        while( currentBaseRestProbability < endingRestProbability || currentBaseRepeatProbability < endingRepeatProbability )
+        while( rCurrent < params.maxR || pCurrent < params.maxP )
         {
             for( int p = 0; p < 4; ++p )
             {
-                const int restProb = currentBaseRestProbability + ( restTieringAmount * p );
-                const int repeatProb = currentBaseRepeatProbability + ( repeatTieringAmount * p );
+                const int restProb = rCurrent + ( params.rTier * p );
+                const int repeatProb = pCurrent + ( params.pTier * p );
                 
                 for( auto it = patternStreams.at( p ).begin(); it != patternStreams.at( p ).end(); ++it )
                 {
@@ -266,14 +267,14 @@ namespace pen
             
             writeMusic( patternStreams, outMusic, 1 );
             
-            if( currentBaseRestProbability < endingRestProbability )
+            if( rCurrent < params.maxR )
             {
-                currentBaseRestProbability += restIncrement;
+                rCurrent += params.rInc;
             }
             
-            if( currentBaseRepeatProbability < endingRepeatProbability )
+            if( pCurrent < params.maxP )
             {
-                currentBaseRepeatProbability += repeatIncrement;
+                pCurrent += params.pInc;
             }
         }
 

@@ -12,6 +12,41 @@ namespace pen
     using Atoms = std::vector<Atom>;
     using AtomStreams = std::map<int, Atoms>;
     
+    struct CoalescenceParams
+    {
+        // rest probabilities
+        
+        // the starting probability that a note will become a rest
+        int minR = 0;
+        
+        // the maximum probability that a note will become a rest
+        int maxR = 1;
+        
+        // the amount that we will increment the rest probability
+        // on each iteration of the coalescing loop
+        int rInc = 1;
+        
+        // the amount that we will add to the rest probability
+        // for each subsequent part in the inner loop
+        int rTier = 0;
+        
+        // repeat probabilities
+        
+        // the starting probability that a note will be repeated
+        int minP = 0;
+        
+        // the maximum probability that a note will be repeated
+        int maxP = 25;
+        
+        // the amount that we will increment the repeat probability
+        // on each iteration of the coalescing loop
+        int pInc = 1;
+        
+        // the amout that we will add to the repeat probability
+        // for each subsequent part in the inner loop
+        int pTier = 2;
+    };
+    
     class Coalescence
     {
     public:
