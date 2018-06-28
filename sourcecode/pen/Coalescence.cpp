@@ -238,6 +238,64 @@ namespace pen
         params.pInc = 1;
         params.pTier = 2;
         
+        doCoalescingLoop( params, patternStreams, outMusic, boolGen );
+        
+//        int rCurrent = params.minR;
+//        int pCurrent = params.minP;
+//        
+//        while( rCurrent < params.maxR || pCurrent < params.maxP )
+//        {
+//            for( int p = 0; p < 4; ++p )
+//            {
+//                const int restProb = rCurrent + ( params.rTier * p );
+//                const int repeatProb = pCurrent + ( params.pTier * p );
+//                
+//                for( auto it = patternStreams.at( p ).begin(); it != patternStreams.at( p ).end(); ++it )
+//                {
+//                    const bool doRest = boolGen.get( restProb );
+//                    const bool doRepeat = boolGen.get( repeatProb );
+//                    
+//                    if( doRest )
+//                    {
+//                        *it = Atom{};
+//                    }
+//                    
+//                    if( doRepeat )
+//                    {
+//                        it = patternStreams.at( p ).insert( it, *it );
+//                    }
+//                }
+//            }
+//            
+//            writeMusic( patternStreams, outMusic, 1 );
+//            
+//            if( rCurrent < params.maxR )
+//            {
+//                rCurrent += params.rInc;
+//            }
+//            
+//            if( pCurrent < params.maxP )
+//            {
+//                pCurrent += params.pInc;
+//            }
+//        }
+
+        shortenStreamsToMatchLengthOfShortestStream( outMusic );
+        reverseStreams( outMusic );
+        writeMusic( originalMusic, outMusic, 32 );
+        writeStreamsToScore( outMusic, myScore );
+        auto& dmgr = mx::api::DocumentManager::getInstance();
+        const auto oID = dmgr.createFromScore( myScore );
+        dmgr.writeToFile( oID, myOutFilepath );
+    }
+    
+    
+    void
+    Coalescence::doCoalescingLoop( const CoalescenceParams& params,
+                                   AtomStreams& ioPatternStreams,
+                                   AtomStreams& ioOutputStreams,
+                                   Prob& ioProb )
+    {
         int rCurrent = params.minR;
         int pCurrent = params.minP;
         
@@ -248,10 +306,10 @@ namespace pen
                 const int restProb = rCurrent + ( params.rTier * p );
                 const int repeatProb = pCurrent + ( params.pTier * p );
                 
-                for( auto it = patternStreams.at( p ).begin(); it != patternStreams.at( p ).end(); ++it )
+                for( auto it = ioPatternStreams.at( p ).begin(); it != ioPatternStreams.at( p ).end(); ++it )
                 {
-                    const bool doRest = boolGen.get( restProb );
-                    const bool doRepeat = boolGen.get( repeatProb );
+                    const bool doRest = ioProb.get( restProb );
+                    const bool doRepeat = ioProb.get( repeatProb );
                     
                     if( doRest )
                     {
@@ -260,12 +318,12 @@ namespace pen
                     
                     if( doRepeat )
                     {
-                        it = patternStreams.at( p ).insert( it, *it );
+                        it = ioPatternStreams.at( p ).insert( it, *it );
                     }
                 }
             }
             
-            writeMusic( patternStreams, outMusic, 1 );
+            writeMusic( ioPatternStreams, ioOutputStreams, 1 );
             
             if( rCurrent < params.maxR )
             {
@@ -277,16 +335,7 @@ namespace pen
                 pCurrent += params.pInc;
             }
         }
-
-        shortenStreamsToMatchLengthOfShortestStream( outMusic );
-        reverseStreams( outMusic );
-        writeMusic( originalMusic, outMusic, 32 );
-        writeStreamsToScore( outMusic, myScore );
-        auto& dmgr = mx::api::DocumentManager::getInstance();
-        const auto oID = dmgr.createFromScore( myScore );
-        dmgr.writeToFile( oID, myOutFilepath );
     }
-    
     
     void
     Coalescence::shortenStreamsToMatchLengthOfShortestStream( AtomStreams& ioStreams )

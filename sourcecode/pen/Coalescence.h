@@ -2,6 +2,7 @@
 
 #include "mx/api/ScoreData.h"
 #include "pen/Atom.h"
+#include "pen/Prob.h"
 #include <string>
 #include <vector>
 #include <sstream>
@@ -45,6 +46,9 @@ namespace pen
         // the amout that we will add to the repeat probability
         // for each subsequent part in the inner loop
         int pTier = 2;
+        
+        // number of times to run the coalescing procedure
+        int numLoops = 0;
     };
     
     class Coalescence
@@ -67,6 +71,10 @@ namespace pen
         bool rbool();
         
     private:
+        static void doCoalescingLoop( const CoalescenceParams& p,
+                                      AtomStreams& ioPatternStreams,
+                                      AtomStreams& ioOutputStreams,
+                                      Prob& ioProb );
         static void doPenultimateCoalescing( AtomStreams& ioPatternStreams, AtomStreams& ioOutputStreams );
         static void writeMusic( const AtomStreams& inStreamsToWrite, AtomStreams& ioStreamsToAppendTo, int numTimes );
         static void writeMusic( const Atoms& inAtomsToWrite, Atoms& ioAtomsToAppendTo, int numTimes );
