@@ -237,49 +237,10 @@ namespace pen
         params.maxP = 25;
         params.pInc = 1;
         params.pTier = 2;
+        params.numLoops = 8;
         
         doCoalescingLoop( params, patternStreams, outMusic, boolGen );
         
-//        int rCurrent = params.minR;
-//        int pCurrent = params.minP;
-//        
-//        while( rCurrent < params.maxR || pCurrent < params.maxP )
-//        {
-//            for( int p = 0; p < 4; ++p )
-//            {
-//                const int restProb = rCurrent + ( params.rTier * p );
-//                const int repeatProb = pCurrent + ( params.pTier * p );
-//                
-//                for( auto it = patternStreams.at( p ).begin(); it != patternStreams.at( p ).end(); ++it )
-//                {
-//                    const bool doRest = boolGen.get( restProb );
-//                    const bool doRepeat = boolGen.get( repeatProb );
-//                    
-//                    if( doRest )
-//                    {
-//                        *it = Atom{};
-//                    }
-//                    
-//                    if( doRepeat )
-//                    {
-//                        it = patternStreams.at( p ).insert( it, *it );
-//                    }
-//                }
-//            }
-//            
-//            writeMusic( patternStreams, outMusic, 1 );
-//            
-//            if( rCurrent < params.maxR )
-//            {
-//                rCurrent += params.rInc;
-//            }
-//            
-//            if( pCurrent < params.maxP )
-//            {
-//                pCurrent += params.pInc;
-//            }
-//        }
-
         shortenStreamsToMatchLengthOfShortestStream( outMusic );
         reverseStreams( outMusic );
         writeMusic( originalMusic, outMusic, 32 );
@@ -299,7 +260,7 @@ namespace pen
         int rCurrent = params.minR;
         int pCurrent = params.minP;
         
-        while( rCurrent < params.maxR || pCurrent < params.maxP )
+        for( int loopCounter = 0; loopCounter < params.numLoops; ++loopCounter )
         {
             for( int p = 0; p < 4; ++p )
             {
@@ -325,14 +286,17 @@ namespace pen
             
             writeMusic( ioPatternStreams, ioOutputStreams, 1 );
             
-            if( rCurrent < params.maxR )
+            rCurrent += params.rInc;
+            pCurrent += params.pInc;
+            
+            if( rCurrent > params.maxR )
             {
-                rCurrent += params.rInc;
+                rCurrent = params.maxR;
             }
             
-            if( pCurrent < params.maxP )
+            if( pCurrent > params.maxP )
             {
-                pCurrent += params.pInc;
+                rCurrent = params.maxP;
             }
         }
     }
