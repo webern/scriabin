@@ -32,6 +32,7 @@ namespace pen
         bool rbool();
         
     private:
+        static void writeMusic( const Atoms& inAtomsToWrite, Atoms& ioAtomsToAppendTo, int numTimes );
         static void reverseAtoms( Atoms& ioAtoms );
         static void reverseStreams( AtomStreams& ioStreams );
         static AtomStreams extractStreams( const MxNoteStreams& inNotes );
@@ -43,5 +44,13 @@ namespace pen
                                    mx::api::SoundID soundID,
                                    const mx::api::ClefData clef );
         static void appendMeasures( mx::api::ScoreData& ioScore, int numMeasures );
+        static void writeStream( int partIndex,
+                                 int startingMeasureIndex,
+                                 int startingEighthIndex,
+                                 const Atoms& inAtoms,
+                                 mx::api::ScoreData& ioScore );
+        static void writeStreamsToScore( const AtomStreams& inStreams, mx::api::ScoreData& ioScore );
+        static int findIndexOfShortestStream( const AtomStreams& inStreams );
+        static void shortenStreamsToMatchLengthOfShortestStream( AtomStreams& ioStreams );
     };
 }

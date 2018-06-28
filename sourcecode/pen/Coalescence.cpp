@@ -138,10 +138,20 @@ namespace pen
     
     
     void
+    Coalescence::writeMusic( const Atoms& inAtomsToWrite, Atoms& ioAtomsToAppendTo, int numTimes )
+    {
+        for( int i = 0; i < numTimes; ++i )
+        {
+            std::copy( std::cbegin( inAtomsToWrite ), std::cend( inAtomsToWrite ), std::back_inserter( ioAtomsToAppendTo ) );
+        }
+    }
+    
+    
+    void
     Coalescence::doEverthing()
     {
         initSelfScore();
-        MxNoteStreams inputNotes = getInputNotes();
+        const MxNoteStreams inputNotes = getInputNotes();
         AtomStreams streams = extractStreams( inputNotes );
         reverseStreams( streams );
         
@@ -153,11 +163,7 @@ namespace pen
             decltype( pair.second ) writer;
             std::copy( std::cbegin( stream ), std::cend( stream ), std::back_inserter( writer ) );
             
-            // final repeats, eight times
-            for( int i = 0; i < 7; ++i, ++masterIndex )
-            {
-                std::copy( std::begin( writer ), std::end( writer ), std::back_inserter( stream ) );
-            }
+            writeMusic( writer, stream, 1 );
 
             // eight times with increasing rests
             for( int i = 0; i < 8; ++i, ++masterIndex )
@@ -199,78 +205,110 @@ namespace pen
             }
         }
         
-        // find the smallest stream
-        int smallest = -1;
-        
-        for( const auto& pait : streams )
-        {
-            if( smallest == -1 || static_cast<int>( pait.second.size() ) < smallest )
-            {
-                smallest = static_cast<int>( pait.second.size() );
-            }
-        }
+        shortenStreamsToMatchLengthOfShortestStream( streams );
+        reverseStreams( streams );
+        writeStreamsToScore( streams, myScore );
+
+        auto& dmgr = mx::api::DocumentManager::getInstance();
+        const auto oID = dmgr.createFromScore( myScore );
+        dmgr.writeToFile( oID, myOutFilepath );
+    }
+    
+    
+    void
+    Coalescence::shortenStreamsToMatchLengthOfShortestStream( AtomStreams& ioStreams )
+    {
+        int smallest = findIndexOfShortestStream( ioStreams );
         
         // delete extra notes based on smallest
-        for( auto& pair : streams )
+        for( auto& pair : ioStreams )
         {
             if( static_cast<int>( pair.second.size() ) > smallest )
             {
                 pair.second.resize( static_cast<size_t>( smallest ) );
             }
         }
-
-        reverseStreams( streams );
+    }
+    
+    
+    int
+    Coalescence::findIndexOfShortestStream( const AtomStreams& inStreams )
+    {
+        // find the smallest stream
+        int smallest = -1;
         
-        // write notes into score
+        for( const auto& streamPair : inStreams )
+        {
+            if( smallest == -1 || static_cast<int>( streamPair.second.size() ) < smallest )
+            {
+                smallest = static_cast<int>( streamPair.second.size() );
+            }
+        }
         
-        for( int thePartIndexRightHere = 0; thePartIndexRightHere < static_cast<int>( streams.size() ); ++thePartIndexRightHere )
+        return smallest;
+    }
+    
+    
+    void
+    Coalescence::writeStreamsToScore( const AtomStreams& inStreams, mx::api::ScoreData& ioScore )
+    {
+        for( int p = 0; p < static_cast<int>( inStreams.size() ); ++p )
         {
             int measureIndex = 0;
             int eighthIndex = 0;
-            const auto& noteStream = streams.at( thePartIndexRightHere );
-            auto& outPart = myScore.parts.at( static_cast<size_t>( thePartIndexRightHere ) );
+            const auto& noteStream = inStreams.at( p );
+            writeStream( p, measureIndex, eighthIndex, noteStream, ioScore );
+        }
+    }
+    
+    
+    void
+    Coalescence::writeStream( int partIndex,
+                              int startingMeasureIndex,
+                              int startingEighthIndex,
+                              const Atoms& inAtoms,
+                              mx::api::ScoreData& ioScore )
+    {
+        for( const auto& atom : inAtoms )
+        {
+            auto measureIndex = startingMeasureIndex;
+            auto eighthIndex = startingEighthIndex;
+            auto& part = ioScore.parts.at( static_cast<size_t>( partIndex) );
             
-            for( const auto& note : noteStream )
+            while( measureIndex > static_cast<int>( part.measures.size() ) - 1 )
             {
-                while( measureIndex > static_cast<int>( outPart.measures.size() ) - 1 )
-                {
-                    appendMeasures( myScore, 1 );
-                }
-                
-                auto& measure = outPart.measures.at( static_cast<size_t>( measureIndex ) );
-                mx::api::NoteData theNote;
-                theNote.tickTimePosition = eighthIndex * ( myScore.ticksPerQuarter / 2 );
-                theNote.durationData.durationTimeTicks = myScore.ticksPerQuarter / 2;
-                theNote.durationData.durationName = mx::api::DurationName::eighth;
-                
-                if( note.getStep() == -1 )
-                {
-                    theNote.isRest = true;
-                }
-                else
-                {
-                    theNote.pitchData = note.getMxPitchData();
-                }
-                
-                measure.staves.at( 0 ).voices.at( 0 ).notes.push_back( theNote );
-                
-                if( ( eighthIndex + 1 ) % 6 == 0 )
-                {
-                    ++measureIndex;
-                    eighthIndex = 0;
-                }
-                else
-                {
-                    ++eighthIndex;
-                }
+                appendMeasures( ioScore, 1 );
             }
             
+            auto& measure = part.measures.at( static_cast<size_t>( measureIndex ) );
+            mx::api::NoteData theNote;
+            theNote.tickTimePosition = eighthIndex * ( ioScore.ticksPerQuarter / 2 );
+            theNote.durationData.durationTimeTicks = ioScore.ticksPerQuarter / 2;
+            theNote.durationData.durationName = mx::api::DurationName::eighth;
+            
+            if( atom.getStep() == -1 )
+            {
+                theNote.isRest = true;
+            }
+            else
+            {
+                theNote.pitchData = atom.getMxPitchData();
+            }
+            
+            measure.staves.at( 0 ).voices.at( 0 ).notes.push_back( theNote );
+            
+            if( ( eighthIndex + 1 ) % 6 == 0 )
+            {
+                ++measureIndex;
+                eighthIndex = 0;
+            }
+            else
+            {
+                ++eighthIndex;
+            }
         }
-        
-        auto& dmgr = mx::api::DocumentManager::getInstance();
-        const auto oID = dmgr.createFromScore( myScore );
-        dmgr.writeToFile( oID, myOutFilepath );
     }
+    
     
     mx::api::ScoreData
     Coalescence::createEmptyScore( const std::string& title )
@@ -294,6 +332,7 @@ namespace pen
         score.partGroups.push_back( grp );
         return score;
     }
+    
     
     void
     Coalescence::addInstrument( mx::api::ScoreData& ioScore,
@@ -323,6 +362,7 @@ namespace pen
         ioScore.parts.back().measures.back().staves.back().clefs.push_back( clef );
         ioScore.parts.back().measures.back().staves.back().voices[0] = mx::api::VoiceData{};
     }
+    
     
     void
     Coalescence::appendMeasures( mx::api::ScoreData& ioScore, int numMeasures )
