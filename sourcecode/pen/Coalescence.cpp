@@ -148,66 +148,80 @@ namespace pen
     
     
     void
+    Coalescence::writeMusic( const AtomStreams& inStreamsToWrite, AtomStreams& ioStreamsToAppendTo, int numTimes )
+    {
+        if( inStreamsToWrite.size() != ioStreamsToAppendTo.size() )
+        {
+            std::runtime_error( "Coalescence::writeMusic: maps must be same size" );
+        }
+        
+        auto inIter = inStreamsToWrite.cbegin();
+        auto outIter = ioStreamsToAppendTo.begin();
+        const auto e = inStreamsToWrite.cend();
+        
+        for( ; inIter != e; ++inIter, ++outIter )
+        {
+            writeMusic( inIter->second, outIter->second, numTimes );
+        }
+    }
+    
+    
+    void
     Coalescence::doEverthing()
     {
         initSelfScore();
         const MxNoteStreams inputNotes = getInputNotes();
-        AtomStreams streams = extractStreams( inputNotes );
-        reverseStreams( streams );
+        const AtomStreams originalMusic = extractStreams( inputNotes );
+        AtomStreams outMusic = originalMusic;
+        reverseStreams( outMusic );
+        const AtomStreams originalReversedMusic = outMusic;
+        AtomStreams patternStreams = originalReversedMusic;
         
-        int masterIndex = 0;
-        
-        for( auto& pair : streams )
+        // add one rest to the cello
         {
-            auto& stream = pair.second;
-            decltype( pair.second ) writer;
-            std::copy( std::cbegin( stream ), std::cend( stream ), std::back_inserter( writer ) );
-            
-            writeMusic( writer, stream, 1 );
-
-            // eight times with increasing rests
-            for( int i = 0; i < 8; ++i, ++masterIndex )
-            {
-                for( auto& note : writer )
-                {
-                    if( masterIndex % 37 == 0 && rbool() )
-                    {
-                        note.setRest();
-                    }
-                    
-                    ++masterIndex;
-                    std::copy( std::begin( writer ), std::end( writer ), std::back_inserter( stream ) );
-                }
-            }
-            
-            // eight times with increasing augmentation
-            for( int i = 0; i < 8; ++i, ++masterIndex )
-            {
-                for( auto noteIter = writer.begin(); noteIter != writer.end(); ++noteIter, ++masterIndex )
-                {
-                    if( masterIndex % 3 == 0 && rbool() )
-                    {
-                        auto reps = ( masterIndex % ( i + 2 ) + 1 );
-                        const auto note = *noteIter;
-                        for( int j = 0; j < reps; ++j )
-                        {
-                            noteIter = writer.insert( noteIter, note );
-                            ++noteIter;
-                            
-                            if( noteIter == writer.end() )
-                            {
-                                break;
-                            }
-                        }
-                    }
-                }
-                std::copy( std::begin( writer ), std::end( writer ), std::back_inserter( stream ) );
-            }
+            const int pidx = 3;
+            const auto insertLoc = patternStreams.at( pidx ).cbegin();
+            patternStreams.at( pidx ).insert( insertLoc, Atom{} );
         }
         
-        shortenStreamsToMatchLengthOfShortestStream( streams );
-        reverseStreams( streams );
-        writeStreamsToScore( streams, myScore );
+        writeMusic( patternStreams, outMusic, 2 );
+        
+        // add two rests to the first violin
+        {
+            const int pidx = 0;
+            auto insertLoc = patternStreams.at( pidx ).cbegin();
+            insertLoc = patternStreams.at( pidx ).insert( insertLoc, Atom{} );
+            insertLoc = patternStreams.at( pidx ).insert( insertLoc, Atom{} );
+        }
+        
+        writeMusic( patternStreams, outMusic, 2 );
+        
+        // add three rests to the second violin
+        {
+            const int pidx = 1;
+            auto insertLoc = patternStreams.at( pidx ).cbegin();
+            insertLoc = patternStreams.at( pidx ).insert( insertLoc, Atom{} );
+            insertLoc = patternStreams.at( pidx ).insert( insertLoc, Atom{} );
+            insertLoc = patternStreams.at( pidx ).insert( insertLoc, Atom{} );
+        }
+        
+        writeMusic( patternStreams, outMusic, 2 );
+        
+        // add four rests to the viola
+        {
+            const int pidx = 2;
+            auto insertLoc = patternStreams.at( pidx ).cbegin();
+            insertLoc = patternStreams.at( pidx ).insert( insertLoc, Atom{} );
+            insertLoc = patternStreams.at( pidx ).insert( insertLoc, Atom{} );
+            insertLoc = patternStreams.at( pidx ).insert( insertLoc, Atom{} );
+            insertLoc = patternStreams.at( pidx ).insert( insertLoc, Atom{} );
+        }
+        
+        writeMusic( patternStreams, outMusic, 2 );
+        
+        shortenStreamsToMatchLengthOfShortestStream( outMusic );
+        reverseStreams( outMusic );
+        writeStreamsToScore( outMusic, myScore );
 
         auto& dmgr = mx::api::DocumentManager::getInstance();
         const auto oID = dmgr.createFromScore( myScore );

@@ -32,6 +32,7 @@ namespace pen
         bool rbool();
         
     private:
+        static void writeMusic( const AtomStreams& inStreamsToWrite, AtomStreams& ioStreamsToAppendTo, int numTimes );
         static void writeMusic( const Atoms& inAtomsToWrite, Atoms& ioAtomsToAppendTo, int numTimes );
         static void reverseAtoms( Atoms& ioAtoms );
         static void reverseStreams( AtomStreams& ioStreams );
