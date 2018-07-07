@@ -242,7 +242,7 @@ namespace pen
         doCoalescingLoop( params, ioPatternStreams, ioOutputStreams, ioProb );
         
         
-        shortenStreamsToMatchLengthOfShortestStream( ioOutputStreams );
+        shortenStreamsToMatchLengthOfShortestStream( ioOutputStreams, 6 );
         reverseStreams( ioOutputStreams );
         writeMusic( inOriginalMusic, ioOutputStreams, 32 );
     }
@@ -322,10 +322,11 @@ namespace pen
     Coalescence::shortenStreamsToMatchLengthOfShortestStream( AtomStreams& ioStreams, int inMultipleOf )
     {
         int smallest = findIndexOfShortestStream( ioStreams );
+        const int originalSizeSmallest = static_cast<int>( ioStreams.at( smallest ).size() );
         
-        if( inMultipleOf > 0 && smallest % inMultipleOf != 0 )
+        if( inMultipleOf > 0 && originalSizeSmallest > 0 && originalSizeSmallest % inMultipleOf != 0 )
         {
-            const int remainder = smallest % inMultipleOf;
+            const int remainder = originalSizeSmallest % inMultipleOf;
             const auto newSize = ioStreams.at( smallest ).size() - static_cast<size_t>( remainder );
             ioStreams.at( smallest ).resize( newSize );
         }
