@@ -408,8 +408,8 @@ namespace pen
             
             auto& measure = part.measures.at( static_cast<size_t>( measureIndex ) );
             mx::api::NoteData theNote;
-            theNote.tickTimePosition = beatIndex * ( ioScore.ticksPerQuarter / 2 );
-            theNote.durationData.durationTimeTicks = ioScore.ticksPerQuarter / 2;
+            theNote.tickTimePosition = beatIndex * TICKS_PER_BEAT;
+            theNote.durationData.durationTimeTicks = TICKS_PER_BEAT;
             theNote.durationData.durationName = BEAT_TYPE_NAME;
             
             if( atom.getStep() == -1 )
