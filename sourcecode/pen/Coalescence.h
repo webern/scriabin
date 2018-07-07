@@ -77,7 +77,6 @@ namespace pen
                                       AtomStreams& ioOutputStreams,
                                       Prob& ioProb );
         
-        static void doPenultimateCoalescing( AtomStreams& ioPatternStreams, AtomStreams& ioOutputStreams );
         static void writeMusic( const AtomStreams& inStreamsToWrite, AtomStreams& ioStreamsToAppendTo, int numTimes );
         static void writeMusic( const Atoms& inAtomsToWrite, Atoms& ioAtomsToAppendTo, int numTimes );
         static void reverseAtoms( Atoms& ioAtoms );
