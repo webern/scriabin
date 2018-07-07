@@ -215,18 +215,11 @@ namespace pen
     
     
     void
-    Coalescence::doEverthing()
+    Coalescence::doSomeAwesomeCoalescing( const AtomStreams& inOriginalMusic,
+                                          AtomStreams& ioPatternStreams,
+                                          AtomStreams& ioOutputStreams,
+                                          Prob& ioProb )
     {
-        initSelfScore();
-        const MxNoteStreams inputNotes = getInputNotes();
-        const AtomStreams originalMusic = extractStreams( inputNotes );
-        AtomStreams outMusic = originalMusic;
-        reverseStreams( outMusic );
-        const AtomStreams originalReversedMusic = outMusic;
-        AtomStreams patternStreams = originalReversedMusic;
-//        doPenultimateCoalescing( patternStreams, outMusic );
-
-        Prob boolGen{ DIGITS_DAT_PATH() };
         CoalescenceParams params;
         params.minR = 0;
         params.maxR = 0;
@@ -239,7 +232,7 @@ namespace pen
         params.pTier = 1;
         params.numLoops = 10;
         
-        doCoalescingLoop( params, patternStreams, outMusic, boolGen );
+        doCoalescingLoop( params, ioPatternStreams, ioOutputStreams, ioProb );
         
         params.minR = 1;
         params.maxR = 1;
@@ -252,25 +245,41 @@ namespace pen
         params.pTier = 0;
         params.numLoops = 10;
         
-        doCoalescingLoop( params, patternStreams, outMusic, boolGen );
+        doCoalescingLoop( params, ioPatternStreams, ioOutputStreams, ioProb );
         
         params.minR = 0;
         params.maxR = 0;
         params.rInc = 0;
         params.rTier = 0;
-
+        
         params.minP = 20;
         params.maxP = 35;
         params.pInc = 0;
         params.pTier = 0;
         params.numLoops = 15;
-
-        doCoalescingLoop( params, patternStreams, outMusic, boolGen );
-
         
-        shortenStreamsToMatchLengthOfShortestStream( outMusic );
+        doCoalescingLoop( params, ioPatternStreams, ioOutputStreams, ioProb );
+        
+        
+        shortenStreamsToMatchLengthOfShortestStream( ioOutputStreams );
+        reverseStreams( ioOutputStreams );
+        writeMusic( inOriginalMusic, ioOutputStreams, 32 );
+    }
+    
+    
+    void
+    Coalescence::doEverthing()
+    {
+        initSelfScore();
+        const MxNoteStreams inputNotes = getInputNotes();
+        const AtomStreams originalMusic = extractStreams( inputNotes );
+        AtomStreams outMusic = originalMusic;
         reverseStreams( outMusic );
-        writeMusic( originalMusic, outMusic, 32 );
+        const AtomStreams originalReversedMusic = outMusic;
+        AtomStreams patternStreams = originalReversedMusic;
+        Prob boolGen{ DIGITS_DAT_PATH() };
+        doSomeAwesomeCoalescing( originalMusic, patternStreams, outMusic, boolGen );
+
         writeStreamsToScore( outMusic, myScore );
         auto& dmgr = mx::api::DocumentManager::getInstance();
         const auto oID = dmgr.createFromScore( myScore );

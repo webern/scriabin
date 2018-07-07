@@ -71,10 +71,16 @@ namespace pen
         bool rbool();
         
     private:
+        static void doSomeAwesomeCoalescing( const AtomStreams& inOriginalMusic,
+                                             AtomStreams& ioPatternStreams,
+                                             AtomStreams& ioOutputStreams,
+                                             Prob& ioProb );
+        
         static void doCoalescingLoop( const CoalescenceParams& p,
                                       AtomStreams& ioPatternStreams,
                                       AtomStreams& ioOutputStreams,
                                       Prob& ioProb );
+        
         static void doPenultimateCoalescing( AtomStreams& ioPatternStreams, AtomStreams& ioOutputStreams );
         static void writeMusic( const AtomStreams& inStreamsToWrite, AtomStreams& ioStreamsToAppendTo, int numTimes );
         static void writeMusic( const Atoms& inAtomsToWrite, Atoms& ioAtomsToAppendTo, int numTimes );
