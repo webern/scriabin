@@ -202,6 +202,53 @@ namespace pen
         
         doCoalescingLoop( params, ioPatternStreams, ioOutputStreams, ioProb );
         
+        // uh oh - the first violin didn't turn out so awesome, but everything else
+        // did. let's kill the first violin and try tweaking it.
+        AtomStreams newPatternStreams = inOriginalMusic;
+        AtomStreams newOutputMusic = inOriginalMusic;
+        reverseStreams( newPatternStreams );
+        
+        params = CoalescenceParams{};
+        params.minR = 0;
+        params.maxR = 0;
+        params.rInc = 0;
+        params.rTier = 0;
+        
+        params.minP = 4;
+        params.maxP = 4;
+        params.pInc = 0;
+        params.pTier = 1;
+        params.numLoops = 10;
+        
+        doCoalescingLoop( params, newPatternStreams, newOutputMusic, ioProb );
+        
+        params.minR = 1;
+        params.maxR = 1;
+        params.rInc = 0;
+        params.rTier = 0;
+        
+        params.minP = 0;
+        params.maxP = 0;
+        params.pInc = 0;
+        params.pTier = 0;
+        params.numLoops = 10;
+        
+        doCoalescingLoop( params, newPatternStreams, newOutputMusic, ioProb );
+        
+        params.minR = 0;
+        params.maxR = 0;
+        params.rInc = 0;
+        params.rTier = 0;
+        
+        params.minP = 20;
+        params.maxP = 35;
+        params.pInc = 0;
+        params.pTier = 0;
+        params.numLoops = 15;
+        
+        doCoalescingLoop( params, newPatternStreams, newOutputMusic, ioProb );
+        ioOutputStreams.at( 0 ) = newOutputMusic.at( 0 );
+        ioPatternStreams.at( 0 ) = newPatternStreams.at( 0 );
         
         shortenStreamsToMatchLengthOfShortestStream( ioOutputStreams, BEATS_PER_MEASURE );
         reverseStreams( ioOutputStreams );
