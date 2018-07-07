@@ -36,4 +36,102 @@ namespace pen
     public:
         void updateName();
     };
+    
+    inline bool operator==( const Atom& inLeft, const Atom& inRight )
+    {
+        if( inLeft.getStep() < 0 && inRight.getStep() < 0 )
+        {
+            return true;
+        }
+        else if( inLeft.getStep() != inRight.getStep() )
+        {
+            return false;
+        }
+        else if( inLeft.getOctave() != inRight.getOctave() )
+        {
+            return false;
+        }
+        else if( inLeft.getAlter() != inRight.getAlter() )
+        {
+            return false;
+        }
+        
+        return true;
+    }
+    
+    enum class AtomPatternType
+    {
+        Pitch,
+        Rest
+    };
+    
+    struct AtomPattern
+    {
+        int index = -1;
+        int repitions = 1;
+        int patternLength = 1;
+        Atom firstAtomOfPattern;
+        AtomPatternType type = AtomPatternType::Pitch;
+    };
+    
+    using AtomPatterns = std::map<int, AtomPattern>;
+    using Atoms = std::vector<Atom>;
+    
+    inline AtomPatterns findRepeatedNotes( const Atoms& inAtoms )
+    {
+        AtomPatterns patterns;
+        bool isRepeating = false;
+        int repititionStartIndex = -1;
+        std::unique_ptr<Atom> lastAtom = nullptr;
+        int currentIndex = 0;
+
+        for( const auto& atom : inAtoms )
+        {
+            const bool equalsPrevious = !!lastAtom && atom == *lastAtom && atom.getStep() >= 0;
+            
+            if( !isRepeating )
+            {
+                if( equalsPrevious )
+                {
+                    isRepeating = true;
+                    repititionStartIndex = currentIndex - 1;
+                }
+                else
+                {
+                    // pedantic - not necessary
+                    isRepeating = false;
+                    repititionStartIndex = -1;
+                }
+            }
+            else
+            {
+                if( equalsPrevious )
+                {
+                    // pedantic - nothing to do
+                    isRepeating = true;
+                }
+                else
+                {
+                    // the repetition stopped with the previous atom, finalize
+                    const int finalIndex = currentIndex - 1;
+                    AtomPattern pattern;
+                    pattern.index = repititionStartIndex;
+                    pattern.patternLength = finalIndex - repititionStartIndex + 1;
+                    pattern.type = AtomPatternType::Pitch;
+                    pattern.firstAtomOfPattern = *lastAtom;
+                    patterns.emplace( pattern.index, pattern );
+                }
+            }
+            
+            if( !lastAtom )
+            {
+                lastAtom = std::unique_ptr<Atom>{ std::make_unique<Atom>() };
+            }
+
+            *lastAtom = atom;
+            ++currentIndex;
+
+        }
+        return patterns;
+    }
 }

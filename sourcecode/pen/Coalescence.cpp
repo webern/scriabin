@@ -266,9 +266,77 @@ namespace pen
             
             if( doAdd || isInitial )
             {
-                // make a datastructure showing where the repetitions are
+                // make a datastructure showing where the repetitions and rests are
+                const auto repetitions = findRepeatedNotes( ioPatternStreams );
                 
+                // find indices of all repeated notes and non-repeated notes
+                std::set<int> repeatedIndices;
+                std::set<int> nonRepeatedIndices;
                 
+                for( const auto& r : repetitions )
+                {
+                    for( int x = r.second.index; x < r.second.index + r.second.patternLength; ++x )
+                    {
+                        repeatedIndices.insert( x );
+                    }
+                }
+                
+                for( int x = 0; x < static_cast<int>( ioPatternStreams.size() ); ++x )
+                {
+                    if( repeatedIndices.find( x ) != repeatedIndices.cend() )
+                    {
+                        nonRepeatedIndices.insert( x );
+                    }
+                }
+                
+                // find a non-repeated index, or a random index if no repeated index exists.
+                int insertIndex = -1;
+                
+                if( !nonRepeatedIndices.empty() )
+                {
+                    auto nriter = nonRepeatedIndices.cbegin();
+                    const auto nrend = nonRepeatedIndices.cend();
+                    
+                    while( insertIndex < 0 )
+                    {
+                        if( ioProb.get( 1 ) )
+                        {
+                            insertIndex = *nriter;
+                        }
+                        ++nriter;
+                        if( nriter == nrend )
+                        {
+                            nriter = nonRepeatedIndices.cbegin();
+                        }
+                    }
+                }
+                else
+                {
+                    auto rpiter = repeatedIndices.cbegin();
+                    const auto rpend = repeatedIndices.cend();
+                    
+                    while( insertIndex < 0 )
+                    {
+                        if( ioProb.get( 1 ) )
+                        {
+                            insertIndex = *rpiter;
+                        }
+                        ++rpiter;
+                        if( rpiter == rpend )
+                        {
+                            rpiter = nonRepeatedIndices.cbegin();
+                        }
+                    }
+                }
+                
+                if( insertIndex < 0 || insertIndex >= static_cast<int>( ioPatternStreams.size() ) )
+                {
+                    throw std::runtime_error{ "index will be out of range" };
+                }
+                
+                // do a repetition at the index
+                auto insertIter = ioPatternStreams.cbegin() + static_cast<ptrdiff_t>( insertIndex );
+                ioPatternStreams.insert( insertIter, *insertIter );
             }
         }
     }
