@@ -319,16 +319,25 @@ namespace pen
     }
     
     void
-    Coalescence::shortenStreamsToMatchLengthOfShortestStream( AtomStreams& ioStreams )
+    Coalescence::shortenStreamsToMatchLengthOfShortestStream( AtomStreams& ioStreams, int inMultipleOf )
     {
         int smallest = findIndexOfShortestStream( ioStreams );
+        
+        if( inMultipleOf > 0 && smallest % inMultipleOf != 0 )
+        {
+            const int remainder = smallest % inMultipleOf;
+            const auto newSize = ioStreams.at( smallest ).size() - static_cast<size_t>( remainder );
+            ioStreams.at( smallest ).resize( newSize );
+        }
+        
+        const auto sizeOfSmallest = ioStreams.at( smallest ).size();
         
         // delete extra notes based on smallest
         for( auto& pair : ioStreams )
         {
-            if( static_cast<int>( pair.second.size() ) > smallest )
+            if( pair.second.size() > sizeOfSmallest )
             {
-                pair.second.resize( static_cast<size_t>( smallest ) );
+                pair.second.resize( sizeOfSmallest );
             }
         }
     }
@@ -339,16 +348,20 @@ namespace pen
     {
         // find the smallest stream
         int smallest = -1;
+        int indexOfSmallest = 0;
+        int currentIndex = 0;
         
         for( const auto& streamPair : inStreams )
         {
             if( smallest == -1 || static_cast<int>( streamPair.second.size() ) < smallest )
             {
                 smallest = static_cast<int>( streamPair.second.size() );
+                indexOfSmallest = currentIndex;
             }
+            ++currentIndex;
         }
         
-        return smallest;
+        return indexOfSmallest;
     }
     
     

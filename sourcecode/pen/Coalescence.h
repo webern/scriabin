@@ -98,6 +98,6 @@ namespace pen
                                  mx::api::ScoreData& ioScore );
         static void writeStreamsToScore( const AtomStreams& inStreams, mx::api::ScoreData& ioScore );
         static int findIndexOfShortestStream( const AtomStreams& inStreams );
-        static void shortenStreamsToMatchLengthOfShortestStream( AtomStreams& ioStreams );
+        static void shortenStreamsToMatchLengthOfShortestStream( AtomStreams& ioStreams, int inMultipleOf = -1 );
     };
 }
