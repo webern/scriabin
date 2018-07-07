@@ -72,6 +72,16 @@ namespace pen
                                              AtomStreams& ioOutputStreams,
                                              Prob& ioProb );
         
+        static void doControlledCoalescing( AtomStreams& ioPatternStreams,
+                                            AtomStreams& ioOutputStreams,
+                                            Prob& ioProb );
+        
+        static void doControlledCoalescing( const int partIndex,
+                                            const int numParts,
+                                            Atoms& ioPatternStreams,
+                                            Atoms& ioOutputStreams,
+                                            Prob& ioProb );
+        
         static void doCoalescingLoop( const CoalescenceParams& p,
                                       AtomStreams& ioPatternStreams,
                                       AtomStreams& ioOutputStreams,

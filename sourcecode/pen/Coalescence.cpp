@@ -202,57 +202,59 @@ namespace pen
         
         doCoalescingLoop( params, ioPatternStreams, ioOutputStreams, ioProb );
         
-        // uh oh - the first violin didn't turn out so awesome, but everything else
-        // did. let's kill the first violin and try tweaking it.
-        AtomStreams newPatternStreams = inOriginalMusic;
-        AtomStreams newOutputMusic = inOriginalMusic;
-        reverseStreams( newPatternStreams );
-        
-        params = CoalescenceParams{};
-        params.minR = 0;
-        params.maxR = 0;
-        params.rInc = 0;
-        params.rTier = 0;
-        
-        params.minP = 4;
-        params.maxP = 4;
-        params.pInc = 0;
-        params.pTier = 1;
-        params.numLoops = 10;
-        
-        doCoalescingLoop( params, newPatternStreams, newOutputMusic, ioProb );
-        
-        params.minR = 1;
-        params.maxR = 1;
-        params.rInc = 0;
-        params.rTier = 0;
-        
-        params.minP = 0;
-        params.maxP = 0;
-        params.pInc = 0;
-        params.pTier = 0;
-        params.numLoops = 10;
-        
-        doCoalescingLoop( params, newPatternStreams, newOutputMusic, ioProb );
-        
-        params.minR = 0;
-        params.maxR = 0;
-        params.rInc = 0;
-        params.rTier = 0;
-        
-        params.minP = 20;
-        params.maxP = 35;
-        params.pInc = 0;
-        params.pTier = 0;
-        params.numLoops = 15;
-        
-        doCoalescingLoop( params, newPatternStreams, newOutputMusic, ioProb );
-        ioOutputStreams.at( 0 ) = newOutputMusic.at( 0 );
-        ioPatternStreams.at( 0 ) = newPatternStreams.at( 0 );
-        
         shortenStreamsToMatchLengthOfShortestStream( ioOutputStreams, BEATS_PER_MEASURE );
         reverseStreams( ioOutputStreams );
         writeMusic( inOriginalMusic, ioOutputStreams, 32 );
+    }
+    
+    
+    void
+    Coalescence::doControlledCoalescing( AtomStreams& ioPatternStreams,
+                                         AtomStreams& ioOutputStreams,
+                                         Prob& ioProb )
+    {
+        if( ioPatternStreams.size() != ioOutputStreams.size() )
+        {
+            throw std::runtime_error{ "don't be stupid" };
+        }
+        
+        auto pit = ioPatternStreams.begin();
+        const auto pend = ioPatternStreams.end();
+        auto oit = ioOutputStreams.begin();
+        int partIndex = 0;
+        
+        for( ; pit != pend; ++pit, ++oit, ++partIndex )
+        {
+            doControlledCoalescing( partIndex, static_cast<int>( ioPatternStreams.size() ), pit->second, oit->second, ioProb );
+        }
+    }
+    
+    
+    void
+    Coalescence::doControlledCoalescing( const int partIndex,
+                                         const int numParts,
+                                         Atoms& ioPatternStreams,
+                                         Atoms& ioOutputStreams,
+                                         Prob& ioProb )
+    {
+        int lengthOrderIndex = 0;
+        const int lastIndex = numParts - 1;
+        const auto doevn = [&]( int index, int last ) { return last - ( index / 2 ); };
+        const auto doodd = [&]( int index ) { return 0 + ( index / 2 ); };
+        for( int i = 0; i < numParts; ++i )
+        {
+            const bool isEven = ( i == 0 ) || ( i % 2 == 0 );
+            lengthOrderIndex = isEven ? doevn( i, lastIndex ) : doodd( i );
+            if( i == partIndex )
+            {
+                break;
+            }
+        }
+        
+        static constexpr const double WEIRD_LENGTH_RATIO_TWEAKER = 1.0 / 3.0;
+        const double lengthOrderAsRatio = static_cast<double>( lengthOrderIndex ) / static_cast<double>( numParts );
+        const double lengthAdjuster = 1.0 + lengthOrderAsRatio * WEIRD_LENGTH_RATIO_TWEAKER;
+        
     }
     
     
@@ -267,6 +269,8 @@ namespace pen
         const AtomStreams originalReversedMusic = outMusic;
         AtomStreams patternStreams = originalReversedMusic;
         Prob boolGen{ DIGITS_DAT_PATH() };
+        
+        doControlledCoalescing( patternStreams, outMusic, boolGen );
         doSomeAwesomeCoalescing( originalMusic, patternStreams, outMusic, boolGen );
 
         writeStreamsToScore( outMusic, myScore );
