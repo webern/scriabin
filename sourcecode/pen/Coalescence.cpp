@@ -312,23 +312,32 @@ namespace pen
                 }
                 else
                 {
-                    // TODO - prefer any repitions with length < 3 before doing
-                    // random selection
+                    const bool isAnyRepitionLessThan3 = std::find_if( std::cbegin( repetitions ), std::cend( repetitions ), [&]( const auto& pair ) { return pair.second.patternLength < 3; } ) != std::cend( repetitions );
                     
-                    auto rpiter = repeatedIndices.cbegin();
-                    const auto rpend = repeatedIndices.cend();
-                    
-                    while( insertIndex < 0 )
+                    if( isAnyRepitionLessThan3 )
                     {
-                        if( ioProb.get( 1 ) )
+                        // TODO - prefer any repitions with length < 3 before doing
+                        // random selection
+
+                    }
+                    else
+                    {
+                        auto rpiter = repeatedIndices.cbegin();
+                        const auto rpend = repeatedIndices.cend();
+                        
+                        while( insertIndex < 0 )
                         {
-                            insertIndex = *rpiter;
+                            if( ioProb.get( 1 ) )
+                            {
+                                insertIndex = *rpiter;
+                            }
+                            ++rpiter;
+                            if( rpiter == rpend )
+                            {
+                                rpiter = nonRepeatedIndices.cbegin();
+                            }
                         }
-                        ++rpiter;
-                        if( rpiter == rpend )
-                        {
-                            rpiter = nonRepeatedIndices.cbegin();
-                        }
+
                     }
                 }
                 
