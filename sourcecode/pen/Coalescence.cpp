@@ -254,7 +254,23 @@ namespace pen
         static constexpr const double WEIRD_LENGTH_RATIO_TWEAKER = 1.0 / 3.0;
         const double lengthOrderAsRatio = static_cast<double>( lengthOrderIndex ) / static_cast<double>( numParts );
         const double lengthAdjuster = 1.0 + lengthOrderAsRatio * WEIRD_LENGTH_RATIO_TWEAKER;
+        constexpr const double BASE_PROBABILITY_OF_ADDING_A_NOTE = 10.0;
+        const double probabilityOfAddingANote = lengthAdjuster * BASE_PROBABILITY_OF_ADDING_A_NOTE;
+        const bool isThisPartTheLongestPart = partIndex == lastIndex;
+        constexpr const int NUMBER_OF_LOOP_ITERATIONS = 100;
         
+        for( int i = 0; i < NUMBER_OF_LOOP_ITERATIONS; ++i )
+        {
+            const bool doAdd = ioProb.get( static_cast<int>( probabilityOfAddingANote + 0.49999999999999999 ) );
+            const bool isInitial = ( i == 0 ) && isThisPartTheLongestPart;
+            
+            if( doAdd || isInitial )
+            {
+                // make a datastructure showing where the repetitions are
+                
+                
+            }
+        }
     }
     
     
