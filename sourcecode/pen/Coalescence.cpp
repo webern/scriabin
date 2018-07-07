@@ -11,7 +11,7 @@ namespace pen
     static constexpr const int BEAT_TYPE_NUMERAL = 8;
     static constexpr const int QUARTER_NOTE_BEAT_TYPE_NUMERAL = 4;
     static constexpr const mx::api::DurationName BEAT_TYPE_NAME = mx::api::DurationName::eighth;
-    static constexpr const int TICKS_PER_QUARTER = 420;
+    static constexpr const int TICKS_PER_QUARTER = 2;
     static constexpr const double BEAT_TYPE_TO_QUARTER_RATIO = static_cast<double>( QUARTER_NOTE_BEAT_TYPE_NUMERAL ) / static_cast<double>( BEAT_TYPE_NUMERAL );
     static constexpr const int TICKS_PER_BEAT = static_cast<int>( ( static_cast<double>( TICKS_PER_QUARTER ) * BEAT_TYPE_TO_QUARTER_RATIO ) + 0.0000000001 );
     
