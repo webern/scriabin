@@ -312,6 +312,9 @@ namespace pen
                 }
                 else
                 {
+                    // TODO - prefer any repitions with length < 3 before doing
+                    // random selection
+                    
                     auto rpiter = repeatedIndices.cbegin();
                     const auto rpend = repeatedIndices.cend();
                     
