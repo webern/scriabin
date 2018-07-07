@@ -7,6 +7,14 @@
 
 namespace pen
 {
+    static constexpr const int BEATS_PER_MEASURE = 6;
+    static constexpr const int BEAT_TYPE_NUMERAL = 8;
+    static constexpr const int QUARTER_NOTE_BEAT_TYPE_NUMERAL = 4;
+    static constexpr const mx::api::DurationName BEAT_TYPE_NAME = mx::api::DurationName::eighth;
+    static constexpr const int TICKS_PER_QUARTER = 420;
+    static constexpr const double BEAT_TYPE_TO_QUARTER_RATIO = static_cast<double>( QUARTER_NOTE_BEAT_TYPE_NUMERAL ) / static_cast<double>( BEAT_TYPE_NUMERAL );
+    static constexpr const int TICKS_PER_BEAT = static_cast<int>( ( static_cast<double>( TICKS_PER_QUARTER ) * BEAT_TYPE_TO_QUARTER_RATIO ) + 0.0000000001 );
+    
     Coalescence::Coalescence( std::string inputFilepath, std::string outputFilepath )
     : myScore{}
     , myInFilepath{ std::move( inputFilepath ) }
@@ -242,7 +250,7 @@ namespace pen
         doCoalescingLoop( params, ioPatternStreams, ioOutputStreams, ioProb );
         
         
-        shortenStreamsToMatchLengthOfShortestStream( ioOutputStreams, 6 );
+        shortenStreamsToMatchLengthOfShortestStream( ioOutputStreams, BEATS_PER_MEASURE );
         reverseStreams( ioOutputStreams );
         writeMusic( inOriginalMusic, ioOutputStreams, 32 );
     }
@@ -372,9 +380,9 @@ namespace pen
         for( int p = 0; p < static_cast<int>( inStreams.size() ); ++p )
         {
             int measureIndex = 0;
-            int eighthIndex = 0;
+            int beatIndex = 0;
             const auto& noteStream = inStreams.at( p );
-            writeStream( p, measureIndex, eighthIndex, noteStream, ioScore );
+            writeStream( p, measureIndex, beatIndex, noteStream, ioScore );
         }
     }
     
@@ -387,7 +395,7 @@ namespace pen
                               mx::api::ScoreData& ioScore )
     {
         auto measureIndex = startingMeasureIndex;
-        auto eighthIndex = startingEighthIndex;
+        auto beatIndex = startingEighthIndex;
         
         for( const auto& atom : inAtoms )
         {
@@ -400,9 +408,9 @@ namespace pen
             
             auto& measure = part.measures.at( static_cast<size_t>( measureIndex ) );
             mx::api::NoteData theNote;
-            theNote.tickTimePosition = eighthIndex * ( ioScore.ticksPerQuarter / 2 );
+            theNote.tickTimePosition = beatIndex * ( ioScore.ticksPerQuarter / 2 );
             theNote.durationData.durationTimeTicks = ioScore.ticksPerQuarter / 2;
-            theNote.durationData.durationName = mx::api::DurationName::eighth;
+            theNote.durationData.durationName = BEAT_TYPE_NAME;
             
             if( atom.getStep() == -1 )
             {
@@ -415,14 +423,14 @@ namespace pen
             
             measure.staves.at( 0 ).voices.at( 0 ).notes.push_back( theNote );
             
-            if( ( eighthIndex + 1 ) % 6 == 0 )
+            if( ( beatIndex + 1 ) % BEATS_PER_MEASURE == 0 )
             {
                 ++measureIndex;
-                eighthIndex = 0;
+                beatIndex = 0;
             }
             else
             {
-                ++eighthIndex;
+                ++beatIndex;
             }
         }
     }
@@ -432,6 +440,7 @@ namespace pen
     Coalescence::createEmptyScore( const std::string& title )
     {
         mx::api::ScoreData score;
+        score.ticksPerQuarter = TICKS_PER_QUARTER;
         score.workTitle = title;
         mx::api::ClefData treble;
         treble.setTreble();
@@ -473,8 +482,8 @@ namespace pen
         ioScore.parts.back().measures.emplace_back();
         ioScore.parts.back().measures.back().staves.emplace_back();
         mx::api::TimeSignatureData tsd;
-        tsd.beats = 6;
-        tsd.beatType = 8;
+        tsd.beats = BEATS_PER_MEASURE;
+        tsd.beatType = BEAT_TYPE_NUMERAL;
         tsd.isImplicit = false;
         ioScore.parts.back().measures.back().timeSignature = tsd;
         ioScore.parts.back().measures.back().staves.back().clefs.push_back( clef );
