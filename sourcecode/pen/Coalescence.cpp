@@ -11,12 +11,8 @@ namespace pen
     : myScore{}
     , myInFilepath{ std::move( inputFilepath ) }
     , myOutFilepath{ std::move( outputFilepath ) }
-    , myRandVec{ true, true, false, false, true, false, true, false, false, false, true, true, true, true, false, true, true, false, false, false, false, false, true, false, false, false, false, true, true, true, false, false, false, true, true, true, false, false, true, true, false, false, true, false, false, true, true, true, true, true, true, false, true, false, true, false, true, false, false, true, true, false, false, true, false, true, false, false, false, false, false, false, true, false, true }
-    , myRandIter{}
-    , myRandEnd{}
     {
-        myRandIter = myRandVec.cbegin();
-        myRandEnd = myRandVec.cend();
+
     }
     
     
@@ -120,21 +116,6 @@ namespace pen
         {
             reverseAtoms( pair.second );
         }
-    }
-    
-    
-    bool
-    Coalescence::rbool()
-    {
-        const bool val = *myRandIter;
-        ++myRandIter;
-        
-        if( myRandIter == myRandEnd )
-        {
-            myRandIter = std::cbegin( myRandVec );
-        }
-        
-        return val;
     }
     
     
