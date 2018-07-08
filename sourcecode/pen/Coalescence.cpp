@@ -168,39 +168,39 @@ namespace pen
         params.rInc = 0;
         params.rTier = 0;
         
-        params.minP = 1;
-        params.maxP = 1;
+        params.minP = 0;
+        params.maxP = 0;
         params.pInc = 0;
         params.pTier = 1;
         params.numLoops = 10;
         
         doCoalescingLoop( params, ioPatternStreams, ioOutputStreams, ioProb );
-        
-        params.minR = 1;
-        params.maxR = 1;
-        params.rInc = 0;
-        params.rTier = 0;
-        
-        params.minP = 0;
-        params.maxP = 0;
-        params.pInc = 0;
-        params.pTier = 0;
-        params.numLoops = 10;
-        
-        doCoalescingLoop( params, ioPatternStreams, ioOutputStreams, ioProb );
-        
-        params.minR = 0;
-        params.maxR = 0;
-        params.rInc = 0;
-        params.rTier = 0;
-        
-        params.minP = 20;
-        params.maxP = 35;
-        params.pInc = 0;
-        params.pTier = 0;
-        params.numLoops = 15;
-        
-        doCoalescingLoop( params, ioPatternStreams, ioOutputStreams, ioProb );
+        writeMusic( ioPatternStreams, ioOutputStreams, 10 );
+//        params.minR = 0;
+//        params.maxR = 0;
+//        params.rInc = 0;
+//        params.rTier = 0;
+//
+//        params.minP = 0;
+//        params.maxP = 0;
+//        params.pInc = 0;
+//        params.pTier = 0;
+//        params.numLoops = 10;
+//
+//        doCoalescingLoop( params, ioPatternStreams, ioOutputStreams, ioProb );
+//
+//        params.minR = 0;
+//        params.maxR = 0;
+//        params.rInc = 0;
+//        params.rTier = 0;
+//
+//        params.minP = 20;
+//        params.maxP = 35;
+//        params.pInc = 0;
+//        params.pTier = 0;
+//        params.numLoops = 15;
+//
+//        doCoalescingLoop( params, ioPatternStreams, ioOutputStreams, ioProb );
     }
     
     
@@ -375,9 +375,9 @@ namespace pen
         // is less than 3 repitions, or if none exists then a random index
         int insertIndex = -1;
         
-        if( !nonRepeatedIndices.empty() )
+        if( repeatedIndices.size() > 0 )
         {
-            const auto& collection = nonRepeatedIndices;
+            const auto& collection = repeatedIndices;
             const auto begit = collection.cbegin();
             const auto endit = collection.cend();
             auto iter = begit;
@@ -399,50 +399,23 @@ namespace pen
         }
         else
         {
-            const bool isAnyRepitionLessThan3 = std::find_if( std::cbegin( repetitions ), std::cend( repetitions ), [&]( const auto& pair ) { return pair.second.patternLength < 3; } ) != std::cend( repetitions );
+            const auto& collection = nonRepeatedIndices;
+            const auto begit = collection.cbegin();
+            const auto endit = collection.cend();
+            auto iter = begit;
             
-            if( isAnyRepitionLessThan3 )
+            while( insertIndex < 0 )
             {
-                const auto& collection = repetitions;
-                const auto begit = collection.cbegin();
-                const auto endit = collection.cend();
-                auto iter = begit;
-                
-                while( insertIndex < 0 )
+                if( ioProb.get( 1 ) )
                 {
-                    if( iter->second.patternLength < 3 && ioProb.get( 1 ) )
-                    {
-                        insertIndex = iter->second.index;
-                    }
-                    
-                    ++iter;
-                    
-                    if( iter == endit )
-                    {
-                        iter = begit;
-                    }
+                    insertIndex = *iter;
                 }
-            }
-            else
-            {
-                const auto& collection = repeatedIndices;
-                const auto begit = collection.cbegin();
-                const auto endit = collection.cend();
-                auto iter = begit;
                 
-                while( insertIndex < 0 )
+                ++iter;
+                
+                if( iter == endit )
                 {
-                    if( ioProb.get( 1 ) )
-                    {
-                        insertIndex = *iter;
-                    }
-                    
-                    ++iter;
-                    
-                    if( iter == endit )
-                    {
-                        iter = begit;
-                    }
+                    iter = begit;
                 }
             }
         }
@@ -468,8 +441,8 @@ namespace pen
         AtomStreams patternStreams = originalReversedMusic;
         Prob boolGen{ DIGITS_DAT_PATH() };
         
-        doControlledCoalescing( patternStreams, outMusic, boolGen );
-        // doSomeAwesomeCoalescing( originalMusic, patternStreams, outMusic, boolGen );
+        //doControlledCoalescing( patternStreams, outMusic, boolGen );
+        doSomeAwesomeCoalescing( originalMusic, patternStreams, outMusic, boolGen );
 
         shortenStreamsToMatchLengthOfShortestStream( outMusic, BEATS_PER_MEASURE );
         reverseStreams( outMusic );
@@ -504,7 +477,11 @@ namespace pen
                     
                     if( doRest )
                     {
-                        it = ioPatternStreams.at( p ).insert( it, Atom{} );
+                        const auto currentIndex = it - ioPatternStreams.at( p ).begin();
+                        const auto insertIndex = findInsertIndex( ioPatternStreams.at( p ), ioProb );
+                        const auto insertIter = ioPatternStreams.at( p ).cbegin() + static_cast<ptrdiff_t>( insertIndex );
+                        ioPatternStreams.at( p ).insert( insertIter, Atom{} );
+                        it = ioPatternStreams.at( p ).begin() + currentIndex;
                     }
                     
                     if( doRepeat )
