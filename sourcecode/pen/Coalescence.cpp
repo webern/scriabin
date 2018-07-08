@@ -205,6 +205,13 @@ namespace pen
         doCoalescingLoop( params, ioPatternStreams, ioOutputStreams, ioProb );
         writeMusic( ioPatternStreams, ioOutputStreams, 2 );
         
+        // add a rest to viola
+        int restPartIndex = 2;
+        auto restIndex = findInsertIndex( ioPatternStreams.at( restPartIndex ), ioProb );
+        auto restIter = ioPatternStreams.at( restPartIndex ).cbegin() + static_cast<ptrdiff_t>( restIndex );
+        restIter = ioPatternStreams.at( restPartIndex ).insert( restIter, Atom{} );
+        // restIter = ioPatternStreams.at( restPartIndex ).insert( restIter, Atom{} );
+        
         params.minR = 0;
         params.maxR = 0;
         params.rInc = 0;
@@ -219,6 +226,80 @@ namespace pen
         doCoalescingLoop( params, ioPatternStreams, ioOutputStreams, ioProb );
         writeMusic( ioPatternStreams, ioOutputStreams, 2 );
         
+        // add a rest to violin 2
+        restPartIndex = 1;
+        restIndex = findInsertIndex( ioPatternStreams.at( restPartIndex ), ioProb );
+        restIter = ioPatternStreams.at( restPartIndex ).cbegin() + static_cast<ptrdiff_t>( restIndex );
+        restIter = ioPatternStreams.at( restPartIndex ).insert( restIter, Atom{} );
+        // restIter = ioPatternStreams.at( restPartIndex ).insert( restIter, Atom{} );
+        
+        params.minR = 0;
+        params.maxR = 0;
+        params.rInc = 0;
+        params.rTier = 0;
+        
+        params.minP = 3;
+        params.maxP = 3;
+        params.pInc = 0;
+        params.pTier = 1;
+        params.numLoops = 2;
+        
+        doCoalescingLoop( params, ioPatternStreams, ioOutputStreams, ioProb );
+        writeMusic( ioPatternStreams, ioOutputStreams, 2 );
+        
+        // add a rest to violin 1
+        restPartIndex = 0;
+        restIndex = findInsertIndex( ioPatternStreams.at( restPartIndex ), ioProb );
+        restIter = ioPatternStreams.at( restPartIndex ).cbegin() + static_cast<ptrdiff_t>( restIndex );
+        restIter = ioPatternStreams.at( restPartIndex ).insert( restIter, Atom{} );
+        restIter = ioPatternStreams.at( restPartIndex ).insert( restIter, Atom{} );
+        
+        params.minR = 0;
+        params.maxR = 0;
+        params.rInc = 0;
+        params.rTier = 0;
+        
+        params.minP = 3;
+        params.maxP = 3;
+        params.pInc = 0;
+        params.pTier = 1;
+        params.numLoops = 2;
+        
+        doCoalescingLoop( params, ioPatternStreams, ioOutputStreams, ioProb );
+        // writeMusic( ioPatternStreams, ioOutputStreams, 2 );
+        
+        // add a rest to cello
+        restPartIndex = 3;
+        restIndex = findInsertIndex( ioPatternStreams.at( restPartIndex ), ioProb );
+        restIter = ioPatternStreams.at( restPartIndex ).cbegin() + static_cast<ptrdiff_t>( restIndex );
+        restIter = ioPatternStreams.at( restPartIndex ).insert( restIter, Atom{} );
+        restIter = ioPatternStreams.at( restPartIndex ).insert( restIter, Atom{} );
+        
+        params.minR = 0;
+        params.maxR = 0;
+        params.rInc = 0;
+        params.rTier = 0;
+        
+        params.minP = 10;
+        params.maxP = 20;
+        params.pInc = 1;
+        params.pTier = 1;
+        params.numLoops = 10;
+        
+        doCoalescingLoop( params, ioPatternStreams, ioOutputStreams, ioProb );
+        
+        params.minR = 0;
+        params.maxR = 0;
+        params.rInc = 0;
+        params.rTier = 0;
+        
+        params.minP = 50;
+        params.maxP = 75;
+        params.pInc = 2;
+        params.pTier = 1;
+        params.numLoops = 5;
+        
+        doCoalescingLoop( params, ioPatternStreams, ioOutputStreams, ioProb );
         
         
 //        params.minR = 0;
