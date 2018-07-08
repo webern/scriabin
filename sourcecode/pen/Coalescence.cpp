@@ -284,22 +284,39 @@ namespace pen
         params.maxP = 20;
         params.pInc = 1;
         params.pTier = 1;
-        params.numLoops = 10;
-        
-        doCoalescingLoop( params, ioPatternStreams, ioOutputStreams, ioProb );
-        
-        params.minR = 0;
-        params.maxR = 0;
-        params.rInc = 0;
-        params.rTier = 0;
-        
-        params.minP = 50;
-        params.maxP = 75;
-        params.pInc = 2;
-        params.pTier = 1;
         params.numLoops = 5;
         
         doCoalescingLoop( params, ioPatternStreams, ioOutputStreams, ioProb );
+        const int NUM_EXPANSIONS_PER_PHRASE = 3;
+        const int NUM_TIMES_THROUGH_THE_PHRASE = 10;
+        
+        for( int loop = 0; loop < NUM_TIMES_THROUGH_THE_PHRASE; ++loop )
+        {
+            for( int add = 0; add < NUM_EXPANSIONS_PER_PHRASE; ++add )
+            {
+                for( auto& p : ioPatternStreams )
+                {
+                    expandShortestReps( p.second, ioProb );
+                }
+                
+            }
+            writeMusic( ioPatternStreams, ioOutputStreams, 1 );
+        }
+        
+//        writeMusic( ioPatternStreams, ioOutputStreams, 2 );
+        
+//        params.minR = 0;
+//        params.maxR = 0;
+//        params.rInc = 0;
+//        params.rTier = 0;
+//
+//        params.minP = 50;
+//        params.maxP = 75;
+//        params.pInc = 2;
+//        params.pTier = 1;
+//        params.numLoops = 5;
+//
+//        doCoalescingLoop( params, ioPatternStreams, ioOutputStreams, ioProb );
         
         
 //        params.minR = 0;
@@ -327,6 +344,132 @@ namespace pen
 //        params.numLoops = 15;
 //
 //        doCoalescingLoop( params, ioPatternStreams, ioOutputStreams, ioProb );
+    }
+    
+    
+    inline int
+    chooseAtRandom( const std::set<int>::const_iterator beginIter, const std::set<int>::const_iterator endIter, Prob& ioProb )
+    {
+        if( beginIter == endIter )
+        {
+            return -1;
+        }
+        
+        int escapeHatch = 0;
+        std::set<int>::const_iterator it = beginIter;
+        
+        for( ; escapeHatch < 100000; ++escapeHatch )
+        {
+            if( ioProb.get( 30 ) )
+            {
+                return *it;
+            }
+            
+            ++it;
+            
+            if( it == endIter )
+            {
+                it = beginIter;
+            }
+        }
+        
+        return -1;
+    }
+    
+    void
+    Coalescence::expandShortestReps( Atoms& ioPattern,
+                                     Prob& ioProb )
+    {
+        const auto nonReps = findNonRepeatingNotes( ioPattern );
+        
+        if( !nonReps.empty() )
+        {
+            if( nonReps.empty() )
+            {
+                return;
+            }
+            
+            const int rando = chooseAtRandom( std::cbegin( nonReps ), std::cend( nonReps ), ioProb );
+            
+            if( rando < 0 || rando >= static_cast<int>( ioPattern.size() ) )
+            {
+                throw std::runtime_error{ "not good" };
+            }
+            
+            const auto randoIter = ioPattern.cbegin() + static_cast<ptrdiff_t>( rando );
+            
+            if( randoIter->getStep() == -1 )
+            {
+                std::cout << "expanding a rest" << std::endl;
+            }
+            else
+            {
+                std::cout << "expanding a note" << std::endl;
+            }
+            
+            ioPattern.insert( randoIter, *randoIter );
+            return;
+        }
+
+        const auto reps = findRepeatedNotes( ioPattern );
+        std::vector<AtomPattern> sorted;
+
+        for( const auto& pair : reps )
+        {
+            sorted.push_back( pair.second );
+        }
+        
+        const auto compare = [&]( AtomPattern& l, AtomPattern& r )
+        {
+            if( l.patternLength < r.patternLength )
+            {
+                return true;
+            }
+            else if( l.patternLength > r.patternLength )
+            {
+                return false;
+            }
+            else if( l.firstAtomOfPattern.getOctave() < r.firstAtomOfPattern.getOctave() )
+            {
+                return true;
+            }
+            else if( l.firstAtomOfPattern.getOctave() > r.firstAtomOfPattern.getOctave() )
+            {
+                return false;
+            }
+            else if( l.firstAtomOfPattern.getStep() < r.firstAtomOfPattern.getStep() )
+            {
+                return true;
+            }
+            else if( l.firstAtomOfPattern.getStep() > r.firstAtomOfPattern.getStep() )
+            {
+                return false;
+            }
+            else if( l.firstAtomOfPattern.getAlter() < r.firstAtomOfPattern.getAlter() )
+            {
+                return true;
+            }
+            else if( l.firstAtomOfPattern.getAlter() > r.firstAtomOfPattern.getAlter() )
+            {
+                return false;
+            }
+            
+            return false;
+        };
+        
+        std::sort( std::begin( sorted ), std::end( sorted ), compare );
+        const auto& first = sorted.front();
+        const auto insertIndex = first.index;
+        const auto insertIter = ioPattern.cbegin() + static_cast<ptrdiff_t>( insertIndex );
+        if( insertIter->getStep() == -1 )
+        {
+            std::cout << "expanding a rest" << std::endl;
+        }
+        else
+        {
+            std::cout << "expanding a note" << std::endl;
+        }
+        ioPattern.insert( insertIter, *insertIter );
     }
     
     

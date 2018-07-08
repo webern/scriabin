@@ -3,6 +3,9 @@
 #include <string>
 #include <sstream>
 #include <cstdint>
+#include <vector>
+#include <map>
+#include <set>
 
 namespace pen
 {
@@ -150,5 +153,47 @@ namespace pen
         }
         
         return patterns;
+    }
+    
+    inline std::set<int> findNonRepeatingNotes( const Atoms& inAtoms )
+    {
+        if( inAtoms.empty() )
+        {
+            return std::set<int>{};
+        }
+        
+        const auto reps = findRepeatedNotes( inAtoms );
+        std::set<int> repeatedIndices;
+        
+        for( const auto& r : reps )
+        {
+            int c = r.second.index;
+            int e = c + r.second.patternLength;
+            
+            for( ; c < e; ++c )
+            {
+                repeatedIndices.insert( c );
+            }
+        }
+        
+        std::set<int> nonRepeatedIndices;
+        const int len = static_cast<int>( inAtoms.size() );
+        
+        for( int x = 0; x < len; ++ x )
+        {
+            const bool isRepeated = repeatedIndices.find( x ) != std::cend( repeatedIndices );
+            
+            if( !isRepeated )
+            {
+                const auto& theNote = inAtoms.at( static_cast<size_t>( x ) );
+                
+                if( theNote.getStep() >= 0 )
+                {
+                    nonRepeatedIndices.insert( x );
+                }
+            }
+        }
+        
+        return nonRepeatedIndices;
     }
 }

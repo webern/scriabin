@@ -72,6 +72,9 @@ namespace pen
                                              AtomStreams& ioOutputStreams,
                                              Prob& ioProb );
         
+        static void expandShortestReps( Atoms& ioPattern,
+                                        Prob& ioProb );
+        
         static void doControlledCoalescing( AtomStreams& ioPatternStreams,
                                             AtomStreams& ioOutputStreams,
                                             Prob& ioProb );
