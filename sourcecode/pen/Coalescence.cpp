@@ -303,6 +303,21 @@ namespace pen
             writeMusic( ioPatternStreams, ioOutputStreams, 1 );
         }
         
+        
+        
+        params.minR = 0;
+        params.maxR = 0;
+        params.rInc = 0;
+        params.rTier = 0;
+        
+        params.minP = 33;
+        params.maxP = 33;
+        params.pInc = 0;
+        params.pTier = 5;
+        params.numLoops = 5;
+        
+        doCoalescingLoop( params, ioPatternStreams, ioOutputStreams, ioProb );
+        
 //        writeMusic( ioPatternStreams, ioOutputStreams, 2 );
         
 //        params.minR = 0;
