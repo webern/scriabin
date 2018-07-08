@@ -120,6 +120,8 @@ namespace pen
                     pattern.type = AtomPatternType::Pitch;
                     pattern.firstAtomOfPattern = *lastAtom;
                     patterns.emplace( pattern.index, pattern );
+                    repititionStartIndex = -1;
+                    isRepeating = false;
                 }
             }
             
@@ -132,6 +134,21 @@ namespace pen
             ++currentIndex;
 
         }
+        
+        if( isRepeating && repititionStartIndex >= 0 )
+        {
+            // the final notes where repeating
+            const int finalIndex = currentIndex - 1;
+            AtomPattern pattern;
+            pattern.index = repititionStartIndex;
+            pattern.patternLength = finalIndex - repititionStartIndex + 1;
+            pattern.type = AtomPatternType::Pitch;
+            pattern.firstAtomOfPattern = *lastAtom;
+            patterns.emplace( pattern.index, pattern );
+            repititionStartIndex = -1;
+            isRepeating = false;
+        }
+        
         return patterns;
     }
 }
