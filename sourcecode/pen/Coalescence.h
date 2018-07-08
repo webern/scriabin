@@ -72,6 +72,16 @@ namespace pen
                                              AtomStreams& ioOutputStreams,
                                              Prob& ioProb );
         
+        static void doControlledCoalescing( AtomStreams& ioPatternStreams,
+                                            AtomStreams& ioOutputStreams,
+                                            Prob& ioProb );
+        
+        static void doControlledCoalescing( const int partIndex,
+                                            const int numParts,
+                                            Atoms& ioPatternStreams,
+                                            Atoms& ioOutputStreams,
+                                            Prob& ioProb );
+        
         static void doCoalescingLoop( const CoalescenceParams& p,
                                       AtomStreams& ioPatternStreams,
                                       AtomStreams& ioOutputStreams,
@@ -98,5 +108,6 @@ namespace pen
         static void writeStreamsToScore( const AtomStreams& inStreams, mx::api::ScoreData& ioScore );
         static int findIndexOfShortestStream( const AtomStreams& inStreams );
         static void shortenStreamsToMatchLengthOfShortestStream( AtomStreams& ioStreams, int inMultipleOf = -1 );
+        static int findInsertIndex( const Atoms& inAtoms, Prob& ioProb );
     };
 }

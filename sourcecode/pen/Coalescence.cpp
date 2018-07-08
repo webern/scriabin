@@ -172,87 +172,305 @@ namespace pen
         params.maxP = 1;
         params.pInc = 0;
         params.pTier = 1;
-        params.numLoops = 10;
+        params.numLoops = 3;
         
         doCoalescingLoop( params, ioPatternStreams, ioOutputStreams, ioProb );
-        
-        params.minR = 1;
-        params.maxR = 1;
-        params.rInc = 0;
-        params.rTier = 0;
-        
-        params.minP = 0;
-        params.maxP = 0;
-        params.pInc = 0;
-        params.pTier = 0;
-        params.numLoops = 10;
-        
-        doCoalescingLoop( params, ioPatternStreams, ioOutputStreams, ioProb );
+        writeMusic( ioPatternStreams, ioOutputStreams, 3 );
         
         params.minR = 0;
         params.maxR = 0;
         params.rInc = 0;
         params.rTier = 0;
         
-        params.minP = 20;
-        params.maxP = 35;
-        params.pInc = 0;
-        params.pTier = 0;
-        params.numLoops = 15;
-        
-        doCoalescingLoop( params, ioPatternStreams, ioOutputStreams, ioProb );
-        
-        // uh oh - the first violin didn't turn out so awesome, but everything else
-        // did. let's kill the first violin and try tweaking it.
-        AtomStreams newPatternStreams = inOriginalMusic;
-        AtomStreams newOutputMusic = inOriginalMusic;
-        reverseStreams( newPatternStreams );
-        
-        params = CoalescenceParams{};
-        params.minR = 0;
-        params.maxR = 0;
-        params.rInc = 0;
-        params.rTier = 0;
-        
-        params.minP = 4;
-        params.maxP = 4;
+        params.minP = 1;
+        params.maxP = 1;
         params.pInc = 0;
         params.pTier = 1;
-        params.numLoops = 10;
+        params.numLoops = 2;
         
-        doCoalescingLoop( params, newPatternStreams, newOutputMusic, ioProb );
-        
-        params.minR = 1;
-        params.maxR = 1;
-        params.rInc = 0;
-        params.rTier = 0;
-        
-        params.minP = 0;
-        params.maxP = 0;
-        params.pInc = 0;
-        params.pTier = 0;
-        params.numLoops = 10;
-        
-        doCoalescingLoop( params, newPatternStreams, newOutputMusic, ioProb );
+        doCoalescingLoop( params, ioPatternStreams, ioOutputStreams, ioProb );
+        writeMusic( ioPatternStreams, ioOutputStreams, 2 );
         
         params.minR = 0;
         params.maxR = 0;
         params.rInc = 0;
         params.rTier = 0;
         
-        params.minP = 20;
-        params.maxP = 35;
+        params.minP = 1;
+        params.maxP = 1;
         params.pInc = 0;
-        params.pTier = 0;
-        params.numLoops = 15;
+        params.pTier = 1;
+        params.numLoops = 2;
         
-        doCoalescingLoop( params, newPatternStreams, newOutputMusic, ioProb );
-        ioOutputStreams.at( 0 ) = newOutputMusic.at( 0 );
-        ioPatternStreams.at( 0 ) = newPatternStreams.at( 0 );
+        doCoalescingLoop( params, ioPatternStreams, ioOutputStreams, ioProb );
+        writeMusic( ioPatternStreams, ioOutputStreams, 2 );
         
-        shortenStreamsToMatchLengthOfShortestStream( ioOutputStreams, BEATS_PER_MEASURE );
-        reverseStreams( ioOutputStreams );
-        writeMusic( inOriginalMusic, ioOutputStreams, 32 );
+        params.minR = 0;
+        params.maxR = 0;
+        params.rInc = 0;
+        params.rTier = 0;
+        
+        params.minP = 1;
+        params.maxP = 1;
+        params.pInc = 0;
+        params.pTier = 1;
+        params.numLoops = 2;
+        
+        doCoalescingLoop( params, ioPatternStreams, ioOutputStreams, ioProb );
+        writeMusic( ioPatternStreams, ioOutputStreams, 2 );
+        
+        
+        
+//        params.minR = 0;
+//        params.maxR = 0;
+//        params.rInc = 0;
+//        params.rTier = 0;
+//
+//        params.minP = 0;
+//        params.maxP = 0;
+//        params.pInc = 0;
+//        params.pTier = 0;
+//        params.numLoops = 10;
+//
+//        doCoalescingLoop( params, ioPatternStreams, ioOutputStreams, ioProb );
+//
+//        params.minR = 0;
+//        params.maxR = 0;
+//        params.rInc = 0;
+//        params.rTier = 0;
+//
+//        params.minP = 20;
+//        params.maxP = 35;
+//        params.pInc = 0;
+//        params.pTier = 0;
+//        params.numLoops = 15;
+//
+//        doCoalescingLoop( params, ioPatternStreams, ioOutputStreams, ioProb );
+    }
+    
+    
+    void
+    Coalescence::doControlledCoalescing( AtomStreams& ioPatternStreams,
+                                         AtomStreams& ioOutputStreams,
+                                         Prob& ioProb )
+    {
+        if( ioPatternStreams.size() != ioOutputStreams.size() )
+        {
+            throw std::runtime_error{ "don't be stupid" };
+        }
+        
+        auto pit = ioPatternStreams.begin();
+        const auto pend = ioPatternStreams.end();
+        auto oit = ioOutputStreams.begin();
+        int partIndex = 0;
+        
+        for( ; pit != pend; ++pit, ++oit, ++partIndex )
+        {
+            doControlledCoalescing( partIndex, static_cast<int>( ioPatternStreams.size() ), pit->second, oit->second, ioProb );
+        }
+    }
+    
+    
+    void
+    Coalescence::doControlledCoalescing( const int partIndex,
+                                         const int numParts,
+                                         Atoms& ioPatternAtoms,
+                                         Atoms& ioOutputAtoms,
+                                         Prob& ioProb )
+    {
+//        int lengthOrderIndex = 0;
+        const int lastIndex = numParts - 1;
+//        const auto doevn = [&]( int index, int last ) { return last - ( index / 2 ); };
+//        const auto doodd = [&]( int index ) { return 0 + ( index / 2 ); };
+//        for( int i = 0; i < numParts; ++i )
+//        {
+//            const bool isEven = ( i == 0 ) || ( i % 2 == 0 );
+//
+//            // (size = 4, h = 2, reverse = h)
+//            // i   j  result
+//            // 0   3  1
+//            // 1   2  3
+//            // 2   1  2 reverse
+//            // 3   0  0
+//
+//            // (size = 5, h = 2, reverse = h)
+//            // i   j  result
+//            // 0   4  1
+//            // 1   3  3
+//            // 2   2  4 reverse
+//            // 3   1  2
+//            // 4   0  0
+//
+//            // (size = 6, h = 3, reverse = h)
+//            // i   j  result
+//            // 0   5  1
+//            // 1   4  3
+//            // 2   3  5
+//            // 3   2  4 reverse
+//            // 4   1  2
+//            // 5   0  0
+//
+//            // algo is, if before reverse, i * 2 + 1
+//            // if after or on reverse, j * 2
+//
+//            // TODO - a loop is not needed to calculate this
+//            for( int i = 0; i <= partIndex; ++ i )
+//            {
+//                const auto j = numParts - i - 1;
+//                const auto h = numParts / 2;
+//                const bool isReversed = i >= h;
+//                const bool isForward = !isReversed;
+//
+//                if( isForward )
+//                {
+//                    lengthOrderIndex = ( i * 2 + 1 );
+//                }
+//                else if( isReversed )
+//                {
+//                    lengthOrderIndex = j * 2;
+//                }
+//            }
+//        }
+        
+//        static constexpr const double WEIRD_LENGTH_RATIO_TWEAKER = 9.0 / 1.0;
+//        const double lengthOrderAsRatio = static_cast<double>( numParts - lengthOrderIndex - 1 ) / static_cast<double>( numParts );
+//        const double lengthAdjuster = 1.0 + lengthOrderAsRatio * WEIRD_LENGTH_RATIO_TWEAKER;
+//        constexpr const double BASE_PROBABILITY_OF_ADDING_A_NOTE = 10.0;
+//        const double probabilityOfAddingANote = lengthAdjuster * BASE_PROBABILITY_OF_ADDING_A_NOTE;
+//        const int prob = static_cast<int>( probabilityOfAddingANote + 0.49999999999999999 );
+        const bool isThisPartTheLongestPart = partIndex == lastIndex;
+        constexpr const int NUMBER_OF_LOOP_ITERATIONS = 100;
+        
+        int prob = 0;
+        int numToAdd = 0;
+        
+        if( partIndex == 0 )
+        {
+            prob = 50;
+            numToAdd = 3;
+        }
+        else if( partIndex == 1 )
+        {
+            prob = 30;
+            numToAdd = 1;
+        }
+        else if( partIndex == 2 )
+        {
+            prob = 40;
+            numToAdd = 2;
+        }
+        else
+        {
+            prob = 60;
+            numToAdd = 4;
+        }
+        
+        for( int i = 0; i < NUMBER_OF_LOOP_ITERATIONS; ++i )
+        {
+            const bool doAdd = ioProb.get( prob );
+            const bool isInitial = ( i == 0 ) && isThisPartTheLongestPart;
+            
+            if( isInitial )
+            {
+                auto insertIter = ioPatternAtoms.cbegin() + static_cast<ptrdiff_t>( lastIndex );
+                ioPatternAtoms.insert( insertIter, *insertIter );
+                writeMusic( ioPatternAtoms, ioOutputAtoms, 1 );
+            }
+            else if( doAdd || isInitial )
+            {
+                for( int z = 0; z < numToAdd; ++z )
+                {
+                    const int insertIndex = findInsertIndex( ioPatternAtoms, ioProb );
+                    auto insertIter = ioPatternAtoms.cbegin() + static_cast<ptrdiff_t>( insertIndex );
+                    ioPatternAtoms.insert( insertIter, *insertIter );
+                }
+                writeMusic( ioPatternAtoms, ioOutputAtoms, 1 );
+            }
+        }
+    }
+    
+    
+    int
+    Coalescence::findInsertIndex( const Atoms& inAtoms, Prob& ioProb )
+    {
+        // make a datastructure showing where the repetitions and rests are
+        const auto repetitions = findRepeatedNotes( inAtoms );
+        
+        // find indices of all repeated notes and non-repeated notes
+        std::set<int> repeatedIndices;
+        std::set<int> nonRepeatedIndices;
+        
+        for( const auto& r : repetitions )
+        {
+            for( int x = r.second.index; x < r.second.index + r.second.patternLength; ++x )
+            {
+                repeatedIndices.insert( x );
+            }
+        }
+        
+        for( int x = 0; x < static_cast<int>( inAtoms.size() ); ++x )
+        {
+            if( repeatedIndices.find( x ) == repeatedIndices.cend() )
+            {
+                nonRepeatedIndices.insert( x );
+            }
+        }
+        
+        // find a non-repeated index, or if none exist, then an index where there
+        // is less than 3 repitions, or if none exists then a random index
+        int insertIndex = -1;
+        
+        if( repeatedIndices.size() > 0 )
+        {
+            const auto& collection = repeatedIndices;
+            const auto begit = collection.cbegin();
+            const auto endit = collection.cend();
+            auto iter = begit;
+            
+            while( insertIndex < 0 )
+            {
+                if( ioProb.get( 1 ) )
+                {
+                    insertIndex = *iter;
+                }
+                
+                ++iter;
+                
+                if( iter == endit )
+                {
+                    iter = begit;
+                }
+            }
+        }
+        else
+        {
+            const auto& collection = nonRepeatedIndices;
+            const auto begit = collection.cbegin();
+            const auto endit = collection.cend();
+            auto iter = begit;
+            
+            while( insertIndex < 0 )
+            {
+                if( ioProb.get( 1 ) )
+                {
+                    insertIndex = *iter;
+                }
+                
+                ++iter;
+                
+                if( iter == endit )
+                {
+                    iter = begit;
+                }
+            }
+        }
+        
+        if( insertIndex < 0 || insertIndex >= static_cast<int>( inAtoms.size() ) )
+        {
+            throw std::runtime_error{ "index will be out of range" };
+        }
+        
+        return insertIndex;
     }
     
     
@@ -267,8 +485,13 @@ namespace pen
         const AtomStreams originalReversedMusic = outMusic;
         AtomStreams patternStreams = originalReversedMusic;
         Prob boolGen{ DIGITS_DAT_PATH() };
+        
+        //doControlledCoalescing( patternStreams, outMusic, boolGen );
         doSomeAwesomeCoalescing( originalMusic, patternStreams, outMusic, boolGen );
 
+        shortenStreamsToMatchLengthOfShortestStream( outMusic, BEATS_PER_MEASURE );
+        reverseStreams( outMusic );
+        writeMusic( originalMusic, outMusic, 32 );
         writeStreamsToScore( outMusic, myScore );
         auto& dmgr = mx::api::DocumentManager::getInstance();
         const auto oID = dmgr.createFromScore( myScore );
@@ -299,7 +522,11 @@ namespace pen
                     
                     if( doRest )
                     {
-                        it = ioPatternStreams.at( p ).insert( it, Atom{} );
+                        const auto currentIndex = it - ioPatternStreams.at( p ).begin();
+                        const auto insertIndex = findInsertIndex( ioPatternStreams.at( p ), ioProb );
+                        const auto insertIter = ioPatternStreams.at( p ).cbegin() + static_cast<ptrdiff_t>( insertIndex );
+                        ioPatternStreams.at( p ).insert( insertIter, Atom{} );
+                        it = ioPatternStreams.at( p ).begin() + currentIndex;
                     }
                     
                     if( doRepeat )
