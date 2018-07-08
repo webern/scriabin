@@ -168,14 +168,59 @@ namespace pen
         params.rInc = 0;
         params.rTier = 0;
         
-        params.minP = 0;
-        params.maxP = 0;
+        params.minP = 1;
+        params.maxP = 1;
         params.pInc = 0;
         params.pTier = 1;
-        params.numLoops = 10;
+        params.numLoops = 3;
         
         doCoalescingLoop( params, ioPatternStreams, ioOutputStreams, ioProb );
-        writeMusic( ioPatternStreams, ioOutputStreams, 10 );
+        writeMusic( ioPatternStreams, ioOutputStreams, 3 );
+        
+        params.minR = 0;
+        params.maxR = 0;
+        params.rInc = 0;
+        params.rTier = 0;
+        
+        params.minP = 1;
+        params.maxP = 1;
+        params.pInc = 0;
+        params.pTier = 1;
+        params.numLoops = 2;
+        
+        doCoalescingLoop( params, ioPatternStreams, ioOutputStreams, ioProb );
+        writeMusic( ioPatternStreams, ioOutputStreams, 2 );
+        
+        params.minR = 0;
+        params.maxR = 0;
+        params.rInc = 0;
+        params.rTier = 0;
+        
+        params.minP = 1;
+        params.maxP = 1;
+        params.pInc = 0;
+        params.pTier = 1;
+        params.numLoops = 2;
+        
+        doCoalescingLoop( params, ioPatternStreams, ioOutputStreams, ioProb );
+        writeMusic( ioPatternStreams, ioOutputStreams, 2 );
+        
+        params.minR = 0;
+        params.maxR = 0;
+        params.rInc = 0;
+        params.rTier = 0;
+        
+        params.minP = 1;
+        params.maxP = 1;
+        params.pInc = 0;
+        params.pTier = 1;
+        params.numLoops = 2;
+        
+        doCoalescingLoop( params, ioPatternStreams, ioOutputStreams, ioProb );
+        writeMusic( ioPatternStreams, ioOutputStreams, 2 );
+        
+        
+        
 //        params.minR = 0;
 //        params.maxR = 0;
 //        params.rInc = 0;
