@@ -61,21 +61,35 @@ namespace pen
         mx::api::ScoreData myScore;
         std::string myInFilepath;
         std::string myOutFilepath;
-        std::vector<bool> myRandVec;
-        std::vector<bool>::const_iterator myRandIter;
-        std::vector<bool>::const_iterator myRandEnd;
         
     private:
         void initSelfScore();
         MxNoteStreams getInputNotes() const;
-        bool rbool();
         
     private:
+        static void doSomeAwesomeCoalescing( const AtomStreams& inOriginalMusic,
+                                             AtomStreams& ioPatternStreams,
+                                             AtomStreams& ioOutputStreams,
+                                             Prob& ioProb );
+        
+        static void expandShortestReps( Atoms& ioPattern,
+                                        Prob& ioProb );
+        
+        static void doControlledCoalescing( AtomStreams& ioPatternStreams,
+                                            AtomStreams& ioOutputStreams,
+                                            Prob& ioProb );
+        
+        static void doControlledCoalescing( const int partIndex,
+                                            const int numParts,
+                                            Atoms& ioPatternStreams,
+                                            Atoms& ioOutputStreams,
+                                            Prob& ioProb );
+        
         static void doCoalescingLoop( const CoalescenceParams& p,
                                       AtomStreams& ioPatternStreams,
                                       AtomStreams& ioOutputStreams,
                                       Prob& ioProb );
-        static void doPenultimateCoalescing( AtomStreams& ioPatternStreams, AtomStreams& ioOutputStreams );
+        
         static void writeMusic( const AtomStreams& inStreamsToWrite, AtomStreams& ioStreamsToAppendTo, int numTimes );
         static void writeMusic( const Atoms& inAtomsToWrite, Atoms& ioAtomsToAppendTo, int numTimes );
         static void reverseAtoms( Atoms& ioAtoms );
@@ -96,6 +110,7 @@ namespace pen
                                  mx::api::ScoreData& ioScore );
         static void writeStreamsToScore( const AtomStreams& inStreams, mx::api::ScoreData& ioScore );
         static int findIndexOfShortestStream( const AtomStreams& inStreams );
-        static void shortenStreamsToMatchLengthOfShortestStream( AtomStreams& ioStreams );
+        static void shortenStreamsToMatchLengthOfShortestStream( AtomStreams& ioStreams, int inMultipleOf = -1 );
+        static int findInsertIndex( const Atoms& inAtoms, Prob& ioProb );
     };
 }

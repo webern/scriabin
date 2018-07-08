@@ -7,16 +7,20 @@
 
 namespace pen
 {
+    static constexpr const int BEATS_PER_MEASURE = 6;
+    static constexpr const int BEAT_TYPE_NUMERAL = 8;
+    static constexpr const int QUARTER_NOTE_BEAT_TYPE_NUMERAL = 4;
+    static constexpr const mx::api::DurationName BEAT_TYPE_NAME = mx::api::DurationName::eighth;
+    static constexpr const int TICKS_PER_QUARTER = 2;
+    static constexpr const double BEAT_TYPE_TO_QUARTER_RATIO = static_cast<double>( QUARTER_NOTE_BEAT_TYPE_NUMERAL ) / static_cast<double>( BEAT_TYPE_NUMERAL );
+    static constexpr const int TICKS_PER_BEAT = static_cast<int>( ( static_cast<double>( TICKS_PER_QUARTER ) * BEAT_TYPE_TO_QUARTER_RATIO ) + 0.0000000001 );
+    
     Coalescence::Coalescence( std::string inputFilepath, std::string outputFilepath )
     : myScore{}
     , myInFilepath{ std::move( inputFilepath ) }
     , myOutFilepath{ std::move( outputFilepath ) }
-    , myRandVec{ true, true, false, false, true, false, true, false, false, false, true, true, true, true, false, true, true, false, false, false, false, false, true, false, false, false, false, true, true, true, false, false, false, true, true, true, false, false, true, true, false, false, true, false, false, true, true, true, true, true, true, false, true, false, true, false, true, false, false, true, true, false, false, true, false, true, false, false, false, false, false, false, true, false, true }
-    , myRandIter{}
-    , myRandEnd{}
     {
-        myRandIter = myRandVec.cbegin();
-        myRandEnd = myRandVec.cend();
+
     }
     
     
@@ -123,21 +127,6 @@ namespace pen
     }
     
     
-    bool
-    Coalescence::rbool()
-    {
-        const bool val = *myRandIter;
-        ++myRandIter;
-        
-        if( myRandIter == myRandEnd )
-        {
-            myRandIter = std::cbegin( myRandVec );
-        }
-        
-        return val;
-    }
-    
-    
     void
     Coalescence::writeMusic( const Atoms& inAtomsToWrite, Atoms& ioAtomsToAppendTo, int numTimes )
     {
@@ -168,49 +157,559 @@ namespace pen
     
     
     void
-    Coalescence::doPenultimateCoalescing( AtomStreams& ioPatternStreams, AtomStreams& ioOutputStreams )
+    Coalescence::doSomeAwesomeCoalescing( const AtomStreams& inOriginalMusic,
+                                          AtomStreams& ioPatternStreams,
+                                          AtomStreams& ioOutputStreams,
+                                          Prob& ioProb )
     {
-        // add one rest to the cello
-        {
-            const int pidx = 3;
-            const auto insertLoc = ioPatternStreams.at( pidx ).cbegin();
-            ioPatternStreams.at( pidx ).insert( insertLoc, Atom{} );
-        }
+        CoalescenceParams params;
+        params.minR = 0;
+        params.maxR = 0;
+        params.rInc = 0;
+        params.rTier = 0;
         
+        params.minP = 1;
+        params.maxP = 1;
+        params.pInc = 0;
+        params.pTier = 1;
+        params.numLoops = 3;
+        
+        doCoalescingLoop( params, ioPatternStreams, ioOutputStreams, ioProb );
+        writeMusic( ioPatternStreams, ioOutputStreams, 3 );
+        
+        params.minR = 0;
+        params.maxR = 0;
+        params.rInc = 0;
+        params.rTier = 0;
+        
+        params.minP = 1;
+        params.maxP = 1;
+        params.pInc = 0;
+        params.pTier = 1;
+        params.numLoops = 2;
+        
+        doCoalescingLoop( params, ioPatternStreams, ioOutputStreams, ioProb );
         writeMusic( ioPatternStreams, ioOutputStreams, 2 );
         
-        // add two rests to the first violin
-        {
-            const int pidx = 0;
-            auto insertLoc = ioPatternStreams.at( pidx ).cbegin();
-            insertLoc = ioPatternStreams.at( pidx ).insert( insertLoc, Atom{} );
-            insertLoc = ioPatternStreams.at( pidx ).insert( insertLoc, Atom{} );
-        }
+        params.minR = 0;
+        params.maxR = 0;
+        params.rInc = 0;
+        params.rTier = 0;
         
+        params.minP = 1;
+        params.maxP = 1;
+        params.pInc = 0;
+        params.pTier = 1;
+        params.numLoops = 2;
+        
+        doCoalescingLoop( params, ioPatternStreams, ioOutputStreams, ioProb );
         writeMusic( ioPatternStreams, ioOutputStreams, 2 );
         
-        // add three rests to the second violin
-        {
-            const int pidx = 1;
-            auto insertLoc = ioPatternStreams.at( pidx ).cbegin();
-            insertLoc = ioPatternStreams.at( pidx ).insert( insertLoc, Atom{} );
-            insertLoc = ioPatternStreams.at( pidx ).insert( insertLoc, Atom{} );
-            insertLoc = ioPatternStreams.at( pidx ).insert( insertLoc, Atom{} );
-        }
+        // add a rest to viola
+        int restPartIndex = 2;
+        auto restIndex = findInsertIndex( ioPatternStreams.at( restPartIndex ), ioProb );
+        auto restIter = ioPatternStreams.at( restPartIndex ).cbegin() + static_cast<ptrdiff_t>( restIndex );
+        restIter = ioPatternStreams.at( restPartIndex ).insert( restIter, Atom{} );
+        // restIter = ioPatternStreams.at( restPartIndex ).insert( restIter, Atom{} );
         
+        params.minR = 0;
+        params.maxR = 0;
+        params.rInc = 0;
+        params.rTier = 0;
+        
+        params.minP = 1;
+        params.maxP = 1;
+        params.pInc = 0;
+        params.pTier = 1;
+        params.numLoops = 2;
+        
+        doCoalescingLoop( params, ioPatternStreams, ioOutputStreams, ioProb );
         writeMusic( ioPatternStreams, ioOutputStreams, 2 );
         
-        // add four rests to the viola
+        // add a rest to violin 2
+        restPartIndex = 1;
+        restIndex = findInsertIndex( ioPatternStreams.at( restPartIndex ), ioProb );
+        restIter = ioPatternStreams.at( restPartIndex ).cbegin() + static_cast<ptrdiff_t>( restIndex );
+        restIter = ioPatternStreams.at( restPartIndex ).insert( restIter, Atom{} );
+        // restIter = ioPatternStreams.at( restPartIndex ).insert( restIter, Atom{} );
+        
+        params.minR = 0;
+        params.maxR = 0;
+        params.rInc = 0;
+        params.rTier = 0;
+        
+        params.minP = 3;
+        params.maxP = 3;
+        params.pInc = 0;
+        params.pTier = 1;
+        params.numLoops = 2;
+        
+        doCoalescingLoop( params, ioPatternStreams, ioOutputStreams, ioProb );
+        writeMusic( ioPatternStreams, ioOutputStreams, 2 );
+        
+        // add a rest to violin 1
+        restPartIndex = 0;
+        restIndex = findInsertIndex( ioPatternStreams.at( restPartIndex ), ioProb );
+        restIter = ioPatternStreams.at( restPartIndex ).cbegin() + static_cast<ptrdiff_t>( restIndex );
+        restIter = ioPatternStreams.at( restPartIndex ).insert( restIter, Atom{} );
+        restIter = ioPatternStreams.at( restPartIndex ).insert( restIter, Atom{} );
+        
+        params.minR = 0;
+        params.maxR = 0;
+        params.rInc = 0;
+        params.rTier = 0;
+        
+        params.minP = 3;
+        params.maxP = 3;
+        params.pInc = 0;
+        params.pTier = 1;
+        params.numLoops = 2;
+        
+        doCoalescingLoop( params, ioPatternStreams, ioOutputStreams, ioProb );
+        // writeMusic( ioPatternStreams, ioOutputStreams, 2 );
+        
+        // add a rest to cello
+        restPartIndex = 3;
+        restIndex = findInsertIndex( ioPatternStreams.at( restPartIndex ), ioProb );
+        restIter = ioPatternStreams.at( restPartIndex ).cbegin() + static_cast<ptrdiff_t>( restIndex );
+        restIter = ioPatternStreams.at( restPartIndex ).insert( restIter, Atom{} );
+        restIter = ioPatternStreams.at( restPartIndex ).insert( restIter, Atom{} );
+        
+        params.minR = 0;
+        params.maxR = 0;
+        params.rInc = 0;
+        params.rTier = 0;
+        
+        params.minP = 10;
+        params.maxP = 20;
+        params.pInc = 1;
+        params.pTier = 1;
+        params.numLoops = 5;
+        
+        doCoalescingLoop( params, ioPatternStreams, ioOutputStreams, ioProb );
+        const int NUM_EXPANSIONS_PER_PHRASE = 3;
+        const int NUM_TIMES_THROUGH_THE_PHRASE = 10;
+        
+        for( int loop = 0; loop < NUM_TIMES_THROUGH_THE_PHRASE; ++loop )
         {
-            const int pidx = 2;
-            auto insertLoc = ioPatternStreams.at( pidx ).cbegin();
-            insertLoc = ioPatternStreams.at( pidx ).insert( insertLoc, Atom{} );
-            insertLoc = ioPatternStreams.at( pidx ).insert( insertLoc, Atom{} );
-            insertLoc = ioPatternStreams.at( pidx ).insert( insertLoc, Atom{} );
-            insertLoc = ioPatternStreams.at( pidx ).insert( insertLoc, Atom{} );
+            for( int add = 0; add < NUM_EXPANSIONS_PER_PHRASE; ++add )
+            {
+                for( auto& p : ioPatternStreams )
+                {
+                    expandShortestReps( p.second, ioProb );
+                }
+                
+            }
+            writeMusic( ioPatternStreams, ioOutputStreams, 1 );
         }
         
-        writeMusic( ioPatternStreams, ioOutputStreams, 2 );
+        
+        
+        params.minR = 0;
+        params.maxR = 0;
+        params.rInc = 0;
+        params.rTier = 0;
+        
+        params.minP = 33;
+        params.maxP = 33;
+        params.pInc = 0;
+        params.pTier = 5;
+        params.numLoops = 5;
+        
+        doCoalescingLoop( params, ioPatternStreams, ioOutputStreams, ioProb );
+        
+//        writeMusic( ioPatternStreams, ioOutputStreams, 2 );
+        
+//        params.minR = 0;
+//        params.maxR = 0;
+//        params.rInc = 0;
+//        params.rTier = 0;
+//
+//        params.minP = 50;
+//        params.maxP = 75;
+//        params.pInc = 2;
+//        params.pTier = 1;
+//        params.numLoops = 5;
+//
+//        doCoalescingLoop( params, ioPatternStreams, ioOutputStreams, ioProb );
+        
+        
+//        params.minR = 0;
+//        params.maxR = 0;
+//        params.rInc = 0;
+//        params.rTier = 0;
+//
+//        params.minP = 0;
+//        params.maxP = 0;
+//        params.pInc = 0;
+//        params.pTier = 0;
+//        params.numLoops = 10;
+//
+//        doCoalescingLoop( params, ioPatternStreams, ioOutputStreams, ioProb );
+//
+//        params.minR = 0;
+//        params.maxR = 0;
+//        params.rInc = 0;
+//        params.rTier = 0;
+//
+//        params.minP = 20;
+//        params.maxP = 35;
+//        params.pInc = 0;
+//        params.pTier = 0;
+//        params.numLoops = 15;
+//
+//        doCoalescingLoop( params, ioPatternStreams, ioOutputStreams, ioProb );
+    }
+    
+    
+    inline int
+    chooseAtRandom( const std::set<int>::const_iterator beginIter, const std::set<int>::const_iterator endIter, Prob& ioProb )
+    {
+        if( beginIter == endIter )
+        {
+            return -1;
+        }
+        
+        int escapeHatch = 0;
+        std::set<int>::const_iterator it = beginIter;
+        
+        for( ; escapeHatch < 100000; ++escapeHatch )
+        {
+            if( ioProb.get( 30 ) )
+            {
+                return *it;
+            }
+            
+            ++it;
+            
+            if( it == endIter )
+            {
+                it = beginIter;
+            }
+        }
+        
+        return -1;
+    }
+    
+    void
+    Coalescence::expandShortestReps( Atoms& ioPattern,
+                                     Prob& ioProb )
+    {
+        const auto nonReps = findNonRepeatingNotes( ioPattern );
+        
+        if( !nonReps.empty() )
+        {
+            if( nonReps.empty() )
+            {
+                return;
+            }
+            
+            const int rando = chooseAtRandom( std::cbegin( nonReps ), std::cend( nonReps ), ioProb );
+            
+            if( rando < 0 || rando >= static_cast<int>( ioPattern.size() ) )
+            {
+                throw std::runtime_error{ "not good" };
+            }
+            
+            const auto randoIter = ioPattern.cbegin() + static_cast<ptrdiff_t>( rando );
+            
+            if( randoIter->getStep() == -1 )
+            {
+                std::cout << "expanding a rest" << std::endl;
+            }
+            else
+            {
+                std::cout << "expanding a note" << std::endl;
+            }
+            
+            ioPattern.insert( randoIter, *randoIter );
+            return;
+        }
+
+        const auto reps = findRepeatedNotes( ioPattern );
+        std::vector<AtomPattern> sorted;
+
+        for( const auto& pair : reps )
+        {
+            sorted.push_back( pair.second );
+        }
+        
+        const auto compare = [&]( AtomPattern& l, AtomPattern& r )
+        {
+            if( l.patternLength < r.patternLength )
+            {
+                return true;
+            }
+            else if( l.patternLength > r.patternLength )
+            {
+                return false;
+            }
+            else if( l.firstAtomOfPattern.getOctave() < r.firstAtomOfPattern.getOctave() )
+            {
+                return true;
+            }
+            else if( l.firstAtomOfPattern.getOctave() > r.firstAtomOfPattern.getOctave() )
+            {
+                return false;
+            }
+            else if( l.firstAtomOfPattern.getStep() < r.firstAtomOfPattern.getStep() )
+            {
+                return true;
+            }
+            else if( l.firstAtomOfPattern.getStep() > r.firstAtomOfPattern.getStep() )
+            {
+                return false;
+            }
+            else if( l.firstAtomOfPattern.getAlter() < r.firstAtomOfPattern.getAlter() )
+            {
+                return true;
+            }
+            else if( l.firstAtomOfPattern.getAlter() > r.firstAtomOfPattern.getAlter() )
+            {
+                return false;
+            }
+            
+            return false;
+        };
+        
+        std::sort( std::begin( sorted ), std::end( sorted ), compare );
+        const auto& first = sorted.front();
+        const auto insertIndex = first.index;
+        const auto insertIter = ioPattern.cbegin() + static_cast<ptrdiff_t>( insertIndex );
+        if( insertIter->getStep() == -1 )
+        {
+            std::cout << "expanding a rest" << std::endl;
+        }
+        else
+        {
+            std::cout << "expanding a note" << std::endl;
+        }
+        ioPattern.insert( insertIter, *insertIter );
+    }
+    
+    
+    void
+    Coalescence::doControlledCoalescing( AtomStreams& ioPatternStreams,
+                                         AtomStreams& ioOutputStreams,
+                                         Prob& ioProb )
+    {
+        if( ioPatternStreams.size() != ioOutputStreams.size() )
+        {
+            throw std::runtime_error{ "don't be stupid" };
+        }
+        
+        auto pit = ioPatternStreams.begin();
+        const auto pend = ioPatternStreams.end();
+        auto oit = ioOutputStreams.begin();
+        int partIndex = 0;
+        
+        for( ; pit != pend; ++pit, ++oit, ++partIndex )
+        {
+            doControlledCoalescing( partIndex, static_cast<int>( ioPatternStreams.size() ), pit->second, oit->second, ioProb );
+        }
+    }
+    
+    
+    void
+    Coalescence::doControlledCoalescing( const int partIndex,
+                                         const int numParts,
+                                         Atoms& ioPatternAtoms,
+                                         Atoms& ioOutputAtoms,
+                                         Prob& ioProb )
+    {
+//        int lengthOrderIndex = 0;
+        const int lastIndex = numParts - 1;
+//        const auto doevn = [&]( int index, int last ) { return last - ( index / 2 ); };
+//        const auto doodd = [&]( int index ) { return 0 + ( index / 2 ); };
+//        for( int i = 0; i < numParts; ++i )
+//        {
+//            const bool isEven = ( i == 0 ) || ( i % 2 == 0 );
+//
+//            // (size = 4, h = 2, reverse = h)
+//            // i   j  result
+//            // 0   3  1
+//            // 1   2  3
+//            // 2   1  2 reverse
+//            // 3   0  0
+//
+//            // (size = 5, h = 2, reverse = h)
+//            // i   j  result
+//            // 0   4  1
+//            // 1   3  3
+//            // 2   2  4 reverse
+//            // 3   1  2
+//            // 4   0  0
+//
+//            // (size = 6, h = 3, reverse = h)
+//            // i   j  result
+//            // 0   5  1
+//            // 1   4  3
+//            // 2   3  5
+//            // 3   2  4 reverse
+//            // 4   1  2
+//            // 5   0  0
+//
+//            // algo is, if before reverse, i * 2 + 1
+//            // if after or on reverse, j * 2
+//
+//            // TODO - a loop is not needed to calculate this
+//            for( int i = 0; i <= partIndex; ++ i )
+//            {
+//                const auto j = numParts - i - 1;
+//                const auto h = numParts / 2;
+//                const bool isReversed = i >= h;
+//                const bool isForward = !isReversed;
+//
+//                if( isForward )
+//                {
+//                    lengthOrderIndex = ( i * 2 + 1 );
+//                }
+//                else if( isReversed )
+//                {
+//                    lengthOrderIndex = j * 2;
+//                }
+//            }
+//        }
+        
+//        static constexpr const double WEIRD_LENGTH_RATIO_TWEAKER = 9.0 / 1.0;
+//        const double lengthOrderAsRatio = static_cast<double>( numParts - lengthOrderIndex - 1 ) / static_cast<double>( numParts );
+//        const double lengthAdjuster = 1.0 + lengthOrderAsRatio * WEIRD_LENGTH_RATIO_TWEAKER;
+//        constexpr const double BASE_PROBABILITY_OF_ADDING_A_NOTE = 10.0;
+//        const double probabilityOfAddingANote = lengthAdjuster * BASE_PROBABILITY_OF_ADDING_A_NOTE;
+//        const int prob = static_cast<int>( probabilityOfAddingANote + 0.49999999999999999 );
+        const bool isThisPartTheLongestPart = partIndex == lastIndex;
+        constexpr const int NUMBER_OF_LOOP_ITERATIONS = 100;
+        
+        int prob = 0;
+        int numToAdd = 0;
+        
+        if( partIndex == 0 )
+        {
+            prob = 50;
+            numToAdd = 3;
+        }
+        else if( partIndex == 1 )
+        {
+            prob = 30;
+            numToAdd = 1;
+        }
+        else if( partIndex == 2 )
+        {
+            prob = 40;
+            numToAdd = 2;
+        }
+        else
+        {
+            prob = 60;
+            numToAdd = 4;
+        }
+        
+        for( int i = 0; i < NUMBER_OF_LOOP_ITERATIONS; ++i )
+        {
+            const bool doAdd = ioProb.get( prob );
+            const bool isInitial = ( i == 0 ) && isThisPartTheLongestPart;
+            
+            if( isInitial )
+            {
+                auto insertIter = ioPatternAtoms.cbegin() + static_cast<ptrdiff_t>( lastIndex );
+                ioPatternAtoms.insert( insertIter, *insertIter );
+                writeMusic( ioPatternAtoms, ioOutputAtoms, 1 );
+            }
+            else if( doAdd || isInitial )
+            {
+                for( int z = 0; z < numToAdd; ++z )
+                {
+                    const int insertIndex = findInsertIndex( ioPatternAtoms, ioProb );
+                    auto insertIter = ioPatternAtoms.cbegin() + static_cast<ptrdiff_t>( insertIndex );
+                    ioPatternAtoms.insert( insertIter, *insertIter );
+                }
+                writeMusic( ioPatternAtoms, ioOutputAtoms, 1 );
+            }
+        }
+    }
+    
+    
+    int
+    Coalescence::findInsertIndex( const Atoms& inAtoms, Prob& ioProb )
+    {
+        // make a datastructure showing where the repetitions and rests are
+        const auto repetitions = findRepeatedNotes( inAtoms );
+        
+        // find indices of all repeated notes and non-repeated notes
+        std::set<int> repeatedIndices;
+        std::set<int> nonRepeatedIndices;
+        
+        for( const auto& r : repetitions )
+        {
+            for( int x = r.second.index; x < r.second.index + r.second.patternLength; ++x )
+            {
+                repeatedIndices.insert( x );
+            }
+        }
+        
+        for( int x = 0; x < static_cast<int>( inAtoms.size() ); ++x )
+        {
+            if( repeatedIndices.find( x ) == repeatedIndices.cend() )
+            {
+                nonRepeatedIndices.insert( x );
+            }
+        }
+        
+        // find a non-repeated index, or if none exist, then an index where there
+        // is less than 3 repitions, or if none exists then a random index
+        int insertIndex = -1;
+        
+        if( repeatedIndices.size() > 0 )
+        {
+            const auto& collection = repeatedIndices;
+            const auto begit = collection.cbegin();
+            const auto endit = collection.cend();
+            auto iter = begit;
+            
+            while( insertIndex < 0 )
+            {
+                if( ioProb.get( 1 ) )
+                {
+                    insertIndex = *iter;
+                }
+                
+                ++iter;
+                
+                if( iter == endit )
+                {
+                    iter = begit;
+                }
+            }
+        }
+        else
+        {
+            const auto& collection = nonRepeatedIndices;
+            const auto begit = collection.cbegin();
+            const auto endit = collection.cend();
+            auto iter = begit;
+            
+            while( insertIndex < 0 )
+            {
+                if( ioProb.get( 1 ) )
+                {
+                    insertIndex = *iter;
+                }
+                
+                ++iter;
+                
+                if( iter == endit )
+                {
+                    iter = begit;
+                }
+            }
+        }
+        
+        if( insertIndex < 0 || insertIndex >= static_cast<int>( inAtoms.size() ) )
+        {
+            throw std::runtime_error{ "index will be out of range" };
+        }
+        
+        return insertIndex;
     }
     
     
@@ -224,51 +723,12 @@ namespace pen
         reverseStreams( outMusic );
         const AtomStreams originalReversedMusic = outMusic;
         AtomStreams patternStreams = originalReversedMusic;
-//        doPenultimateCoalescing( patternStreams, outMusic );
-
         Prob boolGen{ DIGITS_DAT_PATH() };
-        CoalescenceParams params;
-        params.minR = 0;
-        params.maxR = 0;
-        params.rInc = 0;
-        params.rTier = 0;
         
-        params.minP = 1;
-        params.maxP = 1;
-        params.pInc = 0;
-        params.pTier = 1;
-        params.numLoops = 10;
-        
-        doCoalescingLoop( params, patternStreams, outMusic, boolGen );
-        
-        params.minR = 1;
-        params.maxR = 1;
-        params.rInc = 0;
-        params.rTier = 0;
-        
-        params.minP = 0;
-        params.maxP = 0;
-        params.pInc = 0;
-        params.pTier = 0;
-        params.numLoops = 10;
-        
-        doCoalescingLoop( params, patternStreams, outMusic, boolGen );
-        
-        params.minR = 0;
-        params.maxR = 0;
-        params.rInc = 0;
-        params.rTier = 0;
+        //doControlledCoalescing( patternStreams, outMusic, boolGen );
+        doSomeAwesomeCoalescing( originalMusic, patternStreams, outMusic, boolGen );
 
-        params.minP = 20;
-        params.maxP = 35;
-        params.pInc = 0;
-        params.pTier = 0;
-        params.numLoops = 15;
-
-        doCoalescingLoop( params, patternStreams, outMusic, boolGen );
-
-        
-        shortenStreamsToMatchLengthOfShortestStream( outMusic );
+        shortenStreamsToMatchLengthOfShortestStream( outMusic, BEATS_PER_MEASURE );
         reverseStreams( outMusic );
         writeMusic( originalMusic, outMusic, 32 );
         writeStreamsToScore( outMusic, myScore );
@@ -301,7 +761,11 @@ namespace pen
                     
                     if( doRest )
                     {
-                        it = ioPatternStreams.at( p ).insert( it, Atom{} );
+                        const auto currentIndex = it - ioPatternStreams.at( p ).begin();
+                        const auto insertIndex = findInsertIndex( ioPatternStreams.at( p ), ioProb );
+                        const auto insertIter = ioPatternStreams.at( p ).cbegin() + static_cast<ptrdiff_t>( insertIndex );
+                        ioPatternStreams.at( p ).insert( insertIter, Atom{} );
+                        it = ioPatternStreams.at( p ).begin() + currentIndex;
                     }
                     
                     if( doRepeat )
@@ -329,16 +793,26 @@ namespace pen
     }
     
     void
-    Coalescence::shortenStreamsToMatchLengthOfShortestStream( AtomStreams& ioStreams )
+    Coalescence::shortenStreamsToMatchLengthOfShortestStream( AtomStreams& ioStreams, int inMultipleOf )
     {
         int smallest = findIndexOfShortestStream( ioStreams );
+        const int originalSizeSmallest = static_cast<int>( ioStreams.at( smallest ).size() );
+        
+        if( inMultipleOf > 0 && originalSizeSmallest > 0 && originalSizeSmallest % inMultipleOf != 0 )
+        {
+            const int remainder = originalSizeSmallest % inMultipleOf;
+            const auto newSize = ioStreams.at( smallest ).size() - static_cast<size_t>( remainder );
+            ioStreams.at( smallest ).resize( newSize );
+        }
+        
+        const auto sizeOfSmallest = ioStreams.at( smallest ).size();
         
         // delete extra notes based on smallest
         for( auto& pair : ioStreams )
         {
-            if( static_cast<int>( pair.second.size() ) > smallest )
+            if( pair.second.size() > sizeOfSmallest )
             {
-                pair.second.resize( static_cast<size_t>( smallest ) );
+                pair.second.resize( sizeOfSmallest );
             }
         }
     }
@@ -349,16 +823,20 @@ namespace pen
     {
         // find the smallest stream
         int smallest = -1;
+        int indexOfSmallest = 0;
+        int currentIndex = 0;
         
         for( const auto& streamPair : inStreams )
         {
             if( smallest == -1 || static_cast<int>( streamPair.second.size() ) < smallest )
             {
                 smallest = static_cast<int>( streamPair.second.size() );
+                indexOfSmallest = currentIndex;
             }
+            ++currentIndex;
         }
         
-        return smallest;
+        return indexOfSmallest;
     }
     
     
@@ -368,9 +846,9 @@ namespace pen
         for( int p = 0; p < static_cast<int>( inStreams.size() ); ++p )
         {
             int measureIndex = 0;
-            int eighthIndex = 0;
+            int beatIndex = 0;
             const auto& noteStream = inStreams.at( p );
-            writeStream( p, measureIndex, eighthIndex, noteStream, ioScore );
+            writeStream( p, measureIndex, beatIndex, noteStream, ioScore );
         }
     }
     
@@ -383,7 +861,7 @@ namespace pen
                               mx::api::ScoreData& ioScore )
     {
         auto measureIndex = startingMeasureIndex;
-        auto eighthIndex = startingEighthIndex;
+        auto beatIndex = startingEighthIndex;
         
         for( const auto& atom : inAtoms )
         {
@@ -396,9 +874,9 @@ namespace pen
             
             auto& measure = part.measures.at( static_cast<size_t>( measureIndex ) );
             mx::api::NoteData theNote;
-            theNote.tickTimePosition = eighthIndex * ( ioScore.ticksPerQuarter / 2 );
-            theNote.durationData.durationTimeTicks = ioScore.ticksPerQuarter / 2;
-            theNote.durationData.durationName = mx::api::DurationName::eighth;
+            theNote.tickTimePosition = beatIndex * TICKS_PER_BEAT;
+            theNote.durationData.durationTimeTicks = TICKS_PER_BEAT;
+            theNote.durationData.durationName = BEAT_TYPE_NAME;
             
             if( atom.getStep() == -1 )
             {
@@ -411,14 +889,14 @@ namespace pen
             
             measure.staves.at( 0 ).voices.at( 0 ).notes.push_back( theNote );
             
-            if( ( eighthIndex + 1 ) % 6 == 0 )
+            if( ( beatIndex + 1 ) % BEATS_PER_MEASURE == 0 )
             {
                 ++measureIndex;
-                eighthIndex = 0;
+                beatIndex = 0;
             }
             else
             {
-                ++eighthIndex;
+                ++beatIndex;
             }
         }
     }
@@ -428,6 +906,7 @@ namespace pen
     Coalescence::createEmptyScore( const std::string& title )
     {
         mx::api::ScoreData score;
+        score.ticksPerQuarter = TICKS_PER_QUARTER;
         score.workTitle = title;
         mx::api::ClefData treble;
         treble.setTreble();
@@ -469,8 +948,8 @@ namespace pen
         ioScore.parts.back().measures.emplace_back();
         ioScore.parts.back().measures.back().staves.emplace_back();
         mx::api::TimeSignatureData tsd;
-        tsd.beats = 6;
-        tsd.beatType = 8;
+        tsd.beats = BEATS_PER_MEASURE;
+        tsd.beatType = BEAT_TYPE_NUMERAL;
         tsd.isImplicit = false;
         ioScore.parts.back().measures.back().timeSignature = tsd;
         ioScore.parts.back().measures.back().staves.back().clefs.push_back( clef );
