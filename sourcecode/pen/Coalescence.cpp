@@ -210,7 +210,6 @@ namespace pen
         auto restIndex = findInsertIndex( ioPatternStreams.at( restPartIndex ), ioProb );
         auto restIter = ioPatternStreams.at( restPartIndex ).cbegin() + static_cast<ptrdiff_t>( restIndex );
         restIter = ioPatternStreams.at( restPartIndex ).insert( restIter, Atom{} );
-        // restIter = ioPatternStreams.at( restPartIndex ).insert( restIter, Atom{} );
         
         params.minR = 0;
         params.maxR = 0;
@@ -231,7 +230,6 @@ namespace pen
         restIndex = findInsertIndex( ioPatternStreams.at( restPartIndex ), ioProb );
         restIter = ioPatternStreams.at( restPartIndex ).cbegin() + static_cast<ptrdiff_t>( restIndex );
         restIter = ioPatternStreams.at( restPartIndex ).insert( restIter, Atom{} );
-        // restIter = ioPatternStreams.at( restPartIndex ).insert( restIter, Atom{} );
         
         params.minR = 0;
         params.maxR = 0;
@@ -317,48 +315,6 @@ namespace pen
         params.numLoops = 5;
         
         doCoalescingLoop( params, ioPatternStreams, ioOutputStreams, ioProb );
-        
-//        writeMusic( ioPatternStreams, ioOutputStreams, 2 );
-        
-//        params.minR = 0;
-//        params.maxR = 0;
-//        params.rInc = 0;
-//        params.rTier = 0;
-//
-//        params.minP = 50;
-//        params.maxP = 75;
-//        params.pInc = 2;
-//        params.pTier = 1;
-//        params.numLoops = 5;
-//
-//        doCoalescingLoop( params, ioPatternStreams, ioOutputStreams, ioProb );
-        
-        
-//        params.minR = 0;
-//        params.maxR = 0;
-//        params.rInc = 0;
-//        params.rTier = 0;
-//
-//        params.minP = 0;
-//        params.maxP = 0;
-//        params.pInc = 0;
-//        params.pTier = 0;
-//        params.numLoops = 10;
-//
-//        doCoalescingLoop( params, ioPatternStreams, ioOutputStreams, ioProb );
-//
-//        params.minR = 0;
-//        params.maxR = 0;
-//        params.rInc = 0;
-//        params.rTier = 0;
-//
-//        params.minP = 20;
-//        params.maxP = 35;
-//        params.pInc = 0;
-//        params.pTier = 0;
-//        params.numLoops = 15;
-//
-//        doCoalescingLoop( params, ioPatternStreams, ioOutputStreams, ioProb );
     }
     
     
@@ -390,6 +346,7 @@ namespace pen
         
         return -1;
     }
+    
     
     void
     Coalescence::expandShortestReps( Atoms& ioPattern,
@@ -488,147 +445,6 @@ namespace pen
     }
     
     
-    void
-    Coalescence::doControlledCoalescing( AtomStreams& ioPatternStreams,
-                                         AtomStreams& ioOutputStreams,
-                                         Prob& ioProb )
-    {
-        if( ioPatternStreams.size() != ioOutputStreams.size() )
-        {
-            throw std::runtime_error{ "don't be stupid" };
-        }
-        
-        auto pit = ioPatternStreams.begin();
-        const auto pend = ioPatternStreams.end();
-        auto oit = ioOutputStreams.begin();
-        int partIndex = 0;
-        
-        for( ; pit != pend; ++pit, ++oit, ++partIndex )
-        {
-            doControlledCoalescing( partIndex, static_cast<int>( ioPatternStreams.size() ), pit->second, oit->second, ioProb );
-        }
-    }
-    
-    
-    void
-    Coalescence::doControlledCoalescing( const int partIndex,
-                                         const int numParts,
-                                         Atoms& ioPatternAtoms,
-                                         Atoms& ioOutputAtoms,
-                                         Prob& ioProb )
-    {
-//        int lengthOrderIndex = 0;
-        const int lastIndex = numParts - 1;
-//        const auto doevn = [&]( int index, int last ) { return last - ( index / 2 ); };
-//        const auto doodd = [&]( int index ) { return 0 + ( index / 2 ); };
-//        for( int i = 0; i < numParts; ++i )
-//        {
-//            const bool isEven = ( i == 0 ) || ( i % 2 == 0 );
-//
-//            // (size = 4, h = 2, reverse = h)
-//            // i   j  result
-//            // 0   3  1
-//            // 1   2  3
-//            // 2   1  2 reverse
-//            // 3   0  0
-//
-//            // (size = 5, h = 2, reverse = h)
-//            // i   j  result
-//            // 0   4  1
-//            // 1   3  3
-//            // 2   2  4 reverse
-//            // 3   1  2
-//            // 4   0  0
-//
-//            // (size = 6, h = 3, reverse = h)
-//            // i   j  result
-//            // 0   5  1
-//            // 1   4  3
-//            // 2   3  5
-//            // 3   2  4 reverse
-//            // 4   1  2
-//            // 5   0  0
-//
-//            // algo is, if before reverse, i * 2 + 1
-//            // if after or on reverse, j * 2
-//
-//            // TODO - a loop is not needed to calculate this
-//            for( int i = 0; i <= partIndex; ++ i )
-//            {
-//                const auto j = numParts - i - 1;
-//                const auto h = numParts / 2;
-//                const bool isReversed = i >= h;
-//                const bool isForward = !isReversed;
-//
-//                if( isForward )
-//                {
-//                    lengthOrderIndex = ( i * 2 + 1 );
-//                }
-//                else if( isReversed )
-//                {
-//                    lengthOrderIndex = j * 2;
-//                }
-//            }
-//        }
-        
-//        static constexpr const double WEIRD_LENGTH_RATIO_TWEAKER = 9.0 / 1.0;
-//        const double lengthOrderAsRatio = static_cast<double>( numParts - lengthOrderIndex - 1 ) / static_cast<double>( numParts );
-//        const double lengthAdjuster = 1.0 + lengthOrderAsRatio * WEIRD_LENGTH_RATIO_TWEAKER;
-//        constexpr const double BASE_PROBABILITY_OF_ADDING_A_NOTE = 10.0;
-//        const double probabilityOfAddingANote = lengthAdjuster * BASE_PROBABILITY_OF_ADDING_A_NOTE;
-//        const int prob = static_cast<int>( probabilityOfAddingANote + 0.49999999999999999 );
-        const bool isThisPartTheLongestPart = partIndex == lastIndex;
-        constexpr const int NUMBER_OF_LOOP_ITERATIONS = 100;
-        
-        int prob = 0;
-        int numToAdd = 0;
-        
-        if( partIndex == 0 )
-        {
-            prob = 50;
-            numToAdd = 3;
-        }
-        else if( partIndex == 1 )
-        {
-            prob = 30;
-            numToAdd = 1;
-        }
-        else if( partIndex == 2 )
-        {
-            prob = 40;
-            numToAdd = 2;
-        }
-        else
-        {
-            prob = 60;
-            numToAdd = 4;
-        }
-        
-        for( int i = 0; i < NUMBER_OF_LOOP_ITERATIONS; ++i )
-        {
-            const bool doAdd = ioProb.get( prob );
-            const bool isInitial = ( i == 0 ) && isThisPartTheLongestPart;
-            
-            if( isInitial )
-            {
-                auto insertIter = ioPatternAtoms.cbegin() + static_cast<ptrdiff_t>( lastIndex );
-                ioPatternAtoms.insert( insertIter, *insertIter );
-                writeMusic( ioPatternAtoms, ioOutputAtoms, 1 );
-            }
-            else if( doAdd || isInitial )
-            {
-                for( int z = 0; z < numToAdd; ++z )
-                {
-                    const int insertIndex = findInsertIndex( ioPatternAtoms, ioProb );
-                    auto insertIter = ioPatternAtoms.cbegin() + static_cast<ptrdiff_t>( insertIndex );
-                    ioPatternAtoms.insert( insertIter, *insertIter );
-                }
-                writeMusic( ioPatternAtoms, ioOutputAtoms, 1 );
-            }
-        }
-    }
-    
-    
     int
     Coalescence::findInsertIndex( const Atoms& inAtoms, Prob& ioProb )
     {
@@ -724,8 +540,6 @@ namespace pen
         const AtomStreams originalReversedMusic = outMusic;
         AtomStreams patternStreams = originalReversedMusic;
         Prob boolGen{ DIGITS_DAT_PATH() };
-        
-        //doControlledCoalescing( patternStreams, outMusic, boolGen );
         doSomeAwesomeCoalescing( originalMusic, patternStreams, outMusic, boolGen );
 
         shortenStreamsToMatchLengthOfShortestStream( outMusic, BEATS_PER_MEASURE );
