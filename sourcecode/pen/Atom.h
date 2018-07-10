@@ -62,6 +62,12 @@ namespace pen
         return true;
     }
     
+    
+    inline bool operator!=( const Atom& inLeft, const Atom& inRight )
+    {
+        return !( inLeft == inRight );
+    }
+    
     enum class AtomPatternType
     {
         Pitch,

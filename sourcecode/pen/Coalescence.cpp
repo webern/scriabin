@@ -541,10 +541,11 @@ namespace pen
         AtomStreams patternStreams = originalReversedMusic;
         Prob boolGen{ DIGITS_DAT_PATH() };
         doSomeAwesomeCoalescing( originalMusic, patternStreams, outMusic, boolGen );
-
         shortenStreamsToMatchLengthOfShortestStream( outMusic, BEATS_PER_MEASURE );
         reverseStreams( outMusic );
         writeMusic( originalMusic, outMusic, 32 );
+        augmentBeginning( outMusic );
+        
         writeStreamsToScore( outMusic, myScore );
         auto& dmgr = mx::api::DocumentManager::getInstance();
         const auto oID = dmgr.createFromScore( myScore );
@@ -793,6 +794,71 @@ namespace pen
                 }
                 
                 ioScore.parts.at( partIndex ).measures.push_back( prototype );
+            }
+        }
+    }
+    
+    
+    void
+    Coalescence::augmentBeginning( AtomStreams& ioOutMusic )
+    {
+        std::vector<int> changeIndices;
+        std::vector<Atom> previousNotes;
+        std::vector<Atom> currentNotes;
+        int noteIndex = 0;
+        const int lastNote = static_cast<int>( ioOutMusic.at( 0 ).size() ) - 1;
+        
+        for( ; noteIndex <= lastNote && changeIndices.size() < 8; ++noteIndex )
+        {
+            currentNotes.clear();
+            
+            for( const auto& p : ioOutMusic )
+            {
+                const auto a = p.second.at( static_cast<size_t>( noteIndex) );
+                currentNotes.push_back( a );
+            }
+            
+            if( previousNotes.empty() )
+            {
+                changeIndices.push_back( noteIndex );
+            }
+            else
+            {
+                if( previousNotes.size() != currentNotes.size() )
+                {
+                    throw std::runtime_error{ "previousNotes.size() != currentNotes.size()" };
+                }
+                
+                auto prevIter = previousNotes.cbegin();
+                auto currIter = currentNotes.cbegin();
+                const auto prevEnd = previousNotes.cend();
+                
+                for( ; prevIter != prevEnd; ++prevIter, ++currIter )
+                {
+                    if( *prevIter != *currIter )
+                    {
+                        changeIndices.push_back( noteIndex - 1 );
+                    }
+                }
+            }
+            
+            previousNotes = currentNotes;
+        }
+        
+        int changeInstance = static_cast<int>( changeIndices.size() );
+        for( auto changeIndexIter = changeIndices.crbegin(); changeIndexIter != changeIndices.crend(); ++changeIndexIter, --changeInstance )
+        {
+            const auto changeIndex = *changeIndexIter;
+            const auto notesToAdd = 18;//;changeInstance * BEATS_PER_MEASURE;
+            
+            for( auto& p : ioOutMusic )
+            {
+                auto insertIter = p.second.cbegin() + static_cast<ptrdiff_t>( changeIndex );
+                
+                for( int z = 0; z < notesToAdd; ++z )
+                {
+                    insertIter = p.second.insert( insertIter, *insertIter );
+                }
             }
         }
     }
