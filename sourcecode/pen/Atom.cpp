@@ -312,4 +312,40 @@ namespace pen
         const auto result = base + ( octaveAdjustment * SEMITONES_PER_OCTAVE );
         return result;
     }
+    
+    bool operator==( const Atom& inLeft, const Atom& inRight )
+    {
+        return ( !( inLeft < inRight ) ) && ( !( inRight < inLeft ) );
+    }
+    
+    
+    bool operator!=( const Atom& inLeft, const Atom& inRight )
+    {
+        return ( inLeft < inRight ) || ( inRight < inLeft );
+    }
+    
+    
+    bool operator<( const Atom& inLeft, const Atom& inRight )
+    {
+        return inLeft.getMidiNote() < inRight.getMidiNote();
+    }
+    
+    
+    bool operator>( const Atom& inLeft, const Atom& inRight )
+    {
+        return inRight < inLeft;
+    }
+    
+    
+    bool operator<=( const Atom& inLeft, const Atom& inRight )
+    {
+        return ( inLeft < inRight ) || ( inLeft == inRight );
+    }
+    
+    
+    bool operator>=( const Atom& inLeft, const Atom& inRight )
+    {
+        return ( inRight < inLeft ) || ( inLeft == inRight );
+    }
+    
 }

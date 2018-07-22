@@ -46,33 +46,12 @@ namespace pen
         void updateName();
     };
     
-    inline bool operator==( const Atom& inLeft, const Atom& inRight )
-    {
-        if( inLeft.getStep() < 0 && inRight.getStep() < 0 )
-        {
-            return true;
-        }
-        else if( inLeft.getStep() != inRight.getStep() )
-        {
-            return false;
-        }
-        else if( inLeft.getOctave() != inRight.getOctave() )
-        {
-            return false;
-        }
-        else if( inLeft.getAlter() != inRight.getAlter() )
-        {
-            return false;
-        }
-        
-        return true;
-    }
-    
-    
-    inline bool operator!=( const Atom& inLeft, const Atom& inRight )
-    {
-        return !( inLeft == inRight );
-    }
+    bool operator==( const Atom& inLeft, const Atom& inRight );
+    bool operator!=( const Atom& inLeft, const Atom& inRight );
+    bool operator<( const Atom& inLeft, const Atom& inRight );
+    bool operator>( const Atom& inLeft, const Atom& inRight );
+    bool operator<=( const Atom& inLeft, const Atom& inRight );
+    bool operator>=( const Atom& inLeft, const Atom& inRight );
     
     enum class AtomPatternType
     {
