@@ -1,4 +1,5 @@
-#include "Atom.h"
+#include "pen/Atom.h"
+#include "pen/Constants.h"
 
 namespace pen
 {
@@ -10,6 +11,14 @@ namespace pen
     , myIsAccented{ false }
     {
         
+    }
+    
+    Atom::Atom( int inStep, int inAlter, int inOctave )
+    : Atom{}
+    {
+        setStep( inStep );
+        setAlter( inAlter );
+        setOctave( inOctave );
     }
     
     
@@ -288,5 +297,19 @@ namespace pen
     Atom::setIsAccented( bool inIsAccented )
     {
         myIsAccented = inIsAccented;
+    }
+    
+    int
+    Atom::getMidiNote() const
+    {
+        if( this->getStep() < 0 || this->getStep() > STEP_B )
+        {
+            return std::numeric_limits<int>::min();
+        }
+        
+        const auto base = C4_MIDI_NUMBER + STEP_PITCH_CLASSES[static_cast<size_t>( getStep() )] + getAlter();
+        const auto octaveAdjustment = getOctave() - ( ( C4_MIDI_NUMBER / SEMITONES_PER_OCTAVE ) - 1 );
+        const auto result = base + ( octaveAdjustment * SEMITONES_PER_OCTAVE );
+        return result;
     }
 }

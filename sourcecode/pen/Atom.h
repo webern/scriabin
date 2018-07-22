@@ -16,6 +16,7 @@ namespace pen
     {
     public:
         Atom();
+        Atom( int inStep, int inAlter, int inOctave );
         Atom( const mx::api::PitchData& inPitchData );
         
         std::string getName() const;
@@ -32,6 +33,7 @@ namespace pen
         mx::api::PitchData getMxPitchData() const;
         bool getIsAccented() const;
         void setIsAccented( bool inIsAccented );
+        int getMidiNote() const;
 
     private:
         std::string myName;

@@ -20,7 +20,7 @@
 		29CA496E20BCCC1F00F0B643 /* InstrumentConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = 29CA495920BCCC1E00F0B643 /* InstrumentConfig.h */; };
 		29CA496F20BCCC1F00F0B643 /* Program.h in Headers */ = {isa = PBXBuildFile; fileRef = 29CA495A20BCCC1F00F0B643 /* Program.h */; };
 		29CA497020BCCC1F00F0B643 /* CommandLineArgumentPrototype.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 29CA495B20BCCC1F00F0B643 /* CommandLineArgumentPrototype.cpp */; };
-		29CA497120BCCC1F00F0B643 /* constants.h in Headers */ = {isa = PBXBuildFile; fileRef = 29CA495C20BCCC1F00F0B643 /* constants.h */; };
+		29CA497120BCCC1F00F0B643 /* Constants.h in Headers */ = {isa = PBXBuildFile; fileRef = 29CA495C20BCCC1F00F0B643 /* Constants.h */; };
 		29CA497220BCCC1F00F0B643 /* util.h in Headers */ = {isa = PBXBuildFile; fileRef = 29CA495D20BCCC1F00F0B643 /* util.h */; };
 		29CA497320BCCC1F00F0B643 /* PitchPattern.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 29CA495E20BCCC1F00F0B643 /* PitchPattern.cpp */; };
 		29CA497420BCCC1F00F0B643 /* InstrumentSpecies.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 29CA495F20BCCC1F00F0B643 /* InstrumentSpecies.cpp */; };
@@ -53,7 +53,7 @@
 		29CA495920BCCC1E00F0B643 /* InstrumentConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstrumentConfig.h; sourceTree = "<group>"; };
 		29CA495A20BCCC1F00F0B643 /* Program.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Program.h; sourceTree = "<group>"; };
 		29CA495B20BCCC1F00F0B643 /* CommandLineArgumentPrototype.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CommandLineArgumentPrototype.cpp; sourceTree = "<group>"; };
-		29CA495C20BCCC1F00F0B643 /* constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = constants.h; sourceTree = "<group>"; };
+		29CA495C20BCCC1F00F0B643 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		29CA495D20BCCC1F00F0B643 /* util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = util.h; sourceTree = "<group>"; };
 		29CA495E20BCCC1F00F0B643 /* PitchPattern.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PitchPattern.cpp; sourceTree = "<group>"; };
 		29CA495F20BCCC1F00F0B643 /* InstrumentSpecies.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InstrumentSpecies.cpp; sourceTree = "<group>"; };
@@ -122,7 +122,7 @@
 				29CA495320BCCC1E00F0B643 /* CommandLineParser.h */,
 				29CA496020BCCC1F00F0B643 /* CommandLineValue.cpp */,
 				29CA495620BCCC1E00F0B643 /* CommandLineValue.h */,
-				29CA495C20BCCC1F00F0B643 /* constants.h */,
+				29CA495C20BCCC1F00F0B643 /* Constants.h */,
 				29CA495420BCCC1E00F0B643 /* Etude.cpp */,
 				29CA496120BCCC1F00F0B643 /* Etude.h */,
 				29CA495520BCCC1E00F0B643 /* etude1.h */,
@@ -171,7 +171,7 @@
 				29CA496D20BCCC1F00F0B643 /* addMarimbaNotes.h in Headers */,
 				29DE36BE20C477FA0090ED98 /* Coalescence.h in Headers */,
 				29CA496E20BCCC1F00F0B643 /* InstrumentConfig.h in Headers */,
-				29CA497120BCCC1F00F0B643 /* constants.h in Headers */,
+				29CA497120BCCC1F00F0B643 /* Constants.h in Headers */,
 				29CA496F20BCCC1F00F0B643 /* Program.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -106,7 +106,19 @@ namespace pen
             note.setOctave( note.getOctave() - 1 );
         }
         
+        addAccentsToInitialStreams( streams );
         return streams;
+    }
+    
+    
+    void
+    Coalescence::addAccentsToInitialStreams( AtomStreams& ioStreams )
+    {
+        const auto& checkStreamZero = ioStreams.at( 0 );
+        for( const auto& a : checkStreamZero )
+        {
+            //
+        }
     }
     
     
@@ -700,6 +712,14 @@ namespace pen
             else
             {
                 theNote.pitchData = atom.getMxPitchData();
+            }
+            
+            if( atom.getIsAccented() )
+            {
+                mx::api::MarkData accent{};
+                accent.markType = mx::api::MarkType::accent;
+                accent.tickTimePosition = theNote.tickTimePosition;
+                theNote.noteAttachmentData.marks.push_back( accent );
             }
             
             measure.staves.at( 0 ).voices.at( 0 ).notes.push_back( theNote );
