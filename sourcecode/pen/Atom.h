@@ -18,7 +18,7 @@ namespace pen
         Atom();
         Atom( const mx::api::PitchData& inPitchData );
         
-        std::string name;
+        std::string getName() const;
         void setRest();
         void setStep( int inStep );
         int getStep() const;
@@ -30,11 +30,15 @@ namespace pen
         mx::api::Step getMxStep() const;
         void setFromMx( const mx::api::PitchData& inPitchData );
         mx::api::PitchData getMxPitchData() const;
+        bool getIsAccented() const;
+        void setIsAccented( bool inIsAccented );
 
     private:
-        int step;
-        int alter;
-        int octave;
+        std::string myName;
+        int myStep;
+        int myAlter;
+        int myOctave;
+        bool myIsAccented;
 
     public:
         void updateName();

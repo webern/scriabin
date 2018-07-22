@@ -3,10 +3,11 @@
 namespace pen
 {
     Atom::Atom()
-    : step{ -1 }
-    , alter{ 0 }
-    , octave{ 4 }
-    , name{ "rest" }
+    : myStep{ -1 }
+    , myAlter{ 0 }
+    , myOctave{ 4 }
+    , myName{ "rest" }
+    , myIsAccented{ false }
     {
         
     }
@@ -18,13 +19,19 @@ namespace pen
         setFromMx( inPitchData );
     }
     
+    std::string
+    Atom::getName() const
+    {
+        return myName;
+    }
+    
     
     void
     Atom::setRest()
     {
-        step = -1;
-        octave = 4;
-        alter = 0;
+        myStep = -1;
+        myOctave = 4;
+        myAlter = 0;
         updateName();
     }
     
@@ -33,11 +40,11 @@ namespace pen
     Atom::updateName()
     {
         std::stringstream ss;
-        switch ( step )
+        switch ( myStep )
         {
             case -1:
             {
-                this->name = "rest";
+                this->myName = "rest";
                 return;
             }
             case 0:
@@ -77,31 +84,31 @@ namespace pen
             }
             default:
             {
-                this->name = "rest";
+                this->myName = "rest";
                 return;
             }
         }
         
-        if( this->alter == -2 )
+        if( this->myAlter == -2 )
         {
             ss << "bb";
         }
-        else if( this->alter == -1 )
+        else if( this->myAlter == -1 )
         {
             ss << "b";
         }
-        else if( this->alter == 1 )
+        else if( this->myAlter == 1 )
         {
             ss << "#";
         }
-        else if( this->alter == 2 )
+        else if( this->myAlter == 2 )
         {
             ss << "x";
         }
         
-        ss << this->octave;
+        ss << this->myOctave;
         
-        this->name = ss.str();
+        this->myName = ss.str();
     }
     
     
@@ -117,7 +124,7 @@ namespace pen
             throw std::runtime_error("Atom::setStep out of range, > 6");
         }
         
-        step = inStep;
+        myStep = inStep;
         updateName();
     }
 
@@ -125,7 +132,7 @@ namespace pen
     int
     Atom::getStep() const
     {
-        return step;
+        return myStep;
     }
     
     
@@ -141,7 +148,7 @@ namespace pen
             throw std::runtime_error("Atom::setOctave out of range, > 9");
         }
         
-        octave = inOctave;
+        myOctave = inOctave;
         updateName();
     }
     
@@ -149,7 +156,7 @@ namespace pen
     int
     Atom::getOctave() const
     {
-        return octave;
+        return myOctave;
     }
     
     
@@ -165,7 +172,7 @@ namespace pen
             throw std::runtime_error("Atom::setAlter out of range, > 2");
         }
         
-        alter = inAlter;
+        myAlter = inAlter;
         updateName();
     }
     
@@ -173,7 +180,7 @@ namespace pen
     int
     Atom::getAlter() const
     {
-        return alter;
+        return myAlter;
     }
 
     
@@ -183,28 +190,28 @@ namespace pen
         switch ( inMxStep )
         {
             case mx::api::Step::c:
-                this->step = 0;
+                this->myStep = 0;
                 break;
             case mx::api::Step::d:
-                this->step = 1;
+                this->myStep = 1;
                 break;
             case mx::api::Step::e:
-                this->step = 2;
+                this->myStep = 2;
                 break;
             case mx::api::Step::f:
-                this->step = 3;
+                this->myStep = 3;
                 break;
             case mx::api::Step::g:
-                this->step = 4;
+                this->myStep = 4;
                 break;
             case mx::api::Step::a:
-                this->step = 5;
+                this->myStep = 5;
                 break;
             case mx::api::Step::b:
-                this->step = 6;
+                this->myStep = 6;
                 break;
             default:
-                this->step = 7;
+                this->myStep = 7;
                 break;
         }
         updateName();
@@ -216,7 +223,7 @@ namespace pen
     {
         mx::api::Step outStep = mx::api::Step::unspecified;
         
-        switch ( this->step )
+        switch ( this->myStep )
         {
             case 0:
                 outStep = mx::api::Step::c;
@@ -252,8 +259,8 @@ namespace pen
     Atom::setFromMx( const mx::api::PitchData& inPitchData )
     {
         setStep( inPitchData.step );
-        alter = inPitchData.alter;
-        octave = inPitchData.octave;
+        myAlter = inPitchData.alter;
+        myOctave = inPitchData.octave;
         updateName();
     }
     
@@ -263,9 +270,23 @@ namespace pen
     {
         mx::api::PitchData result;
         result.step = getMxStep();
-        result.octave = octave;
-        result.alter = alter;
+        result.octave = myOctave;
+        result.alter = myAlter;
         result.showAccidental();
         return result;
+    }
+    
+    
+    bool
+    Atom::getIsAccented() const
+    {
+        return myIsAccented;
+    }
+    
+    
+    void
+    Atom::setIsAccented( bool inIsAccented )
+    {
+        myIsAccented = inIsAccented;
     }
 }

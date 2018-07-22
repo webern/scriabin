@@ -370,14 +370,14 @@ namespace pen
             
             const auto randoIter = ioPattern.cbegin() + static_cast<ptrdiff_t>( rando );
             
-            if( randoIter->getStep() == -1 )
-            {
-                std::cout << "expanding a rest" << std::endl;
-            }
-            else
-            {
-                std::cout << "expanding a note" << std::endl;
-            }
+//            if( randoIter->getStep() == -1 )
+//            {
+//                std::cout << "expanding a rest" << std::endl;
+//            }
+//            else
+//            {
+//                std::cout << "expanding a note" << std::endl;
+//            }
             
             ioPattern.insert( randoIter, *randoIter );
             return;
@@ -433,14 +433,14 @@ namespace pen
         const auto& first = sorted.front();
         const auto insertIndex = first.index;
         const auto insertIter = ioPattern.cbegin() + static_cast<ptrdiff_t>( insertIndex );
-        if( insertIter->getStep() == -1 )
-        {
-            std::cout << "expanding a rest" << std::endl;
-        }
-        else
-        {
-            std::cout << "expanding a note" << std::endl;
-        }
+//        if( insertIter->getStep() == -1 )
+//        {
+//            std::cout << "expanding a rest" << std::endl;
+//        }
+//        else
+//        {
+//            std::cout << "expanding a note" << std::endl;
+//        }
         ioPattern.insert( insertIter, *insertIter );
     }
     
