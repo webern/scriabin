@@ -55,7 +55,9 @@ namespace pen
     {
     public:
         Coalescence( std::string inputFilepath, std::string outputFilepath );
-        void doEverthing();
+        
+        // saves the score to disk but also returns it for inspection
+        mx::api::ScoreData doEverthing();
         
     private:
         mx::api::ScoreData myScore;

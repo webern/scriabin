@@ -541,7 +541,7 @@ namespace pen
     }
     
     
-    void
+    mx::api::ScoreData
     Coalescence::doEverthing()
     {
         initSelfScore();
@@ -562,6 +562,7 @@ namespace pen
         auto& dmgr = mx::api::DocumentManager::getInstance();
         const auto oID = dmgr.createFromScore( myScore );
         dmgr.writeToFile( oID, myOutFilepath );
+        return myScore;
     }
     
     
