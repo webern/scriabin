@@ -115,9 +115,33 @@ namespace pen
     Coalescence::addAccentsToInitialStreams( AtomStreams& ioStreams )
     {
         const auto& checkStreamZero = ioStreams.at( 0 );
+        int indexHighest = -1;
+        Atom highest;
+        int indexLowest = -1;
+        Atom lowest;
+        int curr = 0;
+        
         for( const auto& a : checkStreamZero )
         {
-            //
+            if( indexHighest == -1 || a > highest )
+            {
+                highest = a;
+                indexHighest = curr;
+            }
+            
+            if( indexLowest == -1 || a < lowest )
+            {
+                lowest = a;
+                indexLowest = curr;
+            }
+
+            ++curr;
+        }
+        
+        for( auto& stream : ioStreams )
+        {
+            stream.second.at( static_cast<size_t>( indexLowest ) ).setIsAccented( true );
+            stream.second.at( static_cast<size_t>( indexHighest ) ).setIsAccented( true );
         }
     }
     
