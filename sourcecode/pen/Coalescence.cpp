@@ -562,7 +562,25 @@ namespace pen
         shortenStreamsToMatchLengthOfShortestStream( outMusic, BEATS_PER_MEASURE );
         reverseStreams( outMusic );
         
-        // TODO - modify accent structure
+        // TODO - eliminate triple+ accents
+        
+        for( auto& stream : outMusic )
+        {
+            auto it = stream.second.begin();
+            const auto en = stream.second.end();
+            std::unique_ptr<Atom> prevAtom = nullptr;
+            
+            for( ; it != en; ++it )
+            {
+                if( !prevAtom )
+                {
+                    prevAtom = std::unique_ptr<Atom>{ std::make_unique<Atom>( *it ) };
+                    continue;
+                }
+            }
+        }
+        
+        // TODO - gradual sneak-in of accents
         
         // TODO - accent stretti
         
