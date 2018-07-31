@@ -546,26 +546,10 @@ namespace pen
         return insertIndex;
     }
     
-    
-    mx::api::ScoreData
-    Coalescence::doEverthing()
+    void
+    Coalescence::eliminateTriplePlusAccents( AtomStreams& ioStreams )
     {
-        initSelfScore();
-        const MxNoteStreams inputNotes = getInputNotes();
-        const AtomStreams originalMusic = extractStreams( inputNotes );
-        AtomStreams outMusic = originalMusic;
-        reverseStreams( outMusic );
-        const AtomStreams originalReversedMusic = outMusic;
-        AtomStreams patternStreams = originalReversedMusic;
-        Prob boolGen{ DIGITS_DAT_PATH() };
-        doSomeAwesomeCoalescing( originalMusic, patternStreams, outMusic, boolGen );
-        shortenStreamsToMatchLengthOfShortestStream( outMusic, BEATS_PER_MEASURE );
-        reverseStreams( outMusic );
-        writeMusic( originalMusic, outMusic, 32 );
-        augmentBeginning( outMusic );
-
-        // eliminate triple+ accents
-        for( auto& stream : outMusic )
+        for( auto& stream : ioStreams )
         {
             auto it = stream.second.begin();
             const auto en = stream.second.end();
@@ -604,6 +588,27 @@ namespace pen
                 *prevAtom = *it;
             }
         }
+    }
+    
+    
+    mx::api::ScoreData
+    Coalescence::doEverthing()
+    {
+        initSelfScore();
+        const MxNoteStreams inputNotes = getInputNotes();
+        const AtomStreams originalMusic = extractStreams( inputNotes );
+        AtomStreams outMusic = originalMusic;
+        reverseStreams( outMusic );
+        const AtomStreams originalReversedMusic = outMusic;
+        AtomStreams patternStreams = originalReversedMusic;
+        Prob boolGen{ DIGITS_DAT_PATH() };
+        doSomeAwesomeCoalescing( originalMusic, patternStreams, outMusic, boolGen );
+        shortenStreamsToMatchLengthOfShortestStream( outMusic, BEATS_PER_MEASURE );
+        reverseStreams( outMusic );
+        writeMusic( originalMusic, outMusic, 32 );
+        augmentBeginning( outMusic );
+
+        eliminateTriplePlusAccents( outMusic );
         
         // TODO - gradual sneak-in of accents
         

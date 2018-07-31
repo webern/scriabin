@@ -106,5 +106,6 @@ namespace pen
         static void shortenStreamsToMatchLengthOfShortestStream( AtomStreams& ioStreams, int inMultipleOf = -1 );
         static int findInsertIndex( const Atoms& inAtoms, Prob& ioProb );
         static void augmentBeginning( AtomStreams& ioOutMusic );
+        static void eliminateTriplePlusAccents( AtomStreams& ioStreams );
     };
 }
