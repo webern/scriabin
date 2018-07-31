@@ -561,6 +561,13 @@ namespace pen
         doSomeAwesomeCoalescing( originalMusic, patternStreams, outMusic, boolGen );
         shortenStreamsToMatchLengthOfShortestStream( outMusic, BEATS_PER_MEASURE );
         reverseStreams( outMusic );
+        
+        // TODO - modify accent structure
+        
+        // TODO - accent stretti
+        
+        // TODO - write the heat death
+        
         writeMusic( originalMusic, outMusic, 32 );
         augmentBeginning( outMusic );
         

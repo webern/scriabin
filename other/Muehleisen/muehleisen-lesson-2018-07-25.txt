@@ -1,0 +1,20 @@
+2018-07-25
+
+Eliminate triple+ accents
+Use probability sparsity on the accents (thin it out in the beginning)
+Experiment with accent stretti
+
+Diagram the form and the sections
+
+Polyrhythmic accents
+Augmentation and collapse (entropy)
+
+Development
+Stretti
+Polyrhythmic
+Removing unaccented notes
+Sustaining accented notes
+
+-- other notes
+David Allen - getting things done (looks good)
+Thierry Escaich - composer - listen
