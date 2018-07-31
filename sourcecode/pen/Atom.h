@@ -16,9 +16,10 @@ namespace pen
     {
     public:
         Atom();
+        Atom( int inStep, int inAlter, int inOctave );
         Atom( const mx::api::PitchData& inPitchData );
         
-        std::string name;
+        std::string getName() const;
         void setRest();
         void setStep( int inStep );
         int getStep() const;
@@ -30,37 +31,27 @@ namespace pen
         mx::api::Step getMxStep() const;
         void setFromMx( const mx::api::PitchData& inPitchData );
         mx::api::PitchData getMxPitchData() const;
+        bool getIsAccented() const;
+        void setIsAccented( bool inIsAccented );
+        int getMidiNote() const;
 
     private:
-        int step;
-        int alter;
-        int octave;
+        std::string myName;
+        int myStep;
+        int myAlter;
+        int myOctave;
+        bool myIsAccented;
 
     public:
         void updateName();
     };
     
-    inline bool operator==( const Atom& inLeft, const Atom& inRight )
-    {
-        if( inLeft.getStep() < 0 && inRight.getStep() < 0 )
-        {
-            return true;
-        }
-        else if( inLeft.getStep() != inRight.getStep() )
-        {
-            return false;
-        }
-        else if( inLeft.getOctave() != inRight.getOctave() )
-        {
-            return false;
-        }
-        else if( inLeft.getAlter() != inRight.getAlter() )
-        {
-            return false;
-        }
-        
-        return true;
-    }
+    bool operator==( const Atom& inLeft, const Atom& inRight );
+    bool operator!=( const Atom& inLeft, const Atom& inRight );
+    bool operator<( const Atom& inLeft, const Atom& inRight );
+    bool operator>( const Atom& inLeft, const Atom& inRight );
+    bool operator<=( const Atom& inLeft, const Atom& inRight );
+    bool operator>=( const Atom& inLeft, const Atom& inRight );
     
     enum class AtomPatternType
     {

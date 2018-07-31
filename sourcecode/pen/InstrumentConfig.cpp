@@ -90,8 +90,8 @@ namespace pen
     InstrumentConfig::InstrumentConfig( const ezxml::XDoc& inConfig )
     : InstrumentConfig{}
     {
-        int middleC = MIDI_NOTE_MIDDLE_C;
-        int middleCOcttave = MIDDLE_C_OCTAVE;
+        int middleC = C4_MIDI_NUMBER;
+        int middleCOcttave = C4_MIDI_NUMBER;
         
         const auto& r = inConfig.getRoot();
         

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		293C29D7210410D2001E3E79 /* TestAtom.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 293C29D6210410D2001E3E79 /* TestAtom.cpp */; };
 		29BEE1B520E4B46800B5276B /* TestProp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 29BEE1B420E4B46800B5276B /* TestProp.cpp */; };
 		29CA48E120BCC69A00F0B643 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 29CA48E020BCC69A00F0B643 /* main.cpp */; };
 		29CA48E220BCC70300F0B643 /* catch_assertionhandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 29CA484620BCC67500F0B643 /* catch_assertionhandler.cpp */; };
@@ -95,6 +96,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		293C29D6210410D2001E3E79 /* TestAtom.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TestAtom.cpp; sourceTree = "<group>"; };
 		29BEE1B420E4B46800B5276B /* TestProp.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TestProp.cpp; sourceTree = "<group>"; };
 		29CA482D20BCC2E200F0B643 /* pen-test */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "pen-test"; sourceTree = BUILT_PRODUCTS_DIR; };
 		29CA484120BCC67500F0B643 /* catch_with_main.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = catch_with_main.hpp; sourceTree = "<group>"; };
@@ -507,6 +509,7 @@
 				29CA499D20BCF16900F0B643 /* TestProgram.cpp */,
 				29CA499C20BCF16900F0B643 /* TestUtil.cpp */,
 				29BEE1B420E4B46800B5276B /* TestProp.cpp */,
+				293C29D6210410D2001E3E79 /* TestAtom.cpp */,
 			);
 			path = tests;
 			sourceTree = "<group>";
@@ -654,6 +657,7 @@
 				29CA48F320BCC70300F0B643 /* catch_matchers_generic.cpp in Sources */,
 				29CA48E720BCC70300F0B643 /* catch_stringref.cpp in Sources */,
 				29CA48F120BCC70300F0B643 /* catch_tag_alias_registry.cpp in Sources */,
+				293C29D7210410D2001E3E79 /* TestAtom.cpp in Sources */,
 				29CA48EA20BCC70300F0B643 /* catch_tag_alias.cpp in Sources */,
 				29CA48EE20BCC70300F0B643 /* catch_test_case_info.cpp in Sources */,
 			);

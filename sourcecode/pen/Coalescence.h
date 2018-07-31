@@ -55,7 +55,9 @@ namespace pen
     {
     public:
         Coalescence( std::string inputFilepath, std::string outputFilepath );
-        void doEverthing();
+        
+        // saves the score to disk but also returns it for inspection
+        mx::api::ScoreData doEverthing();
         
     private:
         mx::api::ScoreData myScore;
@@ -75,16 +77,6 @@ namespace pen
         static void expandShortestReps( Atoms& ioPattern,
                                         Prob& ioProb );
         
-        static void doControlledCoalescing( AtomStreams& ioPatternStreams,
-                                            AtomStreams& ioOutputStreams,
-                                            Prob& ioProb );
-        
-        static void doControlledCoalescing( const int partIndex,
-                                            const int numParts,
-                                            Atoms& ioPatternStreams,
-                                            Atoms& ioOutputStreams,
-                                            Prob& ioProb );
-        
         static void doCoalescingLoop( const CoalescenceParams& p,
                                       AtomStreams& ioPatternStreams,
                                       AtomStreams& ioOutputStreams,
@@ -95,6 +87,7 @@ namespace pen
         static void reverseAtoms( Atoms& ioAtoms );
         static void reverseStreams( AtomStreams& ioStreams );
         static AtomStreams extractStreams( const MxNoteStreams& inNotes );
+        static void addAccentsToInitialStreams( AtomStreams& ioStreams );
         static mx::api::ScoreData createEmptyScore( const std::string& title );
         static void addInstrument( mx::api::ScoreData& ioScore,
                                    const std::string& id,
@@ -112,5 +105,6 @@ namespace pen
         static int findIndexOfShortestStream( const AtomStreams& inStreams );
         static void shortenStreamsToMatchLengthOfShortestStream( AtomStreams& ioStreams, int inMultipleOf = -1 );
         static int findInsertIndex( const Atoms& inAtoms, Prob& ioProb );
+        static void augmentBeginning( AtomStreams& ioOutMusic );
     };
 }

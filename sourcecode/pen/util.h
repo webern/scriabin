@@ -1,7 +1,7 @@
 #pragma once
 
 #include "mx/api/ScoreData.h"
-#include "pen/constants.h"
+#include "pen/Constants.h"
 
 namespace pen
 {
