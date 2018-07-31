@@ -561,22 +561,47 @@ namespace pen
         doSomeAwesomeCoalescing( originalMusic, patternStreams, outMusic, boolGen );
         shortenStreamsToMatchLengthOfShortestStream( outMusic, BEATS_PER_MEASURE );
         reverseStreams( outMusic );
-        
-        // TODO - eliminate triple+ accents
-        
+        writeMusic( originalMusic, outMusic, 32 );
+        augmentBeginning( outMusic );
+
+        // eliminate triple+ accents
         for( auto& stream : outMusic )
         {
             auto it = stream.second.begin();
             const auto en = stream.second.end();
             std::unique_ptr<Atom> prevAtom = nullptr;
+            int accentCount = 0;
             
             for( ; it != en; ++it )
             {
                 if( !prevAtom )
                 {
                     prevAtom = std::unique_ptr<Atom>{ std::make_unique<Atom>( *it ) };
+                    if( it->getIsAccented() )
+                    {
+                        ++accentCount;
+                    }
                     continue;
                 }
+                
+                if( it->getIsAccented() )
+                {
+                    ++accentCount;
+                    
+                    if( *it == *prevAtom )
+                    {
+                        if( accentCount > 2 )
+                        {
+                            it->setIsAccented( false );
+                        }
+                    }
+                }
+                else
+                {
+                    accentCount = 0;
+                }
+                
+                *prevAtom = *it;
             }
         }
         
@@ -586,8 +611,6 @@ namespace pen
         
         // TODO - write the heat death
         
-        writeMusic( originalMusic, outMusic, 32 );
-        augmentBeginning( outMusic );
         
         writeStreamsToScore( outMusic, myScore );
         auto& dmgr = mx::api::DocumentManager::getInstance();
