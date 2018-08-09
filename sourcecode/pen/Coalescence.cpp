@@ -610,7 +610,66 @@ namespace pen
 
         eliminateTriplePlusAccents( outMusic );
         
-        // TODO - gradual sneak-in of accents
+        // gradual sneak-in of accents
+        // find first accent after measure 240
+        // leave that accent in place
+        // but eliminate other accents with 90% probability
+        // gradually reduce this probablity to 0 by measure 400
+        
+
+        const int measure400 = 400 * 6;
+        const int firstDesiredAccentLoc = 200 * 6;
+        
+        auto stream0 = outMusic.at( 0 ).begin() + static_cast<ptrdiff_t>( firstDesiredAccentLoc );
+        auto stream1 = outMusic.at( 1 ).begin() + static_cast<ptrdiff_t>( firstDesiredAccentLoc );
+        auto stream2 = outMusic.at( 2 ).begin() + static_cast<ptrdiff_t>( firstDesiredAccentLoc );
+        auto stream3 = outMusic.at( 3 ).begin() + static_cast<ptrdiff_t>( firstDesiredAccentLoc );
+        const auto streamEnd = outMusic.at( 0 ).end();
+        int firstAccentLoc = 0;
+        
+        for( int i = firstDesiredAccentLoc; stream0 != streamEnd; ++i, ++stream0, ++stream1, ++stream2, ++stream3 )
+        {
+            if( stream0->getIsAccented() ||
+                stream1->getIsAccented() ||
+                stream2->getIsAccented() ||
+                stream3->getIsAccented() )
+            {
+                firstAccentLoc = i;
+                break;
+            }
+        }
+        
+        const double distanceBetweenProbZeroAndProb100 = static_cast<double>( firstAccentLoc ) - static_cast<double>( measure400 );
+        const double startingProb = 80.0;
+        const double probIncrement = startingProb / distanceBetweenProbZeroAndProb100;
+        
+        
+        for( auto& stream : outMusic )
+        {
+            for( size_t i = 0; i < firstAccentLoc; ++ i )
+            {
+                stream.second.at( i ).setIsAccented( false );
+            }
+            
+            
+            double prob = startingProb;
+            for( size_t i = firstAccentLoc + 2; i < measure400 + 6; ++i, prob += probIncrement )
+            {
+                const bool doEliminate = boolGen.get( static_cast<int>( prob ) );
+                
+                if( doEliminate )
+                {
+                    if( stream.second.at( i ).getIsAccented() )
+                    {
+                        if( !stream.second.at( i - 1 ).getIsAccented() )
+                        {
+                            stream.second.at( i ).setIsAccented( false );
+                            stream.second.at( i + 1 ).setIsAccented( false );
+                        }
+                    }
+                }
+            }
+        }
         
         // TODO - accent stretti
         
