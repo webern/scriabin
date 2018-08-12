@@ -104,7 +104,8 @@ namespace pen
         static void writeStreamsToScore( const AtomStreams& inStreams, mx::api::ScoreData& ioScore );
         static int findIndexOfShortestStream( const AtomStreams& inStreams );
         static void shortenStreamsToMatchLengthOfShortestStream( AtomStreams& ioStreams, int inMultipleOf = -1 );
-        void sneakInAccents( AtomStreams& ioMusic, Prob& ioProb );
+        static void sneakInAccents( AtomStreams& ioMusic, Prob& ioProb );
+        static void doStretto( AtomStreams& ioMusic, Prob& ioProb );
         static int findInsertIndex( const Atoms& inAtoms, Prob& ioProb );
         static void augmentBeginning( AtomStreams& ioOutMusic );
         static void eliminateTriplePlusAccents( AtomStreams& ioStreams );

@@ -611,6 +611,7 @@ namespace pen
         sneakInAccents( outMusic, boolGen );
         
         // TODO - accent stretti
+        doStretto( outMusic, boolGen );
         
         // TODO - write the heat death
         
@@ -684,6 +685,13 @@ namespace pen
                 }
             }
         }
+    }
+    
+    
+    void
+    Coalescence::doStretto( AtomStreams& ioMusic, Prob& ioProb )
+    {
+        
     }
     
     
