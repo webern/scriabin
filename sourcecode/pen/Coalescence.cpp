@@ -706,6 +706,66 @@ namespace pen
         {
             stream.second.resize( ( STRETTO_START_MEASURE_INDEX + MUSICAL_PHRASE_LENGTH_MEASURES ) * BEATS_PER_MEASURE );
         }
+        
+        AtomStreams proto;
+        
+        // copy the last musical phrase and remove the downbeat accent
+        for( auto& stream : ioMusic )
+        {
+            for( int n = STRETTO_START_NOTE_INDEX; n < STRETTO_START_NOTE_INDEX + MUSICAL_PHRASE_LENGTH_NOTES; ++n )
+            {
+                auto a = stream.second.at( n );
+                if( n == STRETTO_START_NOTE_INDEX )
+                {
+                    a.setIsAccented( false );
+                }
+                
+                proto[stream.first].push_back( a );
+            }
+        }
+        
+        int strettoCurrentLength = 9; // MUSICAL_PHRASE_LENGTH_NOTES - 1;
+        int strettoCycleCounter = MUSICAL_PHRASE_TOP_NOTE_INDEX;
+        auto cp = proto;
+        
+        for( int ni = STRETTO_START_NOTE_INDEX + MUSICAL_PHRASE_LENGTH_NOTES; ni <= STRETTO_LAST_NOTE_INDEX; ++ni, ++strettoCycleCounter )
+        {
+            if( strettoCycleCounter >= strettoCurrentLength )
+            {
+                strettoCycleCounter = strettoCycleCounter % strettoCurrentLength;
+            }
+            
+            auto phrasen = ni % MUSICAL_PHRASE_LENGTH_NOTES;
+            
+            if( phrasen == MUSICAL_PHRASE_TOP_NOTE_INDEX )
+            {
+                if( strettoCycleCounter == 0 )
+                {
+                    --strettoCurrentLength;
+                }
+                
+                if( strettoCurrentLength < 2 )
+                {
+                    break;
+                }
+            }
+            
+            if( strettoCycleCounter == 0 )
+            {
+                for( auto& stream : cp )
+                {
+                    stream.second.at( phrasen ).setIsAccented( true );
+                }
+            }
+            
+            if( phrasen == MUSICAL_PHRASE_LENGTH_NOTES - 1 )
+            {
+                writeMusic( cp, ioMusic, 1 );
+                cp = proto;
+            }
+        }
+        
+        // writeMusic( proto, ioMusic, 24 );
     }
     
     
