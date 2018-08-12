@@ -607,9 +607,25 @@ namespace pen
         reverseStreams( outMusic );
         writeMusic( originalMusic, outMusic, 32 );
         augmentBeginning( outMusic );
-
         eliminateTriplePlusAccents( outMusic );
+        sneakInAccents( outMusic, boolGen );
         
+        // TODO - accent stretti
+        
+        // TODO - write the heat death
+        
+        
+        writeStreamsToScore( outMusic, myScore );
+        auto& dmgr = mx::api::DocumentManager::getInstance();
+        const auto oID = dmgr.createFromScore( myScore );
+        dmgr.writeToFile( oID, myOutFilepath );
+        return myScore;
+    }
+    
+    
+    void
+    Coalescence::sneakInAccents( AtomStreams& ioMusic, Prob& ioProb )
+    {
         // gradual sneak-in of accents
         // find first accent after measure 240
         // leave that accent in place
@@ -618,19 +634,19 @@ namespace pen
         const int measure400 = 400 * 6;
         const int firstDesiredAccentLoc = 200 * 6;
         
-        auto stream0 = outMusic.at( 0 ).begin() + static_cast<ptrdiff_t>( firstDesiredAccentLoc );
-        auto stream1 = outMusic.at( 1 ).begin() + static_cast<ptrdiff_t>( firstDesiredAccentLoc );
-        auto stream2 = outMusic.at( 2 ).begin() + static_cast<ptrdiff_t>( firstDesiredAccentLoc );
-        auto stream3 = outMusic.at( 3 ).begin() + static_cast<ptrdiff_t>( firstDesiredAccentLoc );
-        const auto streamEnd = outMusic.at( 0 ).end();
+        auto stream0 = ioMusic.at( 0 ).begin() + static_cast<ptrdiff_t>( firstDesiredAccentLoc );
+        auto stream1 = ioMusic.at( 1 ).begin() + static_cast<ptrdiff_t>( firstDesiredAccentLoc );
+        auto stream2 = ioMusic.at( 2 ).begin() + static_cast<ptrdiff_t>( firstDesiredAccentLoc );
+        auto stream3 = ioMusic.at( 3 ).begin() + static_cast<ptrdiff_t>( firstDesiredAccentLoc );
+        const auto streamEnd = ioMusic.at( 0 ).end();
         int firstAccentLoc = 0;
         
         for( int i = firstDesiredAccentLoc; stream0 != streamEnd; ++i, ++stream0, ++stream1, ++stream2, ++stream3 )
         {
             if( stream0->getIsAccented() ||
-                stream1->getIsAccented() ||
-                stream2->getIsAccented() ||
-                stream3->getIsAccented() )
+               stream1->getIsAccented() ||
+               stream2->getIsAccented() ||
+               stream3->getIsAccented() )
             {
                 firstAccentLoc = i;
                 break;
@@ -642,7 +658,7 @@ namespace pen
         const double probIncrement = startingProb / distanceBetweenProbZeroAndProb100;
         
         
-        for( auto& stream : outMusic )
+        for( auto& stream : ioMusic )
         {
             for( size_t i = 0; i < static_cast<size_t>( firstAccentLoc ); ++ i )
             {
@@ -653,7 +669,7 @@ namespace pen
             double prob = startingProb;
             for( size_t i = static_cast<size_t>( firstAccentLoc ) + 2; i < measure400 + 6; ++i, prob += probIncrement )
             {
-                const bool doEliminate = boolGen.get( static_cast<int>( prob ) );
+                const bool doEliminate = ioProb.get( static_cast<int>( prob ) );
                 
                 if( doEliminate )
                 {
@@ -668,17 +684,6 @@ namespace pen
                 }
             }
         }
-        
-        // TODO - accent stretti
-        
-        // TODO - write the heat death
-        
-        
-        writeStreamsToScore( outMusic, myScore );
-        auto& dmgr = mx::api::DocumentManager::getInstance();
-        const auto oID = dmgr.createFromScore( myScore );
-        dmgr.writeToFile( oID, myOutFilepath );
-        return myScore;
     }
     
     
