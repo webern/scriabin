@@ -17,7 +17,7 @@ TEST_CASE( "coalescence", "Comp" )
     pen::Coalescence coalescence{ inFilepath, outFilepath };
     const auto score = coalescence.doEverthing();
     
-    const size_t minimumNumMeasures = 758;
+    const size_t minimumNumMeasures = 627;
     CHECK( score.parts.size() == 4 );
     CHECK( score.parts.at( 0 ).measures.size()>= minimumNumMeasures );
     CHECK( score.parts.at( 1 ).measures.size()>= minimumNumMeasures );

@@ -691,7 +691,21 @@ namespace pen
     void
     Coalescence::doStretto( AtomStreams& ioMusic, Prob& ioProb )
     {
+        const int STRETTO_START_MEASURE_NUMBER = 627;
+        const int STRETTO_LAST_MEASURE_NUMBER = 866;
+        const int STRETTO_START_MEASURE_INDEX = STRETTO_START_MEASURE_NUMBER - 1;
+        const int STRETTO_LAST_MEASURE_INDEX = STRETTO_LAST_MEASURE_NUMBER - 1;
+        const int STRETTO_START_NOTE_INDEX = STRETTO_START_MEASURE_INDEX * BEATS_PER_MEASURE;
+        const int STRETTO_LAST_NOTE_INDEX = ( STRETTO_LAST_MEASURE_NUMBER * BEATS_PER_MEASURE ) - 1;
+        const int MUSICAL_PHRASE_LENGTH_MEASURES = 4;
+        const int MUSICAL_PHRASE_LENGTH_NOTES = MUSICAL_PHRASE_LENGTH_MEASURES * BEATS_PER_MEASURE;
+        const int MUSICAL_PHRASE_TOP_NOTE_INDEX = 15;
         
+        // chop off all repetitions after the cycle which starts at measure number 627
+        for( auto& stream : ioMusic )
+        {
+            stream.second.resize( ( STRETTO_START_MEASURE_INDEX + MUSICAL_PHRASE_LENGTH_MEASURES ) * BEATS_PER_MEASURE );
+        }
     }
     
     
