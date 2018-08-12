@@ -615,8 +615,6 @@ namespace pen
         // leave that accent in place
         // but eliminate other accents with 90% probability
         // gradually reduce this probablity to 0 by measure 400
-        
-
         const int measure400 = 400 * 6;
         const int firstDesiredAccentLoc = 200 * 6;
         
@@ -646,14 +644,14 @@ namespace pen
         
         for( auto& stream : outMusic )
         {
-            for( size_t i = 0; i < firstAccentLoc; ++ i )
+            for( size_t i = 0; i < static_cast<size_t>( firstAccentLoc ); ++ i )
             {
                 stream.second.at( i ).setIsAccented( false );
             }
             
             
             double prob = startingProb;
-            for( size_t i = firstAccentLoc + 2; i < measure400 + 6; ++i, prob += probIncrement )
+            for( size_t i = static_cast<size_t>( firstAccentLoc ) + 2; i < measure400 + 6; ++i, prob += probIncrement )
             {
                 const bool doEliminate = boolGen.get( static_cast<int>( prob ) );
                 
