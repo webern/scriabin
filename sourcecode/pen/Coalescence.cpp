@@ -696,16 +696,20 @@ namespace pen
         const int STRETTO_LAST_MEASURE_NUMBER = 866;
         const int STRETTO_START_MEASURE_INDEX = STRETTO_START_MEASURE_NUMBER - 1;
         const int STRETTO_LAST_MEASURE_INDEX = STRETTO_LAST_MEASURE_NUMBER - 1;
+        
+        StrettoState state;
+        state.setBeatsPerMeasure( BEATS_PER_MEASURE );
+        state.setSectionLengthMeasures( STRETTO_LAST_MEASURE_NUMBER - STRETTO_START_MEASURE_NUMBER );
+        state.setPhraseLengthMeasures( 4 );
+        state.setPhraseTopNoteIndex( 15 );
+
         const int STRETTO_START_NOTE_INDEX = STRETTO_START_MEASURE_INDEX * BEATS_PER_MEASURE;
         const int STRETTO_LAST_NOTE_INDEX = ( STRETTO_LAST_MEASURE_NUMBER * BEATS_PER_MEASURE ) - 1;
-        const int MUSICAL_PHRASE_LENGTH_MEASURES = 4;
-        const int MUSICAL_PHRASE_LENGTH_NOTES = MUSICAL_PHRASE_LENGTH_MEASURES * BEATS_PER_MEASURE;
-        const int MUSICAL_PHRASE_TOP_NOTE_INDEX = 15;
         
         // chop off all repetitions after the cycle which starts at measure number 627
         for( auto& stream : ioMusic )
         {
-            stream.second.resize( ( STRETTO_START_MEASURE_INDEX + MUSICAL_PHRASE_LENGTH_MEASURES ) * BEATS_PER_MEASURE );
+            stream.second.resize( ( STRETTO_START_MEASURE_INDEX + state.getPhraseLengthMeasures() ) * BEATS_PER_MEASURE );
         }
         
         AtomStreams proto;
@@ -713,7 +717,7 @@ namespace pen
         // copy the last musical phrase and remove the downbeat accent
         for( auto& stream : ioMusic )
         {
-            for( int n = STRETTO_START_NOTE_INDEX; n < STRETTO_START_NOTE_INDEX + MUSICAL_PHRASE_LENGTH_NOTES; ++n )
+            for( int n = STRETTO_START_NOTE_INDEX; n < STRETTO_START_NOTE_INDEX + state.getPhraseLengthNotes(); ++n )
             {
                 auto a = stream.second.at( n );
                 if( n == STRETTO_START_NOTE_INDEX )
@@ -726,19 +730,19 @@ namespace pen
         }
         
         int strettoCurrentLength = 9; // MUSICAL_PHRASE_LENGTH_NOTES - 1;
-        int strettoCycleCounter = MUSICAL_PHRASE_TOP_NOTE_INDEX;
+        int strettoCycleCounter = state.getPhraseTopNoteIndex();
         auto cp = proto;
         
-        for( int ni = STRETTO_START_NOTE_INDEX + MUSICAL_PHRASE_LENGTH_NOTES; ni <= STRETTO_LAST_NOTE_INDEX; ++ni, ++strettoCycleCounter )
+        for( int ni = STRETTO_START_NOTE_INDEX + state.getPhraseLengthNotes(); ni <= STRETTO_LAST_NOTE_INDEX; ++ni, ++strettoCycleCounter )
         {
             if( strettoCycleCounter >= strettoCurrentLength )
             {
                 strettoCycleCounter = strettoCycleCounter % strettoCurrentLength;
             }
             
-            auto phrasen = ni % MUSICAL_PHRASE_LENGTH_NOTES;
+            auto phrasen = ni % state.getPhraseLengthNotes();
             
-            if( phrasen == MUSICAL_PHRASE_TOP_NOTE_INDEX )
+            if( phrasen == state.getPhraseTopNoteIndex() )
             {
                 if( strettoCycleCounter == 0 )
                 {
@@ -759,7 +763,7 @@ namespace pen
                 }
             }
             
-            if( phrasen == MUSICAL_PHRASE_LENGTH_NOTES - 1 )
+            if( phrasen == state.getPhraseLengthNotes() - 1 )
             {
                 writeMusic( cp, ioMusic, 1 );
                 cp = proto;
