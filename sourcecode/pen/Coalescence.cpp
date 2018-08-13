@@ -1,5 +1,6 @@
 #include "pen/Coalescence.h"
 #include "pen/Prob.h"
+#include "pen/StrettoState.h"
 #include "../test/PEN_PATH.h"
 #include "mx/api/DocumentManager.h"
 #include <vector>

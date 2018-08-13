@@ -34,6 +34,8 @@
 		29CA49A320BCF4EC00F0B643 /* libMx.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 29CA49A220BCF4EC00F0B643 /* libMx.a */; };
 		29DE36BD20C477FA0090ED98 /* Coalescence.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 29DE36BB20C477FA0090ED98 /* Coalescence.cpp */; };
 		29DE36BE20C477FA0090ED98 /* Coalescence.h in Headers */ = {isa = PBXBuildFile; fileRef = 29DE36BC20C477FA0090ED98 /* Coalescence.h */; };
+		29DF1C152121435600D2F67C /* StrettoState.h in Headers */ = {isa = PBXBuildFile; fileRef = 29DF1C132121435600D2F67C /* StrettoState.h */; };
+		29DF1C162121435600D2F67C /* StrettoState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 29DF1C142121435600D2F67C /* StrettoState.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -67,6 +69,8 @@
 		29CA49A220BCF4EC00F0B643 /* libMx.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libMx.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		29DE36BB20C477FA0090ED98 /* Coalescence.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Coalescence.cpp; sourceTree = "<group>"; };
 		29DE36BC20C477FA0090ED98 /* Coalescence.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Coalescence.h; sourceTree = "<group>"; };
+		29DF1C132121435600D2F67C /* StrettoState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StrettoState.h; sourceTree = "<group>"; };
+		29DF1C142121435600D2F67C /* StrettoState.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = StrettoState.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,6 +117,8 @@
 			children = (
 				29CA495820BCCC1E00F0B643 /* addMarimbaNotes.h */,
 				29CA496220BCCC1F00F0B643 /* addViolinNotes.h */,
+				29474DC720E1B389009BF7C9 /* Atom.cpp */,
+				297F254720E08C0200256E73 /* Atom.h */,
 				29CA496320BCCC1F00F0B643 /* cmd.h */,
 				29DE36BB20C477FA0090ED98 /* Coalescence.cpp */,
 				29DE36BC20C477FA0090ED98 /* Coalescence.h */,
@@ -132,12 +138,12 @@
 				29CA495220BCCC1E00F0B643 /* InstrumentSpecies.h */,
 				29CA495E20BCCC1F00F0B643 /* PitchPattern.cpp */,
 				29CA495720BCCC1E00F0B643 /* PitchPattern.h */,
-				29CA495A20BCCC1F00F0B643 /* Program.h */,
-				29CA495D20BCCC1F00F0B643 /* util.h */,
-				297F254720E08C0200256E73 /* Atom.h */,
-				29474DC720E1B389009BF7C9 /* Atom.cpp */,
 				29BEE1B020E4B12400B5276B /* Prob.cpp */,
 				29BEE1B120E4B12400B5276B /* Prob.h */,
+				29CA495A20BCCC1F00F0B643 /* Program.h */,
+				29DF1C142121435600D2F67C /* StrettoState.cpp */,
+				29DF1C132121435600D2F67C /* StrettoState.h */,
+				29CA495D20BCCC1F00F0B643 /* util.h */,
 			);
 			path = pen;
 			sourceTree = "<group>";
@@ -168,6 +174,7 @@
 				29CA496820BCCC1F00F0B643 /* CommandLineParser.h in Headers */,
 				29CA496C20BCCC1F00F0B643 /* PitchPattern.h in Headers */,
 				29CA496B20BCCC1F00F0B643 /* CommandLineValue.h in Headers */,
+				29DF1C152121435600D2F67C /* StrettoState.h in Headers */,
 				29CA496D20BCCC1F00F0B643 /* addMarimbaNotes.h in Headers */,
 				29DE36BE20C477FA0090ED98 /* Coalescence.h in Headers */,
 				29CA496E20BCCC1F00F0B643 /* InstrumentConfig.h in Headers */,
@@ -242,6 +249,7 @@
 				29CA496920BCCC1F00F0B643 /* Etude.cpp in Sources */,
 				29DE36BD20C477FA0090ED98 /* Coalescence.cpp in Sources */,
 				29CA497020BCCC1F00F0B643 /* CommandLineArgumentPrototype.cpp in Sources */,
+				29DF1C162121435600D2F67C /* StrettoState.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
