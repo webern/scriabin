@@ -14,15 +14,15 @@ namespace pen
     , mySectonLengthPhrases{ -1 }
     , myCounters{}
     {
-        auto actualLengthMeasures = inFacts.sectionLengthMinMeasures / inFacts.phraseLengthMeasures;
+        auto actualLengthMeasures = inFacts.sectionLengthMinMeasures;
+        auto actualLengthPhrases = inFacts.sectionLengthMinMeasures / inFacts.phraseLengthMeasures;
         
         if( inFacts.sectionLengthMinMeasures % inFacts.phraseLengthMeasures != 0 )
         {
-            ++actualLengthMeasures;
+            ++actualLengthPhrases;
         }
-        
-        mySectionLengthMeasures = actualLengthMeasures;
-        mySectonLengthPhrases = mySectionLengthMeasures / myPhraseLengthMeasures;
+        mySectonLengthPhrases = actualLengthPhrases;
+        mySectionLengthMeasures = actualLengthPhrases * myPhraseLengthMeasures;
     }
 
 ///////////////////////////////////////////////////////////////////
@@ -127,6 +127,35 @@ namespace pen
     {
         return getCounter( inName ).current == 0;
     }
+    
+
+    bool
+    StrettoState::getIsFirstNoteOfPhrase() const
+    {
+        return getNoteInPhraseIndex() == 0;
+    }
+    
+    
+    bool
+    StrettoState::getIsLastNoteOfPhrase() const
+    {
+        return getNoteInPhraseIndex() == ( getPhraseLengthNotes() - 1 );
+    }
+    
+    
+    bool
+    StrettoState::getIsTopNoteOfPhrase() const
+    {
+        return getNoteInPhraseIndex() == getPhraseTopNoteIndex();
+    }
+ 
+    
+    bool
+    StrettoState::getIsFirstNoteOfMeasure() const
+    {
+        return getNoteInMeasureIndex() == 0;
+    }
+
 
 ///////////////////////////////////////////////////////////////////
 // public mutable /////////////////////////////////////////////////
@@ -180,6 +209,7 @@ namespace pen
             if( counter.current >= counter.length )
             {
                 counter.current = 0;
+                ++counter.cycleCount;
             }
         }
     }

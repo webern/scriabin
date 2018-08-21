@@ -9,12 +9,14 @@ namespace pen
         std::string name;
         int length;
         int current;
+        int cycleCount;
         
-        Counter() : name{}, length{ 1 }, current{ 0 } {}
-        Counter( std::string inName, int inLength, int inCurrent = 0 )
+        Counter() : name{}, length{ 1 }, current{ 0 }, cycleCount{ 0 } {}
+        Counter( std::string inName, int inLength, int inCurrent = 0, int inCycleCount = 0 )
         : name{ inName }
         , length{ inLength }
         , current{ inCurrent }
+        , cycleCount{ inCycleCount }
         {
             
         }
@@ -47,6 +49,10 @@ namespace pen
         int getSectionLengthPhrases() const;
         const Counter& getCounter( const std::string& inName ) const;
         bool getIsCounterZero( const std::string& inName ) const;
+        bool getIsFirstNoteOfPhrase() const;
+        bool getIsLastNoteOfPhrase() const;
+        bool getIsTopNoteOfPhrase() const;
+        bool getIsFirstNoteOfMeasure() const;
         
     public:
         void addCounter( Counter inCounter );

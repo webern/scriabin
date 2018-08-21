@@ -732,28 +732,71 @@ namespace pen
         }
         
         const auto proto = tempStreams;
-        state.addCounter( Counter{ "fizz", 3 } );
-        state.addCounter( Counter{ "buzz", 5 } );
+        AtomStreams phrase = proto;
+        state.addCounter( { "main", 11 } );
+        
+        const auto accent = [&]( int streamIndex = -1 )
+        {
+            if( streamIndex < 0 )
+            {
+                for( auto& stream : phrase )
+                {
+                    stream.second.at( state.getNoteInPhraseIndex() ).setIsAccented( true );
+                }
+            }
+            else
+            {
+                phrase[streamIndex].at( state.getNoteInPhraseIndex() ).setIsAccented( true );
+            }
+        };
         
         for( int phraseIndex = 0; phraseIndex < state.getSectionLengthPhrases(); ++phraseIndex )
         {
             for( int n = 0; n < state.getPhraseLengthNotes(); ++n, ++state )
             {
-                if( state.getIsCounterZero( "fizz" ) && state.getIsCounterZero( "buzz" ) )
+                if( state.getIsFirstNoteOfPhrase() )
                 {
-                    std::cout << "fizzbuzz" << std::endl;
+                    phrase = proto;
                 }
-                else if( state.getIsCounterZero( "fizz" ) )
+                
+                if( state.getIsCounterZero( "main" ) )
                 {
-                    std::cout << "fizz" << std::endl;
+                    accent();
+                    const auto& counter = state.getCounter( "main" );
+                    const int notesWritten = counter.length * counter.cycleCount;
+                    const int minimumNotes = 3 * state.getPhraseLengthNotes();
+                    const bool isVeryLong = counter.length > 8;
+                    const bool isLong = counter.length > 5;
+                    
+                    if( notesWritten >= minimumNotes )
+                    {
+                        const auto decrementCounter = [&]()
+                        {
+                            --state.getCounterMutable( "main" ).length;
+                            state.getCounterMutable( "main" ).cycleCount = 0;
+                            state.getCounterMutable( "main" ).current = 0;
+
+                        };
+                        
+                        if( isVeryLong )
+                        {
+                            decrementCounter();
+                        }
+                        else if( counter.length > 3 && state.getIsFirstNoteOfMeasure() )
+                        {
+                            decrementCounter();
+                        }
+                        else if( notesWritten >= ( minimumNotes + state.getPhraseLengthNotes()) )
+                        {
+                            decrementCounter();
+                        }
+                    }
+                    
                 }
-                else if( state.getIsCounterZero( "buzz" ) )
+                
+                if( state.getIsLastNoteOfPhrase() )
                 {
-                    std::cout << "buzz" << std::endl;
-                }
-                else
-                {
-                    std::cout << state.getNoteInSectionIndex() << std::endl;
+                    writeMusic( phrase, ioMusic, 1 );
                 }
             }
         }
