@@ -697,11 +697,12 @@ namespace pen
         const int STRETTO_START_MEASURE_INDEX = STRETTO_START_MEASURE_NUMBER - 1;
         const int STRETTO_LAST_MEASURE_INDEX = STRETTO_LAST_MEASURE_NUMBER - 1;
         
-        StrettoState state;
-        state.setBeatsPerMeasure( BEATS_PER_MEASURE );
-        state.setSectionLengthMeasures( STRETTO_LAST_MEASURE_NUMBER - STRETTO_START_MEASURE_NUMBER );
-        state.setPhraseLengthMeasures( 4 );
-        state.setPhraseTopNoteIndex( 15 );
+        StrettoFacts sfacts;
+        sfacts.beatsPerMeasure = BEATS_PER_MEASURE;
+        sfacts.phraseLengthMeasures = 4;
+        sfacts.sectionLengthMinMeasures = STRETTO_LAST_MEASURE_NUMBER - STRETTO_START_MEASURE_NUMBER;
+        sfacts.topNoteIndex = 15;
+        StrettoState state{ sfacts };
 
         const int STRETTO_START_NOTE_INDEX = STRETTO_START_MEASURE_INDEX * BEATS_PER_MEASURE;
         const int STRETTO_LAST_NOTE_INDEX = ( STRETTO_LAST_MEASURE_NUMBER * BEATS_PER_MEASURE ) - 1;
@@ -712,9 +713,9 @@ namespace pen
             stream.second.resize( ( STRETTO_START_MEASURE_INDEX + state.getPhraseLengthMeasures() ) * BEATS_PER_MEASURE );
         }
         
-        AtomStreams proto;
+        AtomStreams tempStreams;
         
-        // copy the last musical phrase and remove the downbeat accent
+        // copy the last musical phrase and remove all accents
         for( auto& stream : ioMusic )
         {
             for( int n = STRETTO_START_NOTE_INDEX; n < STRETTO_START_NOTE_INDEX + state.getPhraseLengthNotes(); ++n )
@@ -725,51 +726,79 @@ namespace pen
                     a.setIsAccented( false );
                 }
                 
-                proto[stream.first].push_back( a );
+                tempStreams[stream.first].push_back( a );
+                tempStreams[stream.first].back().setIsAccented( false );
             }
         }
         
-        int strettoCurrentLength = 9; // MUSICAL_PHRASE_LENGTH_NOTES - 1;
-        int strettoCycleCounter = state.getPhraseTopNoteIndex();
-        auto cp = proto;
+        const auto proto = tempStreams;
+        state.addCounter( Counter{ "fizz", 3 } );
+        state.addCounter( Counter{ "buzz", 5 } );
         
-        for( int ni = STRETTO_START_NOTE_INDEX + state.getPhraseLengthNotes(); ni <= STRETTO_LAST_NOTE_INDEX; ++ni, ++strettoCycleCounter )
+        for( int phraseIndex = 0; phraseIndex < state.getSectionLengthPhrases(); ++phraseIndex )
         {
-            if( strettoCycleCounter >= strettoCurrentLength )
+            for( int n = 0; n < state.getPhraseLengthNotes(); ++n, ++state )
             {
-                strettoCycleCounter = strettoCycleCounter % strettoCurrentLength;
-            }
-            
-            auto phrasen = ni % state.getPhraseLengthNotes();
-            
-            if( phrasen == state.getPhraseTopNoteIndex() )
-            {
-                if( strettoCycleCounter == 0 )
+                if( state.getIsCounterZero( "fizz" ) && state.getIsCounterZero( "buzz" ) )
                 {
-                    --strettoCurrentLength;
+                    std::cout << "fizzbuzz" << std::endl;
                 }
-                
-                if( strettoCurrentLength < 2 )
+                else if( state.getIsCounterZero( "fizz" ) )
                 {
-                    break;
+                    std::cout << "fizz" << std::endl;
                 }
-            }
-            
-            if( strettoCycleCounter == 0 )
-            {
-                for( auto& stream : cp )
+                else if( state.getIsCounterZero( "buzz" ) )
                 {
-                    stream.second.at( phrasen ).setIsAccented( true );
+                    std::cout << "buzz" << std::endl;
                 }
-            }
-            
-            if( phrasen == state.getPhraseLengthNotes() - 1 )
-            {
-                writeMusic( cp, ioMusic, 1 );
-                cp = proto;
+                else
+                {
+                    std::cout << state.getNoteInSectionIndex() << std::endl;
+                }
             }
         }
         
+//        int strettoCurrentLength = 9; // MUSICAL_PHRASE_LENGTH_NOTES - 1;
+//        int strettoCycleCounter = state.getPhraseTopNoteIndex();
+//        auto cp = proto;
+//
+//        for( int ni = STRETTO_START_NOTE_INDEX + state.getPhraseLengthNotes(); ni <= STRETTO_LAST_NOTE_INDEX; ++ni, ++strettoCycleCounter )
+//        {
+//            if( strettoCycleCounter >= strettoCurrentLength )
+//            {
+//                strettoCycleCounter = strettoCycleCounter % strettoCurrentLength;
+//            }
+//
+//            auto phrasen = ni % state.getPhraseLengthNotes();
+//
+//            if( phrasen == state.getPhraseTopNoteIndex() )
+//            {
+//                if( strettoCycleCounter == 0 )
+//                {
+//                    --strettoCurrentLength;
+//                }
+//
+//                if( strettoCurrentLength < 2 )
+//                {
+//                    break;
+//                }
+//            }
+//
+//            if( strettoCycleCounter == 0 )
+//            {
+//                for( auto& stream : cp )
+//                {
+//                    stream.second.at( phrasen ).setIsAccented( true );
+//                }
+//            }
+//
+//            if( phrasen == state.getPhraseLengthNotes() - 1 )
+//            {
+//                writeMusic( cp, ioMusic, 1 );
+//                cp = proto;
+//            }
+//        }
+//
         // writeMusic( proto, ioMusic, 24 );
     }
     
