@@ -4,23 +4,23 @@
 namespace scriabin
 {
     // TODO - replace with something dynamic
-    constexpr const char* const PEN_PATH = "/Users/mjb/repos/scriabin/";
+    constexpr const char* const SCRIABIN_PATH = "/Users/mjb/repos/scriabin/";
 
     inline const std::string& INSTRUMENT_CONFIG_FILEPATH()
     {
-        static const std::string result = std::string{ PEN_PATH } + std::string{ "sourcecode/instrument-config/instrument-config.xml" };
+        static const std::string result = std::string{ SCRIABIN_PATH } + std::string{ "sourcecode/instrument-config/instrument-config.xml" };
         return result;
     }
 
     inline const std::string& OUTPUT_DIRECTORY()
     {
-        static const std::string result = std::string{ PEN_PATH } + std::string{ "out/" };
+        static const std::string result = std::string{ SCRIABIN_PATH } + std::string{ "out/" };
         return result;
     }
 
     inline const std::string& INPUT_DIRECTORY()
     {
-        static const std::string result = std::string{ PEN_PATH } + std::string{ "in/" };
+        static const std::string result = std::string{ SCRIABIN_PATH } + std::string{ "in/" };
         return result;
     }
 
