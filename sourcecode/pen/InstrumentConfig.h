@@ -9,7 +9,7 @@ namespace ezxml
     class XElementIterator;
 }
 
-namespace pen
+namespace scriabin
 {
     class InstrumentConfig
     {

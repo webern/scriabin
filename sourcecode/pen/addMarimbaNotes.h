@@ -1,6 +1,6 @@
 #pragma once
 
-namespace pen
+namespace scriabin
 {
     inline void
     addMarimbaNote( const mx::api::NoteData& NOTE_PROTO,

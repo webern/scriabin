@@ -1,6 +1,6 @@
 #include "pen/InstrumentSpecies.h"
 
-namespace pen
+namespace scriabin
 {
     InstrumentSpecies::InstrumentSpecies( std::string inID )
     : myID{ std::move( inID ) }

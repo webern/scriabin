@@ -7,7 +7,7 @@
 #include <vector>
 #include <sstream>
 
-namespace pen
+namespace scriabin
 {
     using MxNoteStreams = std::map<int, std::vector<mx::api::NoteData>>;
     using Atoms = std::vector<Atom>;

@@ -2,7 +2,7 @@
 #include <cstdint>
 #include <vector>
 
-namespace pen
+namespace scriabin
 {
     class Prob
     {

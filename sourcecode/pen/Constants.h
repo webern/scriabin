@@ -2,7 +2,7 @@
 #include "mx/api/DurationData.h"
 #include <array>
 
-namespace pen
+namespace scriabin
 {
     constexpr const int STEP_C = 0;
     constexpr const int STEP_D = 1;

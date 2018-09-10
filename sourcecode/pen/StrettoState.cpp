@@ -1,6 +1,6 @@
 #include "StrettoState.h"
 
-namespace pen
+namespace scriabin
 {
     StrettoState::StrettoState( StrettoFacts inFacts )
     : myMeasureIndex{ 0 }

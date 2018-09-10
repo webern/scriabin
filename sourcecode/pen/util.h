@@ -3,7 +3,7 @@
 #include "mx/api/ScoreData.h"
 #include "pen/Constants.h"
 
-namespace pen
+namespace scriabin
 {
     inline mx::api::MeasureData&
     getMeasure( mx::api::ScoreData& score, int partIndex, int measureIndex )

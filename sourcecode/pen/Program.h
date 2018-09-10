@@ -4,7 +4,7 @@
 #include "pen/InstrumentConfig.h"
 #include "ezxml/ezxml.h"
 
-namespace pen
+namespace scriabin
 {
     struct Program
     {
@@ -40,7 +40,7 @@ namespace pen
         inline void
         setParser(  int argc, const char* argv[] )
         {
-            parser = pen::cmd( argc, argv );
+            parser = scriabin::cmd( argc, argv );
         }
         
         inline void

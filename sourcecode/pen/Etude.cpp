@@ -1,6 +1,6 @@
 #include "pen/Etude.h"
 
-namespace pen
+namespace scriabin
 {
     Etude::Etude()
     : myConfig{}

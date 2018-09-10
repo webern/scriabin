@@ -3,7 +3,7 @@
 #include <sstream>
 #include <iostream>
 
-namespace pen
+namespace scriabin
 {
     Prob::Prob( const std::string& inDigitsFilepath )
     : myData{}

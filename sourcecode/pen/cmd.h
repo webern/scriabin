@@ -1,7 +1,7 @@
 #pragma once
 #include "pen/CommandLineParser.h"
 
-namespace pen
+namespace scriabin
 {
     inline const zeus::CommandLineParser
     cmd( int argc, const char* argv[] )

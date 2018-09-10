@@ -3,7 +3,7 @@
 #include "pen/Constants.h"
 #include <limits>
 
-using namespace pen;
+using namespace scriabin;
 
 TEST_CASE( "getMidiNote rest", "Atom" )
 {

@@ -2,7 +2,7 @@
 #include "ezxml/ezxml.h"
 #include "pen/constants.h"
 
-namespace pen
+namespace scriabin
 {
     InstrumentConfig::InstrumentConfig()
     : mySpecies{}

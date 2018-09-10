@@ -6,7 +6,7 @@
 #include <vector>
 #include <map>
 
-namespace pen
+namespace scriabin
 {
     static constexpr const int BEATS_PER_MEASURE = 6;
     static constexpr const int BEAT_TYPE_NUMERAL = 8;

@@ -7,7 +7,7 @@
 #include <map>
 #include <set>
 
-namespace pen
+namespace scriabin
 {
     // step -1 indicates rest
     // step 0 is C

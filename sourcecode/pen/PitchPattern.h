@@ -2,7 +2,7 @@
 #include "mx/api/PitchData.h"
 #include <vector>
 
-namespace pen
+namespace scriabin
 {
     class PitchPattern
     {

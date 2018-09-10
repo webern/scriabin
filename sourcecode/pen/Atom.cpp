@@ -1,7 +1,7 @@
 #include "pen/Atom.h"
 #include "pen/Constants.h"
 
-namespace pen
+namespace scriabin
 {
     Atom::Atom()
     : myStep{ -1 }

@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 
-namespace pen
+namespace scriabin
 {
     // TODO - replace with something dynamic
     constexpr const char* const PEN_PATH = "/Users/mjb/repos/scriabin/";

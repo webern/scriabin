@@ -13,7 +13,7 @@
 int inline etude1( int argc, const char* argv[] )
 {
     using namespace mx::api;
-    using namespace pen;
+    using namespace scriabin;
     Program program{ argc, argv };
     
     Etude etude{ program.instrumentConfig };
@@ -30,20 +30,20 @@ int inline etude1( int argc, const char* argv[] )
 
     // TODO - put this in a singleton
     std::map<DurationName, int> ticks = {
-        { pen::Q, tpq },
-        { pen::H, tpq * 2 },
-        { pen::W, tpq * 4 },
-        { pen::E, tpq / 2 },
-        { pen::S, tpq / 4 },
+        { scriabin::Q, tpq },
+        { scriabin::H, tpq * 2 },
+        { scriabin::W, tpq * 4 },
+        { scriabin::E, tpq / 2 },
+        { scriabin::S, tpq / 4 },
     };
     
     // TODO - put this in a singleton
     std::map<int, DurationName> timeSignatureDenominatorDurationName = {
-        { 4, pen::Q },
-        { 2, pen::H },
-        { 1, pen::W },
-        { 8, pen::E },
-        { 16, pen::S },
+        { 4, scriabin::Q },
+        { 2, scriabin::H },
+        { 1, scriabin::W },
+        { 8, scriabin::E },
+        { 16, scriabin::S },
     };
     
     const int BEATS_PER_MEASURE = 4;

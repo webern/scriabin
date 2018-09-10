@@ -2,7 +2,7 @@
 #include <memory>
 #include <string>
 
-namespace pen
+namespace scriabin
 {
     struct InstrumentClassification
     {
