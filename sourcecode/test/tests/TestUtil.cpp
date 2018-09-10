@@ -1,5 +1,5 @@
 #include "catch.hpp"
-#include "pen/util.h"
+#include "scriabin/util.h"
 
 using namespace scriabin;
 

@@ -1,5 +1,5 @@
 #include "catch.hpp"
-#include "pen/Program.h"
+#include "scriabin/Program.h"
 #include "PEN_PATH.h"
 
 using namespace zeus;

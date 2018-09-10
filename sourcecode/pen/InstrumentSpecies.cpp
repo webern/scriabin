@@ -1,4 +1,4 @@
-#include "pen/InstrumentSpecies.h"
+#include "scriabin/InstrumentSpecies.h"
 
 namespace scriabin
 {

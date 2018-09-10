@@ -1,7 +1,7 @@
 #pragma once
 
 #include "mx/api/ScoreData.h"
-#include "pen/Constants.h"
+#include "scriabin/Constants.h"
 
 namespace scriabin
 {

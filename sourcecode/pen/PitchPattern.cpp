@@ -1,4 +1,4 @@
-#include "pen/PitchPattern.h"
+#include "scriabin/PitchPattern.h"
 
 namespace scriabin
 {

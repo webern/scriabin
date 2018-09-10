@@ -1,6 +1,6 @@
 #include "catch.hpp"
-#include "pen/Atom.h"
-#include "pen/Constants.h"
+#include "scriabin/Atom.h"
+#include "scriabin/Constants.h"
 #include <limits>
 
 using namespace scriabin;

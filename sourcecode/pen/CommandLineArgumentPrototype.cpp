@@ -1,4 +1,4 @@
-#include "pen/CommandLineArgumentPrototype.h"
+#include "scriabin/CommandLineArgumentPrototype.h"
 
 namespace zeus
 {

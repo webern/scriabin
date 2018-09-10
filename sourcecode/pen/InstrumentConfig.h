@@ -1,5 +1,5 @@
 #pragma once
-#include "pen/InstrumentSpecies.h"
+#include "scriabin/InstrumentSpecies.h"
 #include <vector>
 #include <map>
 

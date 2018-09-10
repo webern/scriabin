@@ -1,5 +1,5 @@
 #pragma once
-#include "pen/CommandLineParser.h"
+#include "scriabin/CommandLineParser.h"
 
 namespace scriabin
 {

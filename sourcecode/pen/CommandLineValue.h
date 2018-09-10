@@ -1,6 +1,6 @@
 #pragma once
 
-#include "pen/CommandLineArgumentPrototype.h"
+#include "scriabin/CommandLineArgumentPrototype.h"
 #include <string>
 #include <vector>
 

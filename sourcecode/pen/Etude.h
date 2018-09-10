@@ -1,6 +1,6 @@
 #pragma once
 #include "mx/api/ScoreData.h"
-#include "pen/InstrumentConfig.h"
+#include "scriabin/InstrumentConfig.h"
 
 namespace scriabin
 {

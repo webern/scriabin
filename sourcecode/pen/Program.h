@@ -1,7 +1,7 @@
 #pragma once
-#include "pen/CommandLineParser.h"
-#include "pen/cmd.h"
-#include "pen/InstrumentConfig.h"
+#include "scriabin/CommandLineParser.h"
+#include "scriabin/cmd.h"
+#include "scriabin/InstrumentConfig.h"
 #include "ezxml/ezxml.h"
 
 namespace scriabin

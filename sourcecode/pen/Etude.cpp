@@ -1,4 +1,4 @@
-#include "pen/Etude.h"
+#include "scriabin/Etude.h"
 
 namespace scriabin
 {

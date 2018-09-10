@@ -1,8 +1,8 @@
 #pragma once
 
 #include "mx/api/ScoreData.h"
-#include "pen/Atom.h"
-#include "pen/Prob.h"
+#include "scriabin/Atom.h"
+#include "scriabin/Prob.h"
 #include <string>
 #include <vector>
 #include <sstream>

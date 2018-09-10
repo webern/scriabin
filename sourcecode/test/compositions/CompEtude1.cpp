@@ -1,5 +1,5 @@
 #include "catch.hpp"
-#include "pen/etude1.h"
+#include "scriabin/etude1.h"
 #include "PEN_PATH.h"
 #include "mx/api/DocumentManager.h"
 #include "mx/api/ScoreData.h"

@@ -1,13 +1,13 @@
 #pragma once
-#include "pen/util.h"
+#include "scriabin/util.h"
 #include "mx/api/DocumentManager.h"
 #include "mx/api/ScoreData.h"
 #include <iostream>
 #include <map>
-#include "pen/Etude.h"
-#include "pen/Program.h"
-#include "pen/addViolinNotes.h"
-#include "pen/addMarimbaNotes.h"
+#include "scriabin/Etude.h"
+#include "scriabin/Program.h"
+#include "scriabin/addViolinNotes.h"
+#include "scriabin/addMarimbaNotes.h"
 
 
 int inline etude1( int argc, const char* argv[] )
