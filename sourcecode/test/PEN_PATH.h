@@ -4,7 +4,7 @@
 namespace pen
 {
     // TODO - replace with something dynamic
-    constexpr const char* const PEN_PATH = "/Users/mjb/repos/pen/";
+    constexpr const char* const PEN_PATH = "/Users/mjb/repos/scriabin/";
 
     inline const std::string& INSTRUMENT_CONFIG_FILEPATH()
     {
