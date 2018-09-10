@@ -1,5 +1,5 @@
 #include "catch.hpp"
-#include "PEN_PATH.h"
+#include "SCRIABIN_PATH.h"
 #include "scriabin/Prob.h"
 
 using namespace scriabin;

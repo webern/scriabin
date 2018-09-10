@@ -1,6 +1,6 @@
 #include "catch.hpp"
 #include "scriabin/Program.h"
-#include "PEN_PATH.h"
+#include "SCRIABIN_PATH.h"
 
 using namespace zeus;
 

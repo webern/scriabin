@@ -261,7 +261,7 @@
 		29CA499E20BCF16900F0B643 /* TestCommandLineParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestCommandLineParser.cpp; sourceTree = "<group>"; };
 		29CA49A520BCF50000F0B643 /* libpen.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libpen.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		29CA49A720BCF89600F0B643 /* CompEtude1.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CompEtude1.cpp; sourceTree = "<group>"; };
-		29CA49A920BCFB6000F0B643 /* PEN_PATH.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PEN_PATH.h; sourceTree = "<group>"; };
+		29CA49A920BCFB6000F0B643 /* SCRIABIN_PATH.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCRIABIN_PATH.h; sourceTree = "<group>"; };
 		29DE36B820C469880090ED98 /* Coalescence.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Coalescence.cpp; sourceTree = "<group>"; };
 		29F7D6172146B32700426C5F /* libscriabin.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libscriabin.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -298,7 +298,7 @@
 		29CA483820BCC59700F0B643 /* test */ = {
 			isa = PBXGroup;
 			children = (
-				29CA49A920BCFB6000F0B643 /* PEN_PATH.h */,
+				29CA49A920BCFB6000F0B643 /* SCRIABIN_PATH.h */,
 				29CA499B20BCF13D00F0B643 /* compositions */,
 				29CA492320BCC8E600F0B643 /* tests */,
 				29CA483F20BCC62000F0B643 /* catch */,

@@ -1,6 +1,6 @@
 #include "catch.hpp"
 #include "scriabin/etude1.h"
-#include "PEN_PATH.h"
+#include "SCRIABIN_PATH.h"
 #include "mx/api/DocumentManager.h"
 #include "mx/api/ScoreData.h"
 #include "scriabin/Coalescence.h"

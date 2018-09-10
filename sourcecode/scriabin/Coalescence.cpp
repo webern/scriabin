@@ -1,7 +1,7 @@
 #include "scriabin/Coalescence.h"
 #include "scriabin/Prob.h"
 #include "scriabin/StrettoState.h"
-#include "../test/PEN_PATH.h"
+#include "../test/SCRIABIN_PATH.h"
 #include "mx/api/DocumentManager.h"
 #include <vector>
 #include <map>
