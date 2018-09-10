@@ -6,6 +6,9 @@
 #include <vector>
 #include <map>
 
+#define TO_INT( x ) static_cast<int>( x )
+#define TO_SZ( x ) static_cast<size_t>( x )
+
 namespace scriabin
 {
     static constexpr const int BEATS_PER_MEASURE = 6;
@@ -695,7 +698,7 @@ namespace scriabin
         const int STRETTO_START_MEASURE_NUMBER = 627;
         const int STRETTO_LAST_MEASURE_NUMBER = 866;
         const int STRETTO_START_MEASURE_INDEX = STRETTO_START_MEASURE_NUMBER - 1;
-        const int STRETTO_LAST_MEASURE_INDEX = STRETTO_LAST_MEASURE_NUMBER - 1;
+//        const int STRETTO_LAST_MEASURE_INDEX = STRETTO_LAST_MEASURE_NUMBER - 1;
         
         StrettoFacts sfacts;
         sfacts.beatsPerMeasure = BEATS_PER_MEASURE;
@@ -705,12 +708,12 @@ namespace scriabin
         StrettoState state{ sfacts };
 
         const int STRETTO_START_NOTE_INDEX = STRETTO_START_MEASURE_INDEX * BEATS_PER_MEASURE;
-        const int STRETTO_LAST_NOTE_INDEX = ( STRETTO_LAST_MEASURE_NUMBER * BEATS_PER_MEASURE ) - 1;
+//        const int STRETTO_LAST_NOTE_INDEX = ( STRETTO_LAST_MEASURE_NUMBER * BEATS_PER_MEASURE ) - 1;
         
         // chop off all repetitions after the cycle which starts at measure number 627
         for( auto& stream : ioMusic )
         {
-            stream.second.resize( ( STRETTO_START_MEASURE_INDEX + state.getPhraseLengthMeasures() ) * BEATS_PER_MEASURE );
+            stream.second.resize( TO_SZ( ( STRETTO_START_MEASURE_INDEX + state.getPhraseLengthMeasures() ) * BEATS_PER_MEASURE ) );
         }
         
         AtomStreams tempStreams;
@@ -720,7 +723,7 @@ namespace scriabin
         {
             for( int n = STRETTO_START_NOTE_INDEX; n < STRETTO_START_NOTE_INDEX + state.getPhraseLengthNotes(); ++n )
             {
-                auto a = stream.second.at( n );
+                auto a = stream.second.at( TO_SZ( n ) );
                 if( n == STRETTO_START_NOTE_INDEX )
                 {
                     a.setIsAccented( false );
@@ -741,12 +744,12 @@ namespace scriabin
             {
                 for( auto& stream : phrase )
                 {
-                    stream.second.at( state.getNoteInPhraseIndex() ).setIsAccented( true );
+                    stream.second.at( TO_SZ( state.getNoteInPhraseIndex() ) ).setIsAccented( true );
                 }
             }
             else
             {
-                phrase[streamIndex].at( state.getNoteInPhraseIndex() ).setIsAccented( true );
+                phrase[streamIndex].at( TO_SZ( state.getNoteInPhraseIndex() ) ).setIsAccented( true );
             }
         };
         
@@ -766,7 +769,7 @@ namespace scriabin
                     const int notesWritten = counter.length * counter.cycleCount;
                     const int minimumNotes = 3 * state.getPhraseLengthNotes();
                     const bool isVeryLong = counter.length > 8;
-                    const bool isLong = counter.length > 5;
+//                    const bool isLong = counter.length > 5;
                     
                     if( notesWritten >= minimumNotes )
                     {
@@ -1164,3 +1167,6 @@ namespace scriabin
         }
     }
 }
+
+#undef TO_INT
+#undef TO_SZ

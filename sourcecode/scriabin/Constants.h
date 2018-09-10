@@ -41,7 +41,7 @@ namespace scriabin
     constexpr const int PITCH_CLASS_B_SHARP = 0;
     
     constexpr std::array<int, 7> STEP_PITCH_CLASSES =
-    {
+    {{
         PITCH_CLASS_C,
         PITCH_CLASS_D,
         PITCH_CLASS_E,
@@ -49,7 +49,7 @@ namespace scriabin
         PITCH_CLASS_G,
         PITCH_CLASS_A,
         PITCH_CLASS_B,
-    };
+    }};
     
     constexpr const int MIDI_NOTE_ZERO_OCTAVE = -1;
     constexpr const int C4_OCTAVE = 4;

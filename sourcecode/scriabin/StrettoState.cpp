@@ -14,7 +14,7 @@ namespace scriabin
     , mySectonLengthPhrases{ -1 }
     , myCounters{}
     {
-        auto actualLengthMeasures = inFacts.sectionLengthMinMeasures;
+//        auto actualLengthMeasures = inFacts.sectionLengthMinMeasures;
         auto actualLengthPhrases = inFacts.sectionLengthMinMeasures / inFacts.phraseLengthMeasures;
         
         if( inFacts.sectionLengthMinMeasures % inFacts.phraseLengthMeasures != 0 )
