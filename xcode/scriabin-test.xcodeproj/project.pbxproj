@@ -78,9 +78,9 @@
 		29CA499F20BCF16900F0B643 /* TestUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 29CA499C20BCF16900F0B643 /* TestUtil.cpp */; };
 		29CA49A020BCF16900F0B643 /* TestProgram.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 29CA499D20BCF16900F0B643 /* TestProgram.cpp */; };
 		29CA49A120BCF16900F0B643 /* TestCommandLineParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 29CA499E20BCF16900F0B643 /* TestCommandLineParser.cpp */; };
-		29CA49A620BCF50000F0B643 /* libpen.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 29CA49A520BCF50000F0B643 /* libpen.a */; };
 		29CA49A820BCF89600F0B643 /* CompEtude1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 29CA49A720BCF89600F0B643 /* CompEtude1.cpp */; };
 		29DE36B920C469880090ED98 /* Coalescence.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 29DE36B820C469880090ED98 /* Coalescence.cpp */; };
+		29F7D6182146B32700426C5F /* libscriabin.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 29F7D6172146B32700426C5F /* libscriabin.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -263,6 +263,7 @@
 		29CA49A720BCF89600F0B643 /* CompEtude1.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CompEtude1.cpp; sourceTree = "<group>"; };
 		29CA49A920BCFB6000F0B643 /* PEN_PATH.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PEN_PATH.h; sourceTree = "<group>"; };
 		29DE36B820C469880090ED98 /* Coalescence.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Coalescence.cpp; sourceTree = "<group>"; };
+		29F7D6172146B32700426C5F /* libscriabin.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libscriabin.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -270,7 +271,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				29CA49A620BCF50000F0B643 /* libpen.a in Frameworks */,
+				29F7D6182146B32700426C5F /* libscriabin.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -526,6 +527,7 @@
 		29CA49A420BCF50000F0B643 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				29F7D6172146B32700426C5F /* libscriabin.a */,
 				29CA49A520BCF50000F0B643 /* libpen.a */,
 			);
 			name = Frameworks;
