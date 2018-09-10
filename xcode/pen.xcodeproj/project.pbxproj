@@ -106,13 +106,13 @@
 		29CA492520BCCA2800F0B643 /* sourcecode */ = {
 			isa = PBXGroup;
 			children = (
-				29CA492620BCCA7200F0B643 /* pen */,
+				29CA492620BCCA7200F0B643 /* scriabin */,
 			);
 			name = sourcecode;
 			path = ../sourcecode;
 			sourceTree = SOURCE_ROOT;
 		};
-		29CA492620BCCA7200F0B643 /* pen */ = {
+		29CA492620BCCA7200F0B643 /* scriabin */ = {
 			isa = PBXGroup;
 			children = (
 				29CA495820BCCC1E00F0B643 /* addMarimbaNotes.h */,
@@ -145,7 +145,7 @@
 				29DF1C132121435600D2F67C /* StrettoState.h */,
 				29CA495D20BCCC1F00F0B643 /* util.h */,
 			);
-			path = pen;
+			path = scriabin;
 			sourceTree = "<group>";
 		};
 		29CA499620BCEE4F00F0B643 /* Frameworks */ = {
