@@ -11,7 +11,7 @@
       location = "group:/Users/mjb/repos/scriabin/xcode/scriabin.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:pen-test.xcodeproj">
+      location = "group:/Users/mjb/repos/scriabin/xcode/scriabin-test.xcodeproj">
    </FileRef>
    <FileRef
       location = "container:../in">
