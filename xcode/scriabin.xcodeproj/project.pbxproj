@@ -199,7 +199,7 @@
 			dependencies = (
 			);
 			name = scriabin;
-			productName = pen;
+			productName = scriabin;
 			productReference = 29CA481D20BCC28E00F0B643 /* libscriabin.a */;
 			productType = "com.apple.product-type.library.static";
 		};
