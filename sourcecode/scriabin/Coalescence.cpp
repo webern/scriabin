@@ -197,8 +197,7 @@ namespace scriabin
     
     
     void
-    Coalescence::doSomeAwesomeCoalescing( const AtomStreams& inOriginalMusic,
-                                          AtomStreams& ioPatternStreams,
+    Coalescence::doSomeAwesomeCoalescing( AtomStreams& ioPatternStreams,
                                           AtomStreams& ioOutputStreams,
                                           Prob& ioProb )
     {
@@ -606,7 +605,7 @@ namespace scriabin
         const AtomStreams originalReversedMusic = outMusic;
         AtomStreams patternStreams = originalReversedMusic;
         Prob boolGen{ DIGITS_DAT_PATH() };
-        doSomeAwesomeCoalescing( originalMusic, patternStreams, outMusic, boolGen );
+        doSomeAwesomeCoalescing( patternStreams, outMusic, boolGen );
         shortenStreamsToMatchLengthOfShortestStream( outMusic, BEATS_PER_MEASURE );
         reverseStreams( outMusic );
         writeMusic( originalMusic, outMusic, 32 );
@@ -615,7 +614,7 @@ namespace scriabin
         sneakInAccents( outMusic, boolGen );
         
         // TODO - accent stretti
-        doStretto( outMusic, boolGen );
+        doStretto( outMusic );
         
         // TODO - write the heat death
         
@@ -693,7 +692,7 @@ namespace scriabin
     
     
     void
-    Coalescence::doStretto( AtomStreams& ioMusic, Prob& ioProb )
+    Coalescence::doStretto( AtomStreams& ioMusic )
     {
         const int STRETTO_START_MEASURE_NUMBER = 627;
         const int STRETTO_LAST_MEASURE_NUMBER = 866;

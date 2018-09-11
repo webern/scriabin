@@ -69,8 +69,7 @@ namespace scriabin
         MxNoteStreams getInputNotes() const;
         
     private:
-        static void doSomeAwesomeCoalescing( const AtomStreams& inOriginalMusic,
-                                             AtomStreams& ioPatternStreams,
+        static void doSomeAwesomeCoalescing( AtomStreams& ioPatternStreams,
                                              AtomStreams& ioOutputStreams,
                                              Prob& ioProb );
         
@@ -105,7 +104,7 @@ namespace scriabin
         static int findIndexOfShortestStream( const AtomStreams& inStreams );
         static void shortenStreamsToMatchLengthOfShortestStream( AtomStreams& ioStreams, int inMultipleOf = -1 );
         static void sneakInAccents( AtomStreams& ioMusic, Prob& ioProb );
-        static void doStretto( AtomStreams& ioMusic, Prob& ioProb );
+        static void doStretto( AtomStreams& ioMusic );
         static int findInsertIndex( const Atoms& inAtoms, Prob& ioProb );
         static void augmentBeginning( AtomStreams& ioOutMusic );
         static void eliminateTriplePlusAccents( AtomStreams& ioStreams );
