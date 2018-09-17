@@ -108,5 +108,6 @@ namespace scriabin
         static int findInsertIndex( const Atoms& inAtoms, Prob& ioProb );
         static void augmentBeginning( AtomStreams& ioOutMusic );
         static void eliminateTriplePlusAccents( AtomStreams& ioStreams );
+        static void extendTheOpening( AtomStreams& ioOutMusic, int inNumMeasuresAtBeginning );
     };
 }

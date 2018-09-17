@@ -612,18 +612,35 @@ namespace scriabin
         augmentBeginning( outMusic );
         eliminateTriplePlusAccents( outMusic );
         sneakInAccents( outMusic, boolGen );
+        static constexpr const int NUM_MEASURES_AT_BEGINNING = 24;
+        extendTheOpening( outMusic, NUM_MEASURES_AT_BEGINNING );
         
-        // TODO - accent stretti
         doStretto( outMusic );
         
         // TODO - write the heat death
         
         
+        // DONE - Write it Out
         writeStreamsToScore( outMusic, myScore );
         auto& dmgr = mx::api::DocumentManager::getInstance();
         const auto oID = dmgr.createFromScore( myScore );
         dmgr.writeToFile( oID, myOutFilepath );
         return myScore;
+    }
+    
+    
+    void
+    Coalescence::extendTheOpening( AtomStreams& ioOutMusic, int inNumMeasuresAtBeginning )
+    {
+        for( auto& stream : ioOutMusic )
+        {
+            const auto repeatedNote = stream.second.front();
+            
+            for( int i = 0; i < inNumMeasuresAtBeginning * BEATS_PER_MEASURE; ++i )
+            {
+                stream.second.insert( stream.second.cbegin(), repeatedNote );
+            }
+        }
     }
     
     
@@ -694,8 +711,8 @@ namespace scriabin
     void
     Coalescence::doStretto( AtomStreams& ioMusic )
     {
-        const int STRETTO_START_MEASURE_NUMBER = 627;
-        const int STRETTO_LAST_MEASURE_NUMBER = 866;
+        const int STRETTO_START_MEASURE_NUMBER = 699;
+        const int STRETTO_LAST_MEASURE_NUMBER = 1000;
         const int STRETTO_START_MEASURE_INDEX = STRETTO_START_MEASURE_NUMBER - 1;
 //        const int STRETTO_LAST_MEASURE_INDEX = STRETTO_LAST_MEASURE_NUMBER - 1;
         
@@ -709,34 +726,33 @@ namespace scriabin
         const int STRETTO_START_NOTE_INDEX = STRETTO_START_MEASURE_INDEX * BEATS_PER_MEASURE;
 //        const int STRETTO_LAST_NOTE_INDEX = ( STRETTO_LAST_MEASURE_NUMBER * BEATS_PER_MEASURE ) - 1;
         
-        // chop off all repetitions after the cycle which starts at measure number 627
+        // chop off all repetitions after the desired amount
         for( auto& stream : ioMusic )
         {
-            stream.second.resize( TO_SZ( ( STRETTO_START_MEASURE_INDEX + state.getPhraseLengthMeasures() ) * BEATS_PER_MEASURE ) );
+            stream.second.resize( TO_SZ( STRETTO_START_MEASURE_INDEX * BEATS_PER_MEASURE ) );
         }
         
         AtomStreams tempStreams;
-        
+
         // copy the last musical phrase and remove all accents
         for( auto& stream : ioMusic )
         {
-            for( int n = STRETTO_START_NOTE_INDEX; n < STRETTO_START_NOTE_INDEX + state.getPhraseLengthNotes(); ++n )
+            for( int n = STRETTO_START_NOTE_INDEX - state.getPhraseLengthNotes(); n < STRETTO_START_NOTE_INDEX; ++n )
             {
                 auto a = stream.second.at( TO_SZ( n ) );
                 if( n == STRETTO_START_NOTE_INDEX )
                 {
                     a.setIsAccented( false );
                 }
-                
+
                 tempStreams[stream.first].push_back( a );
                 tempStreams[stream.first].back().setIsAccented( false );
             }
         }
-        
+
         const auto proto = tempStreams;
         AtomStreams phrase = proto;
-        state.addCounter( { "main", 11 } );
-        
+
         const auto accent = [&]( int streamIndex = -1 )
         {
             if( streamIndex < 0 )
@@ -751,57 +767,34 @@ namespace scriabin
                 phrase[streamIndex].at( TO_SZ( state.getNoteInPhraseIndex() ) ).setIsAccented( true );
             }
         };
-        
-        for( int phraseIndex = 0; phraseIndex < state.getSectionLengthPhrases(); ++phraseIndex )
-        {
-            for( int n = 0; n < state.getPhraseLengthNotes(); ++n, ++state )
-            {
-                if( state.getIsFirstNoteOfPhrase() )
-                {
-                    phrase = proto;
-                }
-                
-                if( state.getIsCounterZero( "main" ) )
-                {
-                    accent();
-                    const auto& counter = state.getCounter( "main" );
-                    const int notesWritten = counter.length * counter.cycleCount;
-                    const int minimumNotes = 3 * state.getPhraseLengthNotes();
-                    const bool isVeryLong = counter.length > 8;
-//                    const bool isLong = counter.length > 5;
-                    
-                    if( notesWritten >= minimumNotes )
-                    {
-                        const auto decrementCounter = [&]()
-                        {
-                            --state.getCounterMutable( "main" ).length;
-                            state.getCounterMutable( "main" ).cycleCount = 0;
-                            state.getCounterMutable( "main" ).current = 0;
 
-                        };
-                        
-                        if( isVeryLong )
-                        {
-                            decrementCounter();
-                        }
-                        else if( counter.length > 3 && state.getIsFirstNoteOfMeasure() )
-                        {
-                            decrementCounter();
-                        }
-                        else if( notesWritten >= ( minimumNotes + state.getPhraseLengthNotes()) )
-                        {
-                            decrementCounter();
-                        }
+        state.addCounter( { "main", 15 } );
+        
+        for( ; state.getCounterMutable( "main" ).length > 4; --state.getCounterMutable( "main" ).length )
+        {
+            for( int phraseIndex = 0; phraseIndex < 4; ++phraseIndex )
+            {
+                for( int n = 0; n < state.getPhraseLengthNotes(); ++n, ++state )
+                {
+                    if( state.getIsFirstNoteOfPhrase() )
+                    {
+                        phrase = proto;
                     }
                     
-                }
-                
-                if( state.getIsLastNoteOfPhrase() )
-                {
-                    writeMusic( phrase, ioMusic, 1 );
+                    if( state.getIsCounterZero( "main" ) )
+                    {
+                        accent();
+                    }
+                    
+                    if( state.getIsLastNoteOfPhrase() )
+                    {
+                        writeMusic( phrase, ioMusic, 1 );
+                    }
                 }
             }
         }
+        
+        
         
 //        int strettoCurrentLength = 9; // MUSICAL_PHRASE_LENGTH_NOTES - 1;
 //        int strettoCycleCounter = state.getPhraseTopNoteIndex();
