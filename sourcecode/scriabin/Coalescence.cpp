@@ -769,9 +769,15 @@ namespace scriabin
         };
 
         state.addCounter( { "main", 15 } );
+        state.getCounterMutable( "main" ).current = 1;
         
-        for( ; state.getCounterMutable( "main" ).length > 4; --state.getCounterMutable( "main" ).length )
+        for( ; state.getCounterMutable( "main" ).length > 1; --state.getCounterMutable( "main" ).length )
         {
+            if( state.getCounter( "main" ).current >= state.getCounter( "main" ).length )
+            {
+                --state.getCounterMutable( "main" ).current;
+            }
+            
             for( int phraseIndex = 0; phraseIndex < 4; ++phraseIndex )
             {
                 for( int n = 0; n < state.getPhraseLengthNotes(); ++n, ++state )
@@ -779,9 +785,15 @@ namespace scriabin
                     if( state.getIsFirstNoteOfPhrase() )
                     {
                         phrase = proto;
+                        accent();
                     }
                     
                     if( state.getIsCounterZero( "main" ) )
+                    {
+                        accent();
+                    }
+                    
+                    if( state.getIsTopNoteOfPhrase() )
                     {
                         accent();
                     }
@@ -793,6 +805,34 @@ namespace scriabin
                 }
             }
         }
+        
+//        for( ; state.getCounterMutable( "main" ).length > 4; --state.getCounterMutable( "main" ).length )
+//        {
+//            for( int phraseIndex = 0; phraseIndex < 4; ++phraseIndex )
+//            {
+//                for( int n = 0; n < state.getPhraseLengthNotes(); ++n, ++state )
+//                {
+//                    if( state.getIsFirstNoteOfPhrase() )
+//                    {
+//                        phrase = proto;
+//                    }
+//
+//                    const auto& cntr = state.getCounter( "main" );
+//                    const auto cntrCur = cntr.current;
+//                    const auto cntrLen = cntr.length;
+//
+//                    if( cntrCur == cntrLen - 2 || cntrCur >= cntrLen )
+//                    {
+//                        accent();
+//                    }
+//
+//                    if( state.getIsLastNoteOfPhrase() )
+//                    {
+//                        writeMusic( phrase, ioMusic, 1 );
+//                    }
+//                }
+//            }
+//        }
         
         
         
