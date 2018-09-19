@@ -753,25 +753,26 @@ namespace scriabin
         const auto proto = tempStreams;
         AtomStreams phrase = proto;
 
-        const auto accent = [&]( int streamIndex = -1 )
+        const auto accent = [&]( bool stream0, bool stream1, bool stream2, bool stream3 )
         {
-            if( streamIndex < 0 )
+            int streamIndex = 0;
+            for( auto& stream : phrase )
             {
-                for( auto& stream : phrase )
+                if( ( streamIndex == 0 && stream0 ) ||
+                   ( streamIndex == 1 && stream1 ) ||
+                   ( streamIndex == 2 && stream2 ) ||
+                   ( streamIndex == 3 && stream3 ) )
                 {
                     stream.second.at( TO_SZ( state.getNoteInPhraseIndex() ) ).setIsAccented( true );
+                    ++streamIndex;
                 }
-            }
-            else
-            {
-                phrase[streamIndex].at( TO_SZ( state.getNoteInPhraseIndex() ) ).setIsAccented( true );
             }
         };
 
         state.addCounter( { "main", 15 } );
         state.getCounterMutable( "main" ).current = 1;
         
-        for( ; state.getCounterMutable( "main" ).length > 1; --state.getCounterMutable( "main" ).length )
+        for( ; state.getCounterMutable( "main" ).length > 0; --state.getCounterMutable( "main" ).length )
         {
             if( state.getCounter( "main" ).current >= state.getCounter( "main" ).length )
             {
@@ -785,17 +786,17 @@ namespace scriabin
                     if( state.getIsFirstNoteOfPhrase() )
                     {
                         phrase = proto;
-                        accent();
+                        accent( true, true, true, true );
                     }
                     
                     if( state.getIsCounterZero( "main" ) )
                     {
-                        accent();
+                        accent( true, true, true, true );
                     }
                     
                     if( state.getIsTopNoteOfPhrase() )
                     {
-                        accent();
+                        accent( true, true, true, true );
                     }
                     
                     if( state.getIsLastNoteOfPhrase() )
@@ -806,79 +807,122 @@ namespace scriabin
             }
         }
         
-//        for( ; state.getCounterMutable( "main" ).length > 4; --state.getCounterMutable( "main" ).length )
-//        {
-//            for( int phraseIndex = 0; phraseIndex < 4; ++phraseIndex )
-//            {
-//                for( int n = 0; n < state.getPhraseLengthNotes(); ++n, ++state )
-//                {
-//                    if( state.getIsFirstNoteOfPhrase() )
-//                    {
-//                        phrase = proto;
-//                    }
-//
-//                    const auto& cntr = state.getCounter( "main" );
-//                    const auto cntrCur = cntr.current;
-//                    const auto cntrLen = cntr.length;
-//
-//                    if( cntrCur == cntrLen - 2 || cntrCur >= cntrLen )
-//                    {
-//                        accent();
-//                    }
-//
-//                    if( state.getIsLastNoteOfPhrase() )
-//                    {
-//                        writeMusic( phrase, ioMusic, 1 );
-//                    }
-//                }
-//            }
-//        }
+        state.getCounterMutable( "main" ).current = 0;
+        state.getCounterMutable( "main" ).length = 3;
         
+        for( int phraseIndex = 0; phraseIndex < 1; ++phraseIndex )
+        {
+            for( int n = 0; n < state.getPhraseLengthNotes(); ++n, ++state )
+            {
+                if( state.getIsFirstNoteOfPhrase() )
+                {
+                    phrase = proto;
+                    accent( true, true, true, true );
+                }
+                
+                if( state.getIsCounterZero( "main" ) )
+                {
+                    accent( true, true, true, true );
+                }
+                
+                if( state.getIsTopNoteOfPhrase() )
+                {
+                    accent( true, true, true, true );
+                }
+                
+                if( state.getIsLastNoteOfPhrase() )
+                {
+                    writeMusic( phrase, ioMusic, 1 );
+                }
+            }
+        }
         
+        state.getCounterMutable( "main" ).current = 0;
+        state.getCounterMutable( "main" ).length = 4;
         
-//        int strettoCurrentLength = 9; // MUSICAL_PHRASE_LENGTH_NOTES - 1;
-//        int strettoCycleCounter = state.getPhraseTopNoteIndex();
-//        auto cp = proto;
-//
-//        for( int ni = STRETTO_START_NOTE_INDEX + state.getPhraseLengthNotes(); ni <= STRETTO_LAST_NOTE_INDEX; ++ni, ++strettoCycleCounter )
-//        {
-//            if( strettoCycleCounter >= strettoCurrentLength )
-//            {
-//                strettoCycleCounter = strettoCycleCounter % strettoCurrentLength;
-//            }
-//
-//            auto phrasen = ni % state.getPhraseLengthNotes();
-//
-//            if( phrasen == state.getPhraseTopNoteIndex() )
-//            {
-//                if( strettoCycleCounter == 0 )
-//                {
-//                    --strettoCurrentLength;
-//                }
-//
-//                if( strettoCurrentLength < 2 )
-//                {
-//                    break;
-//                }
-//            }
-//
-//            if( strettoCycleCounter == 0 )
-//            {
-//                for( auto& stream : cp )
-//                {
-//                    stream.second.at( phrasen ).setIsAccented( true );
-//                }
-//            }
-//
-//            if( phrasen == state.getPhraseLengthNotes() - 1 )
-//            {
-//                writeMusic( cp, ioMusic, 1 );
-//                cp = proto;
-//            }
-//        }
-//
-        // writeMusic( proto, ioMusic, 24 );
-    }
+        for( int phraseIndex = 0; phraseIndex < 1; ++phraseIndex )
+        {
+            for( int n = 0; n < state.getPhraseLengthNotes(); ++n, ++state )
+            {
+                if( state.getIsFirstNoteOfPhrase() )
+                {
+                    phrase = proto;
+                    accent( true, true, true, true );
+                }
+                
+                if( state.getIsCounterZero( "main" ) )
+                {
+                    accent( true, true, true, true );
+                }
+                
+                if( state.getIsTopNoteOfPhrase() )
+                {
+                    accent( true, true, true, true );
+                }
+                
+                if( state.getIsLastNoteOfPhrase() )
+                {
+                    writeMusic( phrase, ioMusic, 1 );
+                }
+            }
+        }
+        
+        // get the last two phrases
+        AtomStreams lastTwoPhrases{};
+
+        int x = 0;
+        for( const auto& stream : ioMusic )
+        {
+            auto it = stream.second.cbegin() + static_cast<std::ptrdiff_t>( static_cast<int>( stream.second.size() ) - ( 2 * state.getPhraseLengthNotes() ) );
+            const auto ei = stream.second.end();
+
+            std::copy( it, ei, std::back_inserter( lastTwoPhrases[x++] ) );
+        }
+        // repeat the last two phrases
+        writeMusic( lastTwoPhrases, ioMusic, 3 );
+        
+        state.removeCounter( "main" );
+        Counter tempCtr;
+        tempCtr.name = "A";
+        tempCtr.length = 3;
+        state.addCounter( tempCtr );
+        tempCtr.name = "B";
+        tempCtr.length = 4;
+        state.addCounter( tempCtr );
+        
+        for( int phraseIndex = 0; phraseIndex < 4; ++phraseIndex )
+        {
+            for( int n = 0; n < state.getPhraseLengthNotes(); ++n, ++state )
+            {
+                if( state.getIsFirstNoteOfPhrase() )
+                {
+                    phrase = proto;
+                    accent( true, true, true, true );
+                }
+                
+                if( state.getIsCounterZero( "A" ) )
+                {
+                    accent( true, false, false, true );
+                }
+                
+                if( state.getIsCounterZero( "B" ) )
+                {
+                    accent( false, true, true, false );
+                }
+                
+                if( state.getIsTopNoteOfPhrase() )
+                {
+                    accent( true, true, true, true );
+                }
+                
+                if( state.getIsLastNoteOfPhrase() )
+                {
+                    writeMusic( phrase, ioMusic, 1 );
+                }
+            }
+        }
+        
+    } // end of function
     
     
     void
