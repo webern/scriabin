@@ -769,22 +769,71 @@ namespace scriabin
             }
         };
 
-        state.addCounter( { "main", 11 } );
-        state.getCounterMutable( "main" ).current = 1;
+        state.addCounter( { "main", 24 } );
+        state.getCounterMutable( "main" ).current = 17;
+        int phraseCount = 4;
         
-        // quickly cycle through 15, 14, 13, 12, 11
         for( ; state.getCounterMutable( "main" ).length > 0; --state.getCounterMutable( "main" ).length )
         {
-            if( state.getCounter( "main" ).current >= state.getCounter( "main" ).length )
+            if( state.getCounter( "main" ).length == 23 )
+            {
+                // skip over values to seven
+                state.getCounterMutable( "main" ).length = 8;
+                state.getCounterMutable( "main" ).current = 0;
+            }
+
+            const auto currentCounterLength = state.getCounterMutable( "main" ).length;
+
+            if( state.getCounter( "main" ).current >= currentCounterLength )
             {
                 --state.getCounterMutable( "main" ).current;
-                if( state.getCounter( "main" ).current >= state.getCounter( "main" ).length )
+                
+                if( state.getCounter( "main" ).current >= currentCounterLength )
                 {
                     state.getCounterMutable( "main" ).current = 0;
                 }
             }
             
-            for( int phraseIndex = 0; phraseIndex < 1; ++phraseIndex )
+            // set a phraseCount based on where we are in the diminution
+            if( currentCounterLength >= 24 )
+            {
+                phraseCount = 4;
+            }
+            else if( currentCounterLength == 8 )
+            {
+                phraseCount = 4;
+            }
+            else if( currentCounterLength == 7 )
+            {
+                phraseCount = 14;
+            }
+            else if( currentCounterLength == 6 )
+            {
+                phraseCount = 12;
+            }
+            else if( currentCounterLength == 5 )
+            {
+                phraseCount = 10;
+            }
+            else if( currentCounterLength == 4 )
+            {
+                phraseCount = 8;
+            }
+            else if( currentCounterLength == 3 )
+            {
+                phraseCount = 8;
+            }
+            else if( currentCounterLength == 2 )
+            {
+                phraseCount = 6;
+            }
+            else if( currentCounterLength == 1 )
+            {
+                phraseCount = 4;
+            }
+            
+            
+            for( int phraseIndex = 0; phraseIndex < phraseCount; ++phraseIndex )
             {
                 for( int n = 0; n < state.getPhraseLengthNotes(); ++n, ++state )
                 {
@@ -925,7 +974,7 @@ namespace scriabin
 //        }
 //        // repeat the last two phrases
 //        writeMusic( lastTwoPhrases, ioMusic, 3 );
-//        
+//
 //        state.removeCounter( "main" );
 //        Counter tempCtr;
 //        tempCtr.name = "A";
@@ -934,7 +983,7 @@ namespace scriabin
 //        tempCtr.name = "B";
 //        tempCtr.length = 4;
 //        state.addCounter( tempCtr );
-//        
+//
 //        for( int phraseIndex = 0; phraseIndex < 4; ++phraseIndex )
 //        {
 //            for( int n = 0; n < state.getPhraseLengthNotes(); ++n, ++state )
@@ -944,22 +993,22 @@ namespace scriabin
 //                    phrase = proto;
 //                    accent( true, true, true, true );
 //                }
-//                
+//
 //                if( state.getIsCounterZero( "A" ) )
 //                {
 //                    accent( true, false, false, true );
 //                }
-//                
+//
 //                if( state.getIsCounterZero( "B" ) )
 //                {
 //                    accent( false, true, true, false );
 //                }
-//                
+//
 //                if( state.getIsTopNoteOfPhrase() )
 //                {
 //                    accent( true, true, true, true );
 //                }
-//                
+//
 //                if( state.getIsLastNoteOfPhrase() )
 //                {
 //                    writeMusic( phrase, ioMusic, 1 );
