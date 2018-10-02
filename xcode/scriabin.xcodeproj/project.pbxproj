@@ -41,6 +41,7 @@
 /* Begin PBXFileReference section */
 		29474DC720E1B389009BF7C9 /* Atom.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Atom.cpp; sourceTree = "<group>"; };
 		297F254720E08C0200256E73 /* Atom.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Atom.h; sourceTree = "<group>"; };
+		2990ABCC21630CE500F2F728 /* DynamicValue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DynamicValue.h; sourceTree = "<group>"; };
 		29BEE1B020E4B12400B5276B /* Prob.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Prob.cpp; sourceTree = "<group>"; };
 		29BEE1B120E4B12400B5276B /* Prob.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Prob.h; sourceTree = "<group>"; };
 		29CA481D20BCC28E00F0B643 /* libscriabin.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libscriabin.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -144,6 +145,7 @@
 				29DF1C142121435600D2F67C /* StrettoState.cpp */,
 				29DF1C132121435600D2F67C /* StrettoState.h */,
 				29CA495D20BCCC1F00F0B643 /* util.h */,
+				2990ABCC21630CE500F2F728 /* DynamicValue.h */,
 			);
 			path = scriabin;
 			sourceTree = "<group>";

@@ -9,6 +9,7 @@ namespace scriabin
     , myOctave{ 4 }
     , myName{ "rest" }
     , myIsAccented{ false }
+    , myDynamicValue{ DynamicValue::NONE }
     {
         
     }
@@ -312,6 +313,28 @@ namespace scriabin
         const auto result = base + ( octaveAdjustment * SEMITONES_PER_OCTAVE );
         return result;
     }
+    
+    
+    DynamicValue
+    Atom::getDynamicValue() const
+    {
+        return myDynamicValue;
+    }
+    
+    
+    bool
+    Atom::getHasDynamicMarking() const
+    {
+        return myDynamicValue != DynamicValue::NONE;
+    }
+    
+    
+    void
+    Atom::setDynamicValue( DynamicValue& inDynamicValue )
+    {
+        myDynamicValue = inDynamicValue;
+    }
+    
     
     bool operator==( const Atom& inLeft, const Atom& inRight )
     {

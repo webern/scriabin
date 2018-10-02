@@ -1,6 +1,7 @@
 #include "scriabin/Coalescence.h"
 #include "scriabin/Prob.h"
 #include "scriabin/StrettoState.h"
+#include "scriabin/DynamicValue.h"
 #include "../test/SCRIABIN_PATH.h"
 #include "mx/api/DocumentManager.h"
 #include <vector>
@@ -764,11 +765,20 @@ namespace scriabin
                    ( streamIndex == 3 && stream3 ) )
                 {
                     stream.second.at( TO_SZ( state.getNoteInPhraseIndex() ) ).setIsAccented( true );
-                    ++streamIndex;
                 }
+                ++streamIndex;
             }
         };
 
+        const auto dynamic = [&]( DynamicValue vln1, DynamicValue vln2, DynamicValue vla, DynamicValue vlc, AtomStreams& ioStreams )
+        {
+            ioStreams.at( 0 ).at( TO_SZ( state.getNoteInPhraseIndex() ) ).setDynamicValue( vln1 );
+            ioStreams.at( 1 ).at( TO_SZ( state.getNoteInPhraseIndex() ) ).setDynamicValue( vln2 );
+            ioStreams.at( 2 ).at( TO_SZ( state.getNoteInPhraseIndex() ) ).setDynamicValue( vla );
+            ioStreams.at( 3 ).at( TO_SZ( state.getNoteInPhraseIndex() ) ).setDynamicValue( vlc );
+        };
+
+        
         state.addCounter( { "main", 24 } );
         state.getCounterMutable( "main" ).current = 17;
         int phraseCount = 4;
@@ -860,6 +870,271 @@ namespace scriabin
                 }
             }
         }
+        
+        
+        state.removeCounter( "main" );
+        Counter cello;
+        cello.name = "Cello";
+        cello.current = 0;
+        cello.cycleCount = 0;
+        cello.length = 3;
+        
+        Counter viola;
+        viola.name = "Viola";
+        viola.current = 0;
+        viola.cycleCount = 0;
+        viola.length = 3;
+        
+        Counter violin2;
+        violin2.name = "Violin2";
+        violin2.current = 0;
+        violin2.cycleCount = 0;
+        violin2.length = 3;
+        
+        Counter violin1;
+        violin1.name = "Violin1";
+        violin1.current = 0;
+        violin1.cycleCount = 0;
+        violin1.length = 3;
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////// ending
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        
+        state.addCounter( cello );
+        const std::vector<int> pattern = { 3, 4, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181, 191, 193, 197, 199 };
+        auto vln1PatternIt = pattern.cbegin();
+        auto vln2PatternIt = pattern.cbegin();
+        auto vlaPatternIt = pattern.cbegin();
+        auto vlcPatternIt = pattern.cbegin();
+        phraseCount = 0;
+        bool isPianoWritten = false;
+        int vln1Subtractor = 0;
+        int vln2Subtractor = 0;
+        int vlaSubtractor = 0;
+        int vlcSubtractor = 0;
+        
+        while( state.getCounterMutable( "Cello" ).length <= 31 )
+        {
+            for( int n = 0; n < state.getPhraseLengthNotes(); ++n, ++state )
+            {
+                if( state.getIsFirstNoteOfPhrase() )
+                {
+                    phrase = proto;
+                    
+                    if( !isPianoWritten )
+                    {
+                        dynamic( DynamicValue::P, DynamicValue::P, DynamicValue::P, DynamicValue::P, phrase );
+                        isPianoWritten = true;
+                    }
+                }
+                
+                auto celloCounter = &state.getCounterMutable( "Cello" );
+                Counter* violin1Counter = nullptr;
+                Counter* violaCounter = nullptr;
+                Counter* violin2Counter = nullptr;
+                
+                
+                if( celloCounter->length >= 4 )
+                {
+                    if( celloCounter->length == 4 )
+                    {
+                        state.addCounter( violin1 );
+                    }
+                    
+                    violin1Counter = &state.getCounterMutable( "Violin1" );
+                }
+                
+                if( violin1Counter && violin1Counter->length >= 4 )
+                {
+                    if( violin1Counter->length == 4 )
+                    {
+                        state.addCounter( viola );
+                    }
+                    
+                    violaCounter = &state.getCounterMutable( "Viola" );
+                }
+                
+                if( violaCounter && violaCounter->length >= 4 )
+                {
+                    if( violaCounter->length == 4 )
+                    {
+                        state.addCounter( violin2 );
+                    }
+                    
+                    violin2Counter = &state.getCounterMutable( "Violin2" );
+                }
+                
+                bool accentViolin1 = false;
+                bool accentViolin2 = false;
+                bool accentViola = false;
+                bool accentCello = false;
+                
+                if( celloCounter && celloCounter->current == 0 )
+                {
+                    accentCello = true;
+
+                    if( celloCounter->length * celloCounter->cycleCount > 48 )
+                    {
+                        ++vlcPatternIt;
+                        celloCounter->length = *vlcPatternIt;
+                        celloCounter->cycleCount = 0;
+                    }
+                    
+                    if( celloCounter->length >= 17 )
+                    {
+                        vlcSubtractor += 4;
+                    }
+                    else if( celloCounter->length >= 7 )
+                    {
+                        vlcSubtractor += 2;
+                    }
+                }
+                
+                if( violin1Counter && violin1Counter->current == 0 )
+                {
+                    accentViolin1 = true;
+                    
+                    if( violin1Counter->length * violin1Counter->cycleCount > 48 )
+                    {
+                        ++vln1PatternIt;
+                        violin1Counter->length = *vln1PatternIt;
+                        violin1Counter->cycleCount = 0;
+                    }
+                    
+                    if( violin1Counter->length >= 17 )
+                    {
+                        vln1Subtractor += 4;
+                    }
+                    else if( violin1Counter->length >= 7 )
+                    {
+                        vln1Subtractor += 2;
+                    }
+                }
+                
+                if( violaCounter && violaCounter->current == 0 )
+                {
+                    accentViola = true;
+                    
+                    if( violaCounter->length * violaCounter->cycleCount > 48 )
+                    {
+                        ++vlaPatternIt;
+                        violaCounter->length = *vlaPatternIt;
+                        violaCounter->cycleCount = 0;
+                    }
+                    
+                    if( violaCounter->length >= 17 )
+                    {
+                        vlaSubtractor += 4;
+                    }
+                    else if( violaCounter->length >= 7 )
+                    {
+                        vlaSubtractor += 2;
+                    }
+                }
+                
+                if( violin2Counter && violin2Counter->current == 0 )
+                {
+                    accentViolin2 = true;
+                    
+                    if( violin2Counter->length * violin2Counter->cycleCount > 48 )
+                    {
+                        ++vln2PatternIt;
+                        violin2Counter->length = *vln2PatternIt;
+                        violin2Counter->cycleCount = 0;
+                    }
+                    
+                    if( violin2Counter->length >= 17 )
+                    {
+                        vln2Subtractor += 4;
+                    }
+                    else if( violin2Counter->length >= 7 )
+                    {
+                        vln2Subtractor += 2;
+                    }
+                }
+                
+                accent( accentViolin1, accentViolin2, accentViola, accentCello );
+                
+                const auto maybeRest = [&]( Counter* counter, int partIndex, bool isAccented, AtomStreams& ioStreams, int currentNoteInPhrase )
+                {
+                    if( !counter )
+                    {
+                        return;
+                    }
+                    
+                    if( isAccented )
+                    {
+                        return;
+                    }
+                    
+                    bool doRest = false;
+                    
+                    if( counter->length == 5 && counter->current >= 4 )
+                    {
+                        doRest = true;
+                    }
+                    else if( counter->length == 7 && counter->current >= 5 )
+                    {
+                        doRest = true;
+                    }
+                    else if( counter->length == 11 && counter->current >= 5 )
+                    {
+                        doRest = true;
+                    }
+                    else if( counter->length == 13 && counter->current >= 4 )
+                    {
+                        doRest = true;
+                    }
+                    else if( counter->length == 17 && counter->current >= 3 )
+                    {
+                        doRest = true;
+                    }
+                    else if( counter->length == 19 && counter->current >= 2 )
+                    {
+                        doRest = true;
+                    }
+                    else if( counter->length == 23 && counter->current >= 1 )
+                    {
+                        doRest = true;
+                    }
+                    else if( counter->length == 29 && counter->current >= 0 )
+                    {
+                        doRest = true;
+                    }
+                    else if( counter->length == 31 && counter->current >= 0 )
+                    {
+                        doRest = true;
+                    }
+                    else if( counter->length == 37 && counter->current >= 0 )
+                    {
+                        doRest = true;
+                    }
+                    
+                    if( doRest )
+                    {
+                        auto& stream = ioStreams.at( partIndex );
+                        auto& atom = stream.at( TO_SZ( currentNoteInPhrase ) );
+                        atom.setIsAccented( false );
+                        atom.setRest();
+                    }
+                    
+                };
+                
+                maybeRest( violin1Counter, 0, accentViolin1, phrase, state.getNoteInPhraseIndex() );
+                maybeRest( violin2Counter, 1, accentViolin2, phrase, state.getNoteInPhraseIndex() );
+                maybeRest( violaCounter, 2, accentViola, phrase, state.getNoteInPhraseIndex() );
+                maybeRest( celloCounter, 3, accentCello, phrase, state.getNoteInPhraseIndex() );
+                
+                if( state.getIsLastNoteOfPhrase() )
+                {
+                    writeMusic( phrase, ioMusic, 1 );
+                }
+            }
+        }
+        
+
         
 //        // cycle through from 11 down to 3
 //        for( ; state.getCounterMutable( "main" ).length > 3; --state.getCounterMutable( "main" ).length )
@@ -1174,6 +1449,42 @@ namespace scriabin
                 accent.markType = mx::api::MarkType::accent;
                 accent.tickTimePosition = theNote.tickTimePosition;
                 theNote.noteAttachmentData.marks.push_back( accent );
+            }
+            
+            if( atom.getHasDynamicMarking() )
+            {
+                mx::api::MarkData dynamic;
+                dynamic.markType = mx::api::MarkType::pppppp;
+                
+                switch ( atom.getDynamicValue() )
+                {
+                    case DynamicValue::NONE:
+                        throw "you're stupid";
+                        break;
+                    case DynamicValue::PP:
+                        dynamic.markType = mx::api::MarkType::pp;
+                        break;
+                    case DynamicValue::P:
+                        dynamic.markType = mx::api::MarkType::p;
+                        break;
+                    case DynamicValue::MP:
+                        dynamic.markType = mx::api::MarkType::mp;
+                        break;
+                    case DynamicValue::MF:
+                        dynamic.markType = mx::api::MarkType::mf;
+                        break;
+                    case DynamicValue::F:
+                        dynamic.markType = mx::api::MarkType::f;
+                        break;
+                    case DynamicValue::FF:
+                        dynamic.markType = mx::api::MarkType::ff;
+                        break;
+                    default:
+                        throw "you're stupid";
+                        break;
+                }
+                
+                theNote.noteAttachmentData.marks.push_back( dynamic );
             }
             
             measure.staves.at( 0 ).voices.at( 0 ).notes.push_back( theNote );

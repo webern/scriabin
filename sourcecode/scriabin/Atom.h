@@ -1,5 +1,6 @@
 #pragma once
 #include "mx/api/PitchData.h"
+#include "scriabin/DynamicValue.h"
 #include <string>
 #include <sstream>
 #include <cstdint>
@@ -34,6 +35,9 @@ namespace scriabin
         bool getIsAccented() const;
         void setIsAccented( bool inIsAccented );
         int getMidiNote() const;
+        DynamicValue getDynamicValue() const;
+        void setDynamicValue( DynamicValue& inDynamicValue );
+        bool getHasDynamicMarking() const;
 
     private:
         std::string myName;
@@ -41,6 +45,7 @@ namespace scriabin
         int myAlter;
         int myOctave;
         bool myIsAccented;
+        DynamicValue myDynamicValue;
 
     public:
         void updateName();
