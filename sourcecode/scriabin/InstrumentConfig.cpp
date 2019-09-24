@@ -1,6 +1,6 @@
 #include "scriabin/InstrumentConfig.h"
 #include "ezxml/ezxml.h"
-#include "scriabin/constants.h"
+#include "scriabin/Constants.h"
 
 namespace scriabin
 {
