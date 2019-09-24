@@ -17,7 +17,7 @@
 #define CATCH_VERSION_MINOR 2
 #define CATCH_VERSION_PATCH 2
 
-#ifdef __clang__
+#ifdef __clang__´
 #    pragma clang system_header
 #elif defined __GNUC__
 #    pragma GCC system_header
