@@ -723,7 +723,7 @@
 				HEADER_SEARCH_PATHS = (
 					$PROJECT_DIR/../sourcecode/test/catch/include,
 					$PROJECT_DIR/../sourcecode,
-					$PROJECT_DIR/../sourcecode/submodules/mx/Sourcecode,
+					$PROJECT_DIR/../sourcecode/submodules/mx/Sourcecode/include,
 					$PROJECT_DIR/../sourcecode/submodules/ezxml/include,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
@@ -781,7 +781,7 @@
 				HEADER_SEARCH_PATHS = (
 					$PROJECT_DIR/../sourcecode/test/catch/include,
 					$PROJECT_DIR/../sourcecode,
-					$PROJECT_DIR/../sourcecode/submodules/mx/Sourcecode,
+					$PROJECT_DIR/../sourcecode/submodules/mx/Sourcecode/include,
 					$PROJECT_DIR/../sourcecode/submodules/ezxml/include,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13;

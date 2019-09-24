@@ -8,10 +8,10 @@
       location = "group:../sourcecode/submodules/ezxml/ezxml.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:/Users/mjb/repos/scriabin/xcode/scriabin.xcodeproj">
+      location = "container:scriabin.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:/Users/mjb/repos/scriabin/xcode/scriabin-test.xcodeproj">
+      location = "container:scriabin-test.xcodeproj">
    </FileRef>
    <FileRef
       location = "container:../in">

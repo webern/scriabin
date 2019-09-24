@@ -325,7 +325,7 @@
 				GCC_WARN_UNUSED_PARAMETER = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
-					$PROJECT_DIR/../sourcecode/submodules/mx/Sourcecode,
+					$PROJECT_DIR/../sourcecode/submodules/mx/Sourcecode/include,
 					$PROJECT_DIR/../sourcecode/submodules/ezxml/include,
 					$PROJECT_DIR/../sourcecode,
 				);
@@ -397,7 +397,7 @@
 				GCC_WARN_UNUSED_PARAMETER = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
-					$PROJECT_DIR/../sourcecode/submodules/mx/Sourcecode,
+					$PROJECT_DIR/../sourcecode/submodules/mx/Sourcecode/include,
 					$PROJECT_DIR/../sourcecode/submodules/ezxml/include,
 					$PROJECT_DIR/../sourcecode,
 				);
