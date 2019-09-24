@@ -4,7 +4,7 @@
 namespace scriabin
 {
     // TODO - replace with something dynamic
-    constexpr const char* const SCRIABIN_PATH = "/Users/mjb/repos/scriabin/";
+    constexpr const char* const SCRIABIN_PATH = "/Users/brigmatt/repos/scriabin/";
 
     inline const std::string& INSTRUMENT_CONFIG_FILEPATH()
     {
