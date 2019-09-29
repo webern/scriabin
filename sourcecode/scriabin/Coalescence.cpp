@@ -435,40 +435,40 @@ namespace scriabin
 
         const auto compare = [&]( AtomPattern& l, AtomPattern& r )
         {
-          if( l.patternLength < r.patternLength )
-          {
-              return true;
-          }
-          else if( l.patternLength > r.patternLength )
-          {
-              return false;
-          }
-          else if( l.firstAtomOfPattern.getOctave() < r.firstAtomOfPattern.getOctave() )
-          {
-              return true;
-          }
-          else if( l.firstAtomOfPattern.getOctave() > r.firstAtomOfPattern.getOctave() )
-          {
-              return false;
-          }
-          else if( l.firstAtomOfPattern.getStep() < r.firstAtomOfPattern.getStep() )
-          {
-              return true;
-          }
-          else if( l.firstAtomOfPattern.getStep() > r.firstAtomOfPattern.getStep() )
-          {
-              return false;
-          }
-          else if( l.firstAtomOfPattern.getAlter() < r.firstAtomOfPattern.getAlter() )
-          {
-              return true;
-          }
-          else if( l.firstAtomOfPattern.getAlter() > r.firstAtomOfPattern.getAlter() )
-          {
-              return false;
-          }
+            if( l.patternLength < r.patternLength )
+            {
+                return true;
+            }
+            else if( l.patternLength > r.patternLength )
+            {
+                return false;
+            }
+            else if( l.firstAtomOfPattern.getOctave() < r.firstAtomOfPattern.getOctave() )
+            {
+                return true;
+            }
+            else if( l.firstAtomOfPattern.getOctave() > r.firstAtomOfPattern.getOctave() )
+            {
+                return false;
+            }
+            else if( l.firstAtomOfPattern.getStep() < r.firstAtomOfPattern.getStep() )
+            {
+                return true;
+            }
+            else if( l.firstAtomOfPattern.getStep() > r.firstAtomOfPattern.getStep() )
+            {
+                return false;
+            }
+            else if( l.firstAtomOfPattern.getAlter() < r.firstAtomOfPattern.getAlter() )
+            {
+                return true;
+            }
+            else if( l.firstAtomOfPattern.getAlter() > r.firstAtomOfPattern.getAlter() )
+            {
+                return false;
+            }
 
-          return false;
+            return false;
         };
 
         std::sort( std::begin( sorted ), std::end( sorted ), compare );
@@ -629,7 +629,7 @@ namespace scriabin
         static constexpr const int NUM_MEASURES_AT_BEGINNING = 24;
         extendTheOpening( outMusic, NUM_MEASURES_AT_BEGINNING );
 
-        doStretto( outMusic );
+        doStretto( outMusic, boolGen );
 
         // TODO - write the heat death
 
@@ -722,7 +722,7 @@ namespace scriabin
 
 
     void
-    Coalescence::doStretto( AtomStreams& ioMusic )
+    Coalescence::doStretto( AtomStreams& ioMusic, Prob& ioProb )
     {
         const int STRETTO_START_MEASURE_NUMBER = 699;
         const int STRETTO_LAST_MEASURE_NUMBER = 1000;
@@ -783,30 +783,69 @@ namespace scriabin
 
         const auto accent = [&]( int inPartIndex )
         {
-          stretto.at( TO_SZ( inPartIndex ) ).back().setIsAccented( true );
+            stretto.at( TO_SZ( inPartIndex ) ).back().setIsAccented( true );
         };
 
         const auto accentAll = [&]()
         {
-          accent( M1X );
-          accent( M2X );
-          accent( M3X );
-          accent( M4X );
+            accent( M1X );
+            accent( M2X );
+            accent( M3X );
+            accent( M4X );
         };
 
+        const std::vector<int>
+                primes = { 97, 89, 83, 79, 71, 67, 61, 59, 53, 47, 43, 41, 37, 31, 29, 23, 19, 17, 13, 11, 7, 5 };
+
+        auto m1primesIter = primes.cbegin();
+        auto m2primesIter = primes.cbegin();
+        auto m3primesIter = primes.cbegin();
+        auto m4primesIter = primes.cbegin();
+        const auto primesEnd = primes.cend();
+
         state.addCounter( { M1, 24 } );
-        state.getCounterMutable( M1 ).length = 17;
+        state.getCounterMutable( M1 ).length = *m1primesIter;
+        state.getCounterMutable( M1 ).current = 5;
 
         state.addCounter( { M2, 24 } );
-        state.getCounterMutable( M2 ).length = 19;
+        state.getCounterMutable( M2 ).length = *m2primesIter;
+        state.getCounterMutable( M1 ).current = 7;
 
         state.addCounter( { M3, 24 } );
-        state.getCounterMutable( M3 ).length = 13;
+        state.getCounterMutable( M3 ).length = *m3primesIter;
+        state.getCounterMutable( M1 ).current = 11;
 
         state.addCounter( { M4, 24 } );
-        state.getCounterMutable( M4 ).length = 23;
+        state.getCounterMutable( M4 ).length = *m4primesIter;
+        state.getCounterMutable( M1 ).current = 13;
 
         const int HOW_LONG = 400;
+
+        const auto setNextPrime = [&]( const std::string& counterName )
+        {
+            auto iter = m1primesIter;
+            if( counterName == M2 )
+            {
+                iter = m2primesIter;
+            }
+            else if( counterName == M3 )
+            {
+                iter = m3primesIter;
+            }
+            else if( counterName == M4 )
+            {
+                iter = m4primesIter;
+            }
+
+            if( iter != primesEnd )
+            {
+                ++iter;
+                if( iter != primesEnd )
+                {
+                    state.getCounterMutable( counterName ).length = *iter;
+                }
+            }
+        };
 
         for( int i = 0; i < HOW_LONG; ++state, ++i )
         {
@@ -832,21 +871,25 @@ namespace scriabin
             if( state.getIsCounterZero( M1 ) )
             {
                 accent( M1X );
+                setNextPrime( M1 );
             }
 
-            if( state.getIsCounterZero( M2 ) )
+            if( state.getIsCounterZero( M2 ) && i > 200 )
             {
                 accent( M2X );
+                setNextPrime( M2 );
             }
 
-            if( state.getIsCounterZero( M3 ) )
+            if( state.getIsCounterZero( M3 ) && i > 300 )
             {
                 accent( M3X );
+                setNextPrime( M3 );
             }
 
-            if( state.getIsCounterZero( M4 ) )
+            if( state.getIsCounterZero( M4 ) && i > 100 )
             {
                 accent( M4X );
+                setNextPrime( M4 );
             }
         }
 
