@@ -189,7 +189,7 @@ namespace scriabin
     {
         if( inStreamsToWrite.size() != ioStreamsToAppendTo.size() )
         {
-            std::runtime_error( "Coalescence::writeMusic: maps must be same size" );
+            throw std::runtime_error( "Coalescence::writeMusic: maps must be same size" );
         }
 
         auto inIter = inStreamsToWrite.cbegin();
@@ -795,8 +795,8 @@ namespace scriabin
         };
 
         const std::vector<int>
-                primes = { 97, 89, 83, 79, 71, 67, 61, 59, 53, 47, 43, 41, 37, 31, 29, 23, 19, 17, 13, 11, 7, 5 };
-
+//                primes = { 97, 89, 83, 79, 71, 67, 61, 59, 53, 47, 43, 41, 37, 31, 29, 23, 19, 17, 13, 11, 7, 5 };
+                primes = { 71, 67, 61, 59, 53, 47, 43, 41, 37, 31, 29, 23, 19, 17, 13, 11, 7, 5 };
         auto m1primesIter = primes.cbegin();
         auto m2primesIter = primes.cbegin();
         auto m3primesIter = primes.cbegin();
@@ -805,47 +805,60 @@ namespace scriabin
 
         state.addCounter( { M1, 24 } );
         state.getCounterMutable( M1 ).length = *m1primesIter;
-        state.getCounterMutable( M1 ).current = 5;
+//        state.getCounterMutable( M1 ).current = 5;
 
         state.addCounter( { M2, 24 } );
         state.getCounterMutable( M2 ).length = *m2primesIter;
-        state.getCounterMutable( M1 ).current = 7;
+//        state.getCounterMutable( M1 ).current = 7;
 
         state.addCounter( { M3, 24 } );
         state.getCounterMutable( M3 ).length = *m3primesIter;
-        state.getCounterMutable( M1 ).current = 11;
+//        state.getCounterMutable( M1 ).current = 11;
 
         state.addCounter( { M4, 24 } );
         state.getCounterMutable( M4 ).length = *m4primesIter;
-        state.getCounterMutable( M1 ).current = 13;
+//        state.getCounterMutable( M1 ).current = 13;
 
-        const int HOW_LONG = 400;
+        const int HOW_LONG = 4000;
+        const int WAIT_TRIGGER_INTERVAL = 25;
 
         const auto setNextPrime = [&]( const std::string& counterName )
         {
-            auto iter = m1primesIter;
+            auto iter = &m1primesIter;
             if( counterName == M2 )
             {
-                iter = m2primesIter;
+                iter = &m2primesIter;
             }
             else if( counterName == M3 )
             {
-                iter = m3primesIter;
+                iter = &m3primesIter;
             }
             else if( counterName == M4 )
             {
-                iter = m4primesIter;
+                iter = &m4primesIter;
             }
 
-            if( iter != primesEnd )
+            if( *iter != primesEnd )
             {
-                ++iter;
-                if( iter != primesEnd )
+                ++( *iter );
+                if( ( *iter ) != primesEnd )
                 {
-                    state.getCounterMutable( counterName ).length = *iter;
+                    const auto current = state.getCounter( counterName ).length;
+                    const auto probability = std::min( current * 4, 100 );
+                    const bool doDecrement = ioProb.get( probability );
+                    if( doDecrement )
+                    {
+                        const auto newPrime = *( *iter );
+                        state.getCounterMutable( counterName ).length = newPrime;
+                    }
                 }
             }
         };
+
+        bool isM1Initialized = false;
+        bool isM2Initialized = false;
+        bool isM3Initialized = false;
+        bool isM4Initialized = false;
 
         for( int i = 0; i < HOW_LONG; ++state, ++i )
         {
@@ -859,6 +872,31 @@ namespace scriabin
             stretto.at( M3X ).push_back( atom3 );
             stretto.at( M4X ).push_back( atom4 );
 
+            // initialize marimbas to start at different times
+            if( i == WAIT_TRIGGER_INTERVAL * 1 )
+            {
+                state.getCounterMutable( M1 ).current = 0;
+                isM1Initialized = true;
+            }
+
+            if( i == WAIT_TRIGGER_INTERVAL * 2 )
+            {
+                state.getCounterMutable( M4 ).current = 0;
+                isM4Initialized = true;
+            }
+
+            if( i == WAIT_TRIGGER_INTERVAL * 3 )
+            {
+                state.getCounterMutable( M2 ).current = 0;
+                isM2Initialized = true;
+            }
+
+            if( i == WAIT_TRIGGER_INTERVAL * 4 )
+            {
+                state.getCounterMutable( M3 ).current = 0;
+                isM3Initialized = true;
+            }
+
             if( state.getIsFirstNoteOfPhrase() )
             {
                 accentAll();
@@ -868,25 +906,25 @@ namespace scriabin
                 accentAll();
             }
 
-            if( state.getIsCounterZero( M1 ) )
+            if( state.getIsCounterZero( M1 ) && isM1Initialized )
             {
                 accent( M1X );
                 setNextPrime( M1 );
             }
 
-            if( state.getIsCounterZero( M2 ) && i > 200 )
+            if( state.getIsCounterZero( M2 ) && isM2Initialized )
             {
                 accent( M2X );
                 setNextPrime( M2 );
             }
 
-            if( state.getIsCounterZero( M3 ) && i > 300 )
+            if( state.getIsCounterZero( M3 ) && isM3Initialized )
             {
                 accent( M3X );
                 setNextPrime( M3 );
             }
 
-            if( state.getIsCounterZero( M4 ) && i > 100 )
+            if( state.getIsCounterZero( M4 ) && isM4Initialized )
             {
                 accent( M4X );
                 setNextPrime( M4 );
@@ -1126,10 +1164,10 @@ namespace scriabin
         alto.setAlto();
         mx::api::ClefData bass;
         bass.setBass();
-        addInstrument( score, "VN1", "Violin 1", "Vln 1", mx::api::SoundID::stringsViolin, treble );
-        addInstrument( score, "VN2", "Violin 2", "Vln 2", mx::api::SoundID::stringsViolin, treble );
-        addInstrument( score, "VLA", "Viola", "Vla", mx::api::SoundID::stringsViola, alto );
-        addInstrument( score, "VLC", "Cello", "Vlc", mx::api::SoundID::stringsCello, bass );
+        addInstrument( score, "MARIMBA1", "Marimba 1", "1", mx::api::SoundID::pitchedPercussionMarimba, treble );
+        addInstrument( score, "MARIMBA2", "Marimba 2", "2", mx::api::SoundID::pitchedPercussionMarimba, treble );
+        addInstrument( score, "MARIMBA3", "Marimba 3", "3", mx::api::SoundID::pitchedPercussionMarimba, alto );
+        addInstrument( score, "MARIMBA4", "Marimba 4", "4", mx::api::SoundID::pitchedPercussionMarimbaBass, bass );
         mx::api::PartGroupData grp;
         grp.firstPartIndex = 0;
         grp.lastPartIndex = 3;
