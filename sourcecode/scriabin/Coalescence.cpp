@@ -17,26 +17,28 @@ namespace scriabin
     static constexpr const int QUARTER_NOTE_BEAT_TYPE_NUMERAL = 4;
     static constexpr const mx::api::DurationName BEAT_TYPE_NAME = mx::api::DurationName::eighth;
     static constexpr const int TICKS_PER_QUARTER = 2;
-    static constexpr const double BEAT_TYPE_TO_QUARTER_RATIO = static_cast<double>( QUARTER_NOTE_BEAT_TYPE_NUMERAL ) / static_cast<double>( BEAT_TYPE_NUMERAL );
-    static constexpr const int TICKS_PER_BEAT = static_cast<int>( ( static_cast<double>( TICKS_PER_QUARTER ) * BEAT_TYPE_TO_QUARTER_RATIO ) + 0.0000000001 );
-    
+    static constexpr const double BEAT_TYPE_TO_QUARTER_RATIO =
+            static_cast<double>( QUARTER_NOTE_BEAT_TYPE_NUMERAL ) / static_cast<double>( BEAT_TYPE_NUMERAL );
+    static constexpr const int TICKS_PER_BEAT =
+            static_cast<int>( ( static_cast<double>( TICKS_PER_QUARTER ) * BEAT_TYPE_TO_QUARTER_RATIO ) +
+                              0.0000000001 );
+
+
     Coalescence::Coalescence( std::string inputFilepath, std::string outputFilepath )
-    : myScore{}
-    , myInFilepath{ std::move( inputFilepath ) }
-    , myOutFilepath{ std::move( outputFilepath ) }
+            : myScore{}, myInFilepath{ std::move( inputFilepath ) }, myOutFilepath{ std::move( outputFilepath ) }
     {
 
     }
-    
-    
+
+
     void
     Coalescence::initSelfScore()
     {
         myScore = mx::api::ScoreData{};
         myScore = createEmptyScore( "Coalescence" );
     }
-    
-    
+
+
     MxNoteStreams
     Coalescence::getInputNotes() const
     {
@@ -46,7 +48,7 @@ namespace scriabin
         dmgr.destroyDocument( inID );
         MxNoteStreams inputNotes;
         int partIndex = 0;
-        
+
         for( const auto& part : input.parts )
         {
             for( const auto& measure : part.measures )
@@ -54,7 +56,7 @@ namespace scriabin
                 const auto& staff = measure.staves.at( 0 );
                 const auto& voice = staff.voices.at( 0 );
                 const auto& notes = voice.notes;
-                
+
                 for( const auto& note : notes )
                 {
                     inputNotes[partIndex].push_back( note );
@@ -62,16 +64,16 @@ namespace scriabin
             }
             ++partIndex;
         }
-        
+
         return inputNotes;
     }
-    
-    
+
+
     AtomStreams
     Coalescence::extractStreams( const MxNoteStreams& inNotes )
     {
         AtomStreams streams;
-        
+
         for( const auto& origPair : inNotes )
         {
             for( const auto& note : origPair.second )
@@ -81,9 +83,9 @@ namespace scriabin
                 {
                     a.setFromMx( note.pitchData );
                 }
-                
+
                 int numNotes = 1;
-                
+
                 if( note.durationData.durationName == mx::api::DurationName::quarter )
                 {
                     numNotes = 2;
@@ -92,30 +94,30 @@ namespace scriabin
                         numNotes = 3;
                     }
                 }
-                
+
                 a.updateName();
-                
+
                 for( int i = 0; i < numNotes; ++i )
                 {
                     streams[origPair.first].push_back( a );
                 }
             }
         }
-        
+
         // fix a problem with the viola part by copying violin 1
         // and transposing it down two octaves
         streams.at( 2 ) = streams.at( 0 );
-        
+
         for( auto& note : streams.at( 2 ) )
         {
             note.setOctave( note.getOctave() - 1 );
         }
-        
+
         addAccentsToInitialStreams( streams );
         return streams;
     }
-    
-    
+
+
     void
     Coalescence::addAccentsToInitialStreams( AtomStreams& ioStreams )
     {
@@ -125,7 +127,7 @@ namespace scriabin
         int indexLowest = -1;
         Atom lowest;
         int curr = 0;
-        
+
         for( const auto& a : checkStreamZero )
         {
             if( indexHighest == -1 || a > highest )
@@ -133,7 +135,7 @@ namespace scriabin
                 highest = a;
                 indexHighest = curr;
             }
-            
+
             if( indexLowest == -1 || a < lowest )
             {
                 lowest = a;
@@ -142,22 +144,22 @@ namespace scriabin
 
             ++curr;
         }
-        
+
         for( auto& stream : ioStreams )
         {
             stream.second.at( static_cast<size_t>( indexLowest ) ).setIsAccented( true );
             stream.second.at( static_cast<size_t>( indexHighest ) ).setIsAccented( true );
         }
     }
-    
-    
+
+
     void
     Coalescence::reverseAtoms( Atoms& ioAtoms )
     {
-        std::reverse(std::begin( ioAtoms ), std::end( ioAtoms ) );
+        std::reverse( std::begin( ioAtoms ), std::end( ioAtoms ) );
     }
-    
-    
+
+
     void
     Coalescence::reverseStreams( AtomStreams& ioStreams )
     {
@@ -166,18 +168,22 @@ namespace scriabin
             reverseAtoms( pair.second );
         }
     }
-    
-    
+
+
     void
     Coalescence::writeMusic( const Atoms& inAtomsToWrite, Atoms& ioAtomsToAppendTo, int numTimes )
     {
         for( int i = 0; i < numTimes; ++i )
         {
-            std::copy( std::cbegin( inAtomsToWrite ), std::cend( inAtomsToWrite ), std::back_inserter( ioAtomsToAppendTo ) );
+            std::copy(
+                    std::cbegin( inAtomsToWrite ),
+                    std::cend( inAtomsToWrite ),
+                    std::back_inserter( ioAtomsToAppendTo )
+            );
         }
     }
-    
-    
+
+
     void
     Coalescence::writeMusic( const AtomStreams& inStreamsToWrite, AtomStreams& ioStreamsToAppendTo, int numTimes )
     {
@@ -185,149 +191,151 @@ namespace scriabin
         {
             std::runtime_error( "Coalescence::writeMusic: maps must be same size" );
         }
-        
+
         auto inIter = inStreamsToWrite.cbegin();
         auto outIter = ioStreamsToAppendTo.begin();
         const auto e = inStreamsToWrite.cend();
-        
+
         for( ; inIter != e; ++inIter, ++outIter )
         {
             writeMusic( inIter->second, outIter->second, numTimes );
         }
     }
-    
-    
+
+
     void
-    Coalescence::doSomeAwesomeCoalescing( AtomStreams& ioPatternStreams,
-                                          AtomStreams& ioOutputStreams,
-                                          Prob& ioProb )
+    Coalescence::doSomeAwesomeCoalescing(
+            AtomStreams& ioPatternStreams,
+            AtomStreams& ioOutputStreams,
+            Prob& ioProb
+    )
     {
         CoalescenceParams params;
         params.minR = 0;
         params.maxR = 0;
         params.rInc = 0;
         params.rTier = 0;
-        
+
         params.minP = 1;
         params.maxP = 1;
         params.pInc = 0;
         params.pTier = 1;
         params.numLoops = 3;
-        
+
         doCoalescingLoop( params, ioPatternStreams, ioOutputStreams, ioProb );
         writeMusic( ioPatternStreams, ioOutputStreams, 3 );
-        
+
         params.minR = 0;
         params.maxR = 0;
         params.rInc = 0;
         params.rTier = 0;
-        
+
         params.minP = 1;
         params.maxP = 1;
         params.pInc = 0;
         params.pTier = 1;
         params.numLoops = 2;
-        
+
         doCoalescingLoop( params, ioPatternStreams, ioOutputStreams, ioProb );
         writeMusic( ioPatternStreams, ioOutputStreams, 2 );
-        
+
         params.minR = 0;
         params.maxR = 0;
         params.rInc = 0;
         params.rTier = 0;
-        
+
         params.minP = 1;
         params.maxP = 1;
         params.pInc = 0;
         params.pTier = 1;
         params.numLoops = 2;
-        
+
         doCoalescingLoop( params, ioPatternStreams, ioOutputStreams, ioProb );
         writeMusic( ioPatternStreams, ioOutputStreams, 2 );
-        
+
         // add a rest to viola
         int restPartIndex = 2;
         auto restIndex = findInsertIndex( ioPatternStreams.at( restPartIndex ), ioProb );
         auto restIter = ioPatternStreams.at( restPartIndex ).cbegin() + static_cast<ptrdiff_t>( restIndex );
         restIter = ioPatternStreams.at( restPartIndex ).insert( restIter, Atom{} );
-        
+
         params.minR = 0;
         params.maxR = 0;
         params.rInc = 0;
         params.rTier = 0;
-        
+
         params.minP = 1;
         params.maxP = 1;
         params.pInc = 0;
         params.pTier = 1;
         params.numLoops = 2;
-        
+
         doCoalescingLoop( params, ioPatternStreams, ioOutputStreams, ioProb );
         writeMusic( ioPatternStreams, ioOutputStreams, 2 );
-        
+
         // add a rest to violin 2
         restPartIndex = 1;
         restIndex = findInsertIndex( ioPatternStreams.at( restPartIndex ), ioProb );
         restIter = ioPatternStreams.at( restPartIndex ).cbegin() + static_cast<ptrdiff_t>( restIndex );
         restIter = ioPatternStreams.at( restPartIndex ).insert( restIter, Atom{} );
-        
+
         params.minR = 0;
         params.maxR = 0;
         params.rInc = 0;
         params.rTier = 0;
-        
+
         params.minP = 3;
         params.maxP = 3;
         params.pInc = 0;
         params.pTier = 1;
         params.numLoops = 2;
-        
+
         doCoalescingLoop( params, ioPatternStreams, ioOutputStreams, ioProb );
         writeMusic( ioPatternStreams, ioOutputStreams, 2 );
-        
+
         // add a rest to violin 1
         restPartIndex = 0;
         restIndex = findInsertIndex( ioPatternStreams.at( restPartIndex ), ioProb );
         restIter = ioPatternStreams.at( restPartIndex ).cbegin() + static_cast<ptrdiff_t>( restIndex );
         restIter = ioPatternStreams.at( restPartIndex ).insert( restIter, Atom{} );
         restIter = ioPatternStreams.at( restPartIndex ).insert( restIter, Atom{} );
-        
+
         params.minR = 0;
         params.maxR = 0;
         params.rInc = 0;
         params.rTier = 0;
-        
+
         params.minP = 3;
         params.maxP = 3;
         params.pInc = 0;
         params.pTier = 1;
         params.numLoops = 2;
-        
+
         doCoalescingLoop( params, ioPatternStreams, ioOutputStreams, ioProb );
         // writeMusic( ioPatternStreams, ioOutputStreams, 2 );
-        
+
         // add a rest to cello
         restPartIndex = 3;
         restIndex = findInsertIndex( ioPatternStreams.at( restPartIndex ), ioProb );
         restIter = ioPatternStreams.at( restPartIndex ).cbegin() + static_cast<ptrdiff_t>( restIndex );
         restIter = ioPatternStreams.at( restPartIndex ).insert( restIter, Atom{} );
         restIter = ioPatternStreams.at( restPartIndex ).insert( restIter, Atom{} );
-        
+
         params.minR = 0;
         params.maxR = 0;
         params.rInc = 0;
         params.rTier = 0;
-        
+
         params.minP = 10;
         params.maxP = 20;
         params.pInc = 1;
         params.pTier = 1;
         params.numLoops = 5;
-        
+
         doCoalescingLoop( params, ioPatternStreams, ioOutputStreams, ioProb );
         const int NUM_EXPANSIONS_PER_PHRASE = 3;
         const int NUM_TIMES_THROUGH_THE_PHRASE = 10;
-        
+
         for( int loop = 0; loop < NUM_TIMES_THROUGH_THE_PHRASE; ++loop )
         {
             for( int add = 0; add < NUM_EXPANSIONS_PER_PHRASE; ++add )
@@ -336,78 +344,82 @@ namespace scriabin
                 {
                     expandShortestReps( p.second, ioProb );
                 }
-                
+
             }
             writeMusic( ioPatternStreams, ioOutputStreams, 1 );
         }
-        
-        
-        
+
         params.minR = 0;
         params.maxR = 0;
         params.rInc = 0;
         params.rTier = 0;
-        
+
         params.minP = 33;
         params.maxP = 33;
         params.pInc = 0;
         params.pTier = 5;
         params.numLoops = 5;
-        
+
         doCoalescingLoop( params, ioPatternStreams, ioOutputStreams, ioProb );
     }
-    
-    
+
+
     inline int
-    chooseAtRandom( const std::set<int>::const_iterator beginIter, const std::set<int>::const_iterator endIter, Prob& ioProb )
+    chooseAtRandom(
+            const std::set<int>::const_iterator beginIter,
+            const std::set<int>::const_iterator endIter,
+            Prob& ioProb
+    )
     {
         if( beginIter == endIter )
         {
             return -1;
         }
-        
+
         int escapeHatch = 0;
         std::set<int>::const_iterator it = beginIter;
-        
+
         for( ; escapeHatch < 100000; ++escapeHatch )
         {
             if( ioProb.get( 30 ) )
             {
                 return *it;
             }
-            
+
             ++it;
-            
+
             if( it == endIter )
             {
                 it = beginIter;
             }
         }
-        
+
         return -1;
     }
-    
-    
+
+
     void
-    Coalescence::expandShortestReps( Atoms& ioPattern,
-                                     Prob& ioProb )
+    Coalescence::expandShortestReps(
+            Atoms& ioPattern,
+            Prob& ioProb
+    )
     {
         const auto nonReps = findNonRepeatingNotes( ioPattern );
-        
+
         if( !nonReps.empty() )
         {
             if( nonReps.empty() )
             {
                 return;
             }
-            
+
             const int rando = chooseAtRandom( std::cbegin( nonReps ), std::cend( nonReps ), ioProb );
-            
+
             if( rando < 0 || rando >= static_cast<int>( ioPattern.size() ) )
             {
                 throw std::runtime_error{ "not good" };
             }
-            
+
             const auto randoIter = ioPattern.cbegin() + static_cast<ptrdiff_t>( rando );
             ioPattern.insert( randoIter, *randoIter );
             return;
@@ -420,63 +432,63 @@ namespace scriabin
         {
             sorted.push_back( pair.second );
         }
-        
+
         const auto compare = [&]( AtomPattern& l, AtomPattern& r )
         {
-            if( l.patternLength < r.patternLength )
-            {
-                return true;
-            }
-            else if( l.patternLength > r.patternLength )
-            {
-                return false;
-            }
-            else if( l.firstAtomOfPattern.getOctave() < r.firstAtomOfPattern.getOctave() )
-            {
-                return true;
-            }
-            else if( l.firstAtomOfPattern.getOctave() > r.firstAtomOfPattern.getOctave() )
-            {
-                return false;
-            }
-            else if( l.firstAtomOfPattern.getStep() < r.firstAtomOfPattern.getStep() )
-            {
-                return true;
-            }
-            else if( l.firstAtomOfPattern.getStep() > r.firstAtomOfPattern.getStep() )
-            {
-                return false;
-            }
-            else if( l.firstAtomOfPattern.getAlter() < r.firstAtomOfPattern.getAlter() )
-            {
-                return true;
-            }
-            else if( l.firstAtomOfPattern.getAlter() > r.firstAtomOfPattern.getAlter() )
-            {
-                return false;
-            }
-            
-            return false;
+          if( l.patternLength < r.patternLength )
+          {
+              return true;
+          }
+          else if( l.patternLength > r.patternLength )
+          {
+              return false;
+          }
+          else if( l.firstAtomOfPattern.getOctave() < r.firstAtomOfPattern.getOctave() )
+          {
+              return true;
+          }
+          else if( l.firstAtomOfPattern.getOctave() > r.firstAtomOfPattern.getOctave() )
+          {
+              return false;
+          }
+          else if( l.firstAtomOfPattern.getStep() < r.firstAtomOfPattern.getStep() )
+          {
+              return true;
+          }
+          else if( l.firstAtomOfPattern.getStep() > r.firstAtomOfPattern.getStep() )
+          {
+              return false;
+          }
+          else if( l.firstAtomOfPattern.getAlter() < r.firstAtomOfPattern.getAlter() )
+          {
+              return true;
+          }
+          else if( l.firstAtomOfPattern.getAlter() > r.firstAtomOfPattern.getAlter() )
+          {
+              return false;
+          }
+
+          return false;
         };
-        
+
         std::sort( std::begin( sorted ), std::end( sorted ), compare );
         const auto& first = sorted.front();
         const auto insertIndex = first.index;
         const auto insertIter = ioPattern.cbegin() + static_cast<ptrdiff_t>( insertIndex );
         ioPattern.insert( insertIter, *insertIter );
     }
-    
-    
+
+
     int
     Coalescence::findInsertIndex( const Atoms& inAtoms, Prob& ioProb )
     {
         // make a datastructure showing where the repetitions and rests are
         const auto repetitions = findRepeatedNotes( inAtoms );
-        
+
         // find indices of all repeated notes and non-repeated notes
         std::set<int> repeatedIndices;
         std::set<int> nonRepeatedIndices;
-        
+
         for( const auto& r : repetitions )
         {
             for( int x = r.second.index; x < r.second.index + r.second.patternLength; ++x )
@@ -484,7 +496,7 @@ namespace scriabin
                 repeatedIndices.insert( x );
             }
         }
-        
+
         for( int x = 0; x < static_cast<int>( inAtoms.size() ); ++x )
         {
             if( repeatedIndices.find( x ) == repeatedIndices.cend() )
@@ -492,27 +504,27 @@ namespace scriabin
                 nonRepeatedIndices.insert( x );
             }
         }
-        
+
         // find a non-repeated index, or if none exist, then an index where there
         // is less than 3 repitions, or if none exists then a random index
         int insertIndex = -1;
-        
+
         if( repeatedIndices.size() > 0 )
         {
             const auto& collection = repeatedIndices;
             const auto begit = collection.cbegin();
             const auto endit = collection.cend();
             auto iter = begit;
-            
+
             while( insertIndex < 0 )
             {
                 if( ioProb.get( 1 ) )
                 {
                     insertIndex = *iter;
                 }
-                
+
                 ++iter;
-                
+
                 if( iter == endit )
                 {
                     iter = begit;
@@ -525,31 +537,32 @@ namespace scriabin
             const auto begit = collection.cbegin();
             const auto endit = collection.cend();
             auto iter = begit;
-            
+
             while( insertIndex < 0 )
             {
                 if( ioProb.get( 1 ) )
                 {
                     insertIndex = *iter;
                 }
-                
+
                 ++iter;
-                
+
                 if( iter == endit )
                 {
                     iter = begit;
                 }
             }
         }
-        
+
         if( insertIndex < 0 || insertIndex >= static_cast<int>( inAtoms.size() ) )
         {
             throw std::runtime_error{ "index will be out of range" };
         }
-        
+
         return insertIndex;
     }
-    
+
+
     void
     Coalescence::eliminateTriplePlusAccents( AtomStreams& ioStreams )
     {
@@ -559,7 +572,7 @@ namespace scriabin
             const auto en = stream.second.end();
             std::unique_ptr<Atom> prevAtom = nullptr;
             int accentCount = 0;
-            
+
             for( ; it != en; ++it )
             {
                 if( !prevAtom )
@@ -571,11 +584,11 @@ namespace scriabin
                     }
                     continue;
                 }
-                
+
                 if( it->getIsAccented() )
                 {
                     ++accentCount;
-                    
+
                     if( *it == *prevAtom )
                     {
                         if( accentCount > 2 )
@@ -588,13 +601,13 @@ namespace scriabin
                 {
                     accentCount = 0;
                 }
-                
+
                 *prevAtom = *it;
             }
         }
     }
-    
-    
+
+
     mx::api::ScoreData
     Coalescence::doEverthing()
     {
@@ -615,12 +628,12 @@ namespace scriabin
         sneakInAccents( outMusic, boolGen );
         static constexpr const int NUM_MEASURES_AT_BEGINNING = 24;
         extendTheOpening( outMusic, NUM_MEASURES_AT_BEGINNING );
-        
+
         doStretto( outMusic );
-        
+
         // TODO - write the heat death
-        
-        
+
+
         // DONE - Write it Out
         writeStreamsToScore( outMusic, myScore );
         auto& dmgr = mx::api::DocumentManager::getInstance();
@@ -628,23 +641,23 @@ namespace scriabin
         dmgr.writeToFile( oID, myOutFilepath );
         return myScore;
     }
-    
-    
+
+
     void
     Coalescence::extendTheOpening( AtomStreams& ioOutMusic, int inNumMeasuresAtBeginning )
     {
         for( auto& stream : ioOutMusic )
         {
             const auto repeatedNote = stream.second.front();
-            
+
             for( int i = 0; i < inNumMeasuresAtBeginning * BEATS_PER_MEASURE; ++i )
             {
                 stream.second.insert( stream.second.cbegin(), repeatedNote );
             }
         }
     }
-    
-    
+
+
     void
     Coalescence::sneakInAccents( AtomStreams& ioMusic, Prob& ioProb )
     {
@@ -655,44 +668,43 @@ namespace scriabin
         // gradually reduce this probablity to 0 by measure 400
         const int measure400 = 400 * 6;
         const int firstDesiredAccentLoc = 200 * 6;
-        
+
         auto stream0 = ioMusic.at( 0 ).begin() + static_cast<ptrdiff_t>( firstDesiredAccentLoc );
         auto stream1 = ioMusic.at( 1 ).begin() + static_cast<ptrdiff_t>( firstDesiredAccentLoc );
         auto stream2 = ioMusic.at( 2 ).begin() + static_cast<ptrdiff_t>( firstDesiredAccentLoc );
         auto stream3 = ioMusic.at( 3 ).begin() + static_cast<ptrdiff_t>( firstDesiredAccentLoc );
         const auto streamEnd = ioMusic.at( 0 ).end();
         int firstAccentLoc = 0;
-        
+
         for( int i = firstDesiredAccentLoc; stream0 != streamEnd; ++i, ++stream0, ++stream1, ++stream2, ++stream3 )
         {
             if( stream0->getIsAccented() ||
-               stream1->getIsAccented() ||
-               stream2->getIsAccented() ||
-               stream3->getIsAccented() )
+                stream1->getIsAccented() ||
+                stream2->getIsAccented() ||
+                stream3->getIsAccented() )
             {
                 firstAccentLoc = i;
                 break;
             }
         }
-        
-        const double distanceBetweenProbZeroAndProb100 = static_cast<double>( firstAccentLoc ) - static_cast<double>( measure400 );
+
+        const double distanceBetweenProbZeroAndProb100 =
+                static_cast<double>( firstAccentLoc ) - static_cast<double>( measure400 );
         const double startingProb = 80.0;
         const double probIncrement = startingProb / distanceBetweenProbZeroAndProb100;
-        
-        
+
         for( auto& stream : ioMusic )
         {
-            for( size_t i = 0; i < static_cast<size_t>( firstAccentLoc ); ++ i )
+            for( size_t i = 0; i < static_cast<size_t>( firstAccentLoc ); ++i )
             {
                 stream.second.at( i ).setIsAccented( false );
             }
-            
-            
+
             double prob = startingProb;
             for( size_t i = static_cast<size_t>( firstAccentLoc ) + 2; i < measure400 + 6; ++i, prob += probIncrement )
             {
                 const bool doEliminate = ioProb.get( static_cast<int>( prob ) );
-                
+
                 if( doEliminate )
                 {
                     if( stream.second.at( i ).getIsAccented() )
@@ -707,8 +719,8 @@ namespace scriabin
             }
         }
     }
-    
-    
+
+
     void
     Coalescence::doStretto( AtomStreams& ioMusic )
     {
@@ -716,7 +728,7 @@ namespace scriabin
         const int STRETTO_LAST_MEASURE_NUMBER = 1000;
         const int STRETTO_START_MEASURE_INDEX = STRETTO_START_MEASURE_NUMBER - 1;
 //        const int STRETTO_LAST_MEASURE_INDEX = STRETTO_LAST_MEASURE_NUMBER - 1;
-        
+
         StrettoFacts sfacts;
         sfacts.beatsPerMeasure = BEATS_PER_MEASURE;
         sfacts.phraseLengthMeasures = 4;
@@ -726,13 +738,13 @@ namespace scriabin
 
         const int STRETTO_START_NOTE_INDEX = STRETTO_START_MEASURE_INDEX * BEATS_PER_MEASURE;
 //        const int STRETTO_LAST_NOTE_INDEX = ( STRETTO_LAST_MEASURE_NUMBER * BEATS_PER_MEASURE ) - 1;
-        
+
         // chop off all repetitions after the desired amount
         for( auto& stream : ioMusic )
         {
             stream.second.resize( TO_SZ( STRETTO_START_MEASURE_INDEX * BEATS_PER_MEASURE ) );
         }
-        
+
         AtomStreams tempStreams;
 
         // copy the last musical phrase and remove all accents
@@ -754,37 +766,42 @@ namespace scriabin
         const auto proto = tempStreams;
         AtomStreams phrase = proto;
 
-        const auto accent = [&]( bool stream0, bool stream1, bool stream2, bool stream3 )
+//        const auto accent = [&]( bool stream0, bool stream1, bool stream2, bool stream3 )
+//        {
+//            int streamIndex = 0;
+//            for( auto& stream : phrase )
+//            {
+//                if( ( streamIndex == 0 && stream0 ) ||
+//                   ( streamIndex == 1 && stream1 ) ||
+//                   ( streamIndex == 2 && stream2 ) ||
+//                   ( streamIndex == 3 && stream3 ) )
+//                {
+//                    stream.second.at( TO_SZ( state.getNoteInPhraseIndex() ) ).setIsAccented( true );
+//                }
+//                ++streamIndex;
+//            }
+//        };
+
+        const auto accent = [&]( int inPartIndex )
         {
-            int streamIndex = 0;
-            for( auto& stream : phrase )
-            {
-                if( ( streamIndex == 0 && stream0 ) ||
-                   ( streamIndex == 1 && stream1 ) ||
-                   ( streamIndex == 2 && stream2 ) ||
-                   ( streamIndex == 3 && stream3 ) )
-                {
-                    stream.second.at( TO_SZ( state.getNoteInPhraseIndex() ) ).setIsAccented( true );
-                }
-                ++streamIndex;
-            }
+          phrase.at( TO_SZ( inPartIndex ) ).at( TO_SZ( state.getNoteInPhraseIndex() ) ).setIsAccented( true );
         };
 
-      const auto rest = [&]( bool stream0, bool stream1, bool stream2, bool stream3 )
-      {
-        int streamIndex = 0;
-        for( auto& stream : phrase )
-        {
-          if( ( streamIndex == 0 && stream0 ) ||
-              ( streamIndex == 1 && stream1 ) ||
-              ( streamIndex == 2 && stream2 ) ||
-              ( streamIndex == 3 && stream3 ) )
-          {
-            stream.second.at( TO_SZ( state.getNoteInPhraseIndex() ) ).setRest ();
-          }
-          ++streamIndex;
-        }
-      };
+//      const auto rest = [&]( bool stream0, bool stream1, bool stream2, bool stream3 )
+//      {
+//        int streamIndex = 0;
+//        for( auto& stream : phrase )
+//        {
+//          if( ( streamIndex == 0 && stream0 ) ||
+//              ( streamIndex == 1 && stream1 ) ||
+//              ( streamIndex == 2 && stream2 ) ||
+//              ( streamIndex == 3 && stream3 ) )
+//          {
+//            stream.second.at( TO_SZ( state.getNoteInPhraseIndex() ) ).setRest ();
+//          }
+//          ++streamIndex;
+//        }
+//      };
 
 //        const auto dynamic = [&]( DynamicValue vln1, DynamicValue vln2, DynamicValue vla, DynamicValue vlc, AtomStreams& ioStreams )
 //        {
@@ -794,11 +811,30 @@ namespace scriabin
 //            ioStreams.at( 3 ).at( TO_SZ( state.getNoteInPhraseIndex() ) ).setDynamicValue( vlc );
 //        };
 
-        
-        state.addCounter( { "main", 24 } );
-        state.getCounterMutable( "main" ).current = 17;
-        int phraseCount = 4;
-        
+        const std::string M1 = "Marimba 1";
+        const std::string M2 = "Marimba 2";
+        const std::string M3 = "Marimba 3";
+        const std::string M4 = "Bass Marimba";
+
+        const size_t M1X = 0;
+        const size_t M2X = 1;
+        const size_t M3X = 2;
+        const size_t M4X = 3;
+
+        state.addCounter( { M1, 24 } );
+        state.getCounterMutable( M1 ).current = 17;
+
+        state.addCounter( { M2, 24 } );
+        state.getCounterMutable( M2 ).current = 19;
+
+        state.addCounter( { M3, 24 } );
+        state.getCounterMutable( M3 ).current = 13;
+
+        state.addCounter( { M4, 24 } );
+        state.getCounterMutable( M4 ).current = 23;
+
+        //int phraseCount = 4;
+
         for( ; state.getCounterMutable( "main" ).length > 0; --state.getCounterMutable( "main" ).length )
         {
             if( state.getCounter( "main" ).length == 23 )
@@ -813,13 +849,13 @@ namespace scriabin
             if( state.getCounter( "main" ).current >= currentCounterLength )
             {
                 --state.getCounterMutable( "main" ).current;
-                
+
                 if( state.getCounter( "main" ).current >= currentCounterLength )
                 {
                     state.getCounterMutable( "main" ).current = 0;
                 }
             }
-            
+
             // set a phraseCount based on where we are in the diminution
             if( currentCounterLength >= 24 )
             {
@@ -870,30 +906,34 @@ namespace scriabin
                         accent( true, true, true, true );
                         isCurrentAccent = true;
                     }
-                    
+
                     if( state.getIsCounterZero( "main" ) )
                     {
                         accent( true, true, true, true );
-                      isCurrentAccent = true;
+                        isCurrentAccent = true;
                     }
-                    
+
                     if( state.getIsTopNoteOfPhrase() )
                     {
                         accent( true, true, true, true );
-                      isCurrentAccent = true;
+                        isCurrentAccent = true;
                     }
 
-                    if(isNoteAfterAccent && state.getCounter("main").length > 1) {
-                      rest(true,true,true,true);
+                    if( isNoteAfterAccent && state.getCounter( "main" ).length > 1 )
+                    {
+                        rest( true, true, true, true );
                     }
 
-                    if(isCurrentAccent) {
-                      isNoteAfterAccent = true;
-                      isCurrentAccent = false;
-                    } else {
-                      isNoteAfterAccent = false;
+                    if( isCurrentAccent )
+                    {
+                        isNoteAfterAccent = true;
+                        isCurrentAccent = false;
                     }
-                    
+                    else
+                    {
+                        isNoteAfterAccent = false;
+                    }
+
                     if( state.getIsLastNoteOfPhrase() )
                     {
                         writeMusic( phrase, ioMusic, 1 );
@@ -901,27 +941,26 @@ namespace scriabin
                 }
             }
         }
-        
-        
+
         state.removeCounter( "main" );
         Counter cello;
         cello.name = "Cello";
         cello.current = 0;
         cello.cycleCount = 0;
         cello.length = 3;
-        
+
         Counter viola;
         viola.name = "Viola";
         viola.current = 0;
         viola.cycleCount = 0;
         viola.length = 3;
-        
+
         Counter violin2;
         violin2.name = "Violin2";
         violin2.current = 0;
         violin2.cycleCount = 0;
         violin2.length = 3;
-        
+
         Counter violin1;
         violin1.name = "Violin1";
         violin1.current = 0;
@@ -932,7 +971,7 @@ namespace scriabin
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////// ending
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        
+
 //        state.addCounter( cello );
 //        const std::vector<int> pattern = { 3, 4, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181, 191, 193, 197, 199 };
 //        auto vln1PatternIt = pattern.cbegin();
@@ -1166,7 +1205,7 @@ namespace scriabin
 //        }
 //
 
-        
+
 //        // cycle through from 11 down to 3
 //        for( ; state.getCounterMutable( "main" ).length > 3; --state.getCounterMutable( "main" ).length )
 //        {
@@ -1206,7 +1245,7 @@ namespace scriabin
 //                }
 //            }
 //        }
-        
+
 //        state.getCounterMutable( "main" ).current = 0;
 //        state.getCounterMutable( "main" ).length = 3;
 //
@@ -1236,7 +1275,7 @@ namespace scriabin
 //                }
 //            }
 //        }
-        
+
 //        state.getCounterMutable( "main" ).current = 0;
 //        state.getCounterMutable( "main" ).length = 4;
 //
@@ -1266,7 +1305,7 @@ namespace scriabin
 //                }
 //            }
 //        }
-        
+
 //        // get the last two phrases
 //        AtomStreams lastTwoPhrases{};
 //
@@ -1321,79 +1360,83 @@ namespace scriabin
 //                }
 //            }
 //        }
-        
+
     } // end of function
-    
-    
+
+
     void
-    Coalescence::doCoalescingLoop( const CoalescenceParams& params,
-                                   AtomStreams& ioPatternStreams,
-                                   AtomStreams& ioOutputStreams,
-                                   Prob& ioProb )
+    Coalescence::doCoalescingLoop(
+            const CoalescenceParams& params,
+            AtomStreams& ioPatternStreams,
+            AtomStreams& ioOutputStreams,
+            Prob& ioProb
+    )
     {
         int rCurrent = params.minR;
         int pCurrent = params.minP;
-        
+
         for( int loopCounter = 0; loopCounter < params.numLoops; ++loopCounter )
         {
             for( int p = 0; p < 4; ++p )
             {
                 const int restProb = rCurrent + ( params.rTier * p );
                 const int repeatProb = pCurrent + ( params.pTier * p );
-                
+
                 for( auto it = ioPatternStreams.at( p ).begin(); it != ioPatternStreams.at( p ).end(); ++it )
                 {
                     const bool doRest = ioProb.get( restProb );
                     const bool doRepeat = ioProb.get( repeatProb );
-                    
+
                     if( doRest )
                     {
                         const auto currentIndex = it - ioPatternStreams.at( p ).begin();
                         const auto insertIndex = findInsertIndex( ioPatternStreams.at( p ), ioProb );
-                        const auto insertIter = ioPatternStreams.at( p ).cbegin() + static_cast<ptrdiff_t>( insertIndex );
+                        const auto
+                                insertIter = ioPatternStreams.at( p ).cbegin() + static_cast<ptrdiff_t>( insertIndex );
                         ioPatternStreams.at( p ).insert( insertIter, Atom{} );
                         it = ioPatternStreams.at( p ).begin() + currentIndex;
                     }
-                    
+
                     if( doRepeat )
                     {
                         it = ioPatternStreams.at( p ).insert( it, *it );
                     }
                 }
             }
-            
+
             writeMusic( ioPatternStreams, ioOutputStreams, 1 );
-            
+
             rCurrent += params.rInc;
             pCurrent += params.pInc;
-            
+
             if( rCurrent > params.maxR )
             {
                 rCurrent = params.maxR;
             }
-            
+
             if( pCurrent > params.maxP )
             {
                 rCurrent = params.maxP;
             }
         }
     }
-    
+
+
     void
     Coalescence::shortenStreamsToMatchLengthOfShortestStream( AtomStreams& ioStreams, int inMultipleOf )
     {
         int smallest = findIndexOfShortestStream( ioStreams );
         const int originalSizeSmallest = static_cast<int>( ioStreams.at( smallest ).size() );
-        
+
         if( inMultipleOf > 0 && originalSizeSmallest > 0 && originalSizeSmallest % inMultipleOf != 0 )
         {
             const int remainder = originalSizeSmallest % inMultipleOf;
             const auto newSize = ioStreams.at( smallest ).size() - static_cast<size_t>( remainder );
             ioStreams.at( smallest ).resize( newSize );
         }
-        
+
         const auto sizeOfSmallest = ioStreams.at( smallest ).size();
-        
+
         // delete extra notes based on smallest
         for( auto& pair : ioStreams )
         {
@@ -1403,8 +1446,8 @@ namespace scriabin
             }
         }
     }
-    
-    
+
+
     int
     Coalescence::findIndexOfShortestStream( const AtomStreams& inStreams )
     {
@@ -1412,7 +1455,7 @@ namespace scriabin
         int smallest = -1;
         int indexOfSmallest = 0;
         int currentIndex = 0;
-        
+
         for( const auto& streamPair : inStreams )
         {
             if( smallest == -1 || static_cast<int>( streamPair.second.size() ) < smallest )
@@ -1422,11 +1465,11 @@ namespace scriabin
             }
             ++currentIndex;
         }
-        
+
         return indexOfSmallest;
     }
-    
-    
+
+
     void
     Coalescence::writeStreamsToScore( const AtomStreams& inStreams, mx::api::ScoreData& ioScore )
     {
@@ -1438,33 +1481,35 @@ namespace scriabin
             writeStream( p, measureIndex, beatIndex, noteStream, ioScore );
         }
     }
-    
-    
+
+
     void
-    Coalescence::writeStream( int partIndex,
-                              int startingMeasureIndex,
-                              int startingEighthIndex,
-                              const Atoms& inAtoms,
-                              mx::api::ScoreData& ioScore )
+    Coalescence::writeStream(
+            int partIndex,
+            int startingMeasureIndex,
+            int startingEighthIndex,
+            const Atoms& inAtoms,
+            mx::api::ScoreData& ioScore
+    )
     {
         auto measureIndex = startingMeasureIndex;
         auto beatIndex = startingEighthIndex;
-        
+
         for( const auto& atom : inAtoms )
         {
             auto& part = ioScore.parts.at( static_cast<size_t>( partIndex) );
-            
+
             while( measureIndex > static_cast<int>( part.measures.size() ) - 1 )
             {
                 appendMeasures( ioScore, 1 );
             }
-            
+
             auto& measure = part.measures.at( static_cast<size_t>( measureIndex ) );
             mx::api::NoteData theNote;
             theNote.tickTimePosition = beatIndex * TICKS_PER_BEAT;
             theNote.durationData.durationTimeTicks = TICKS_PER_BEAT;
             theNote.durationData.durationName = BEAT_TYPE_NAME;
-            
+
             if( atom.getStep() == -1 )
             {
                 theNote.isRest = true;
@@ -1473,7 +1518,7 @@ namespace scriabin
             {
                 theNote.pitchData = atom.getMxPitchData();
             }
-            
+
             if( atom.getIsAccented() )
             {
                 mx::api::MarkData accent{};
@@ -1481,45 +1526,37 @@ namespace scriabin
                 accent.tickTimePosition = theNote.tickTimePosition;
                 theNote.noteAttachmentData.marks.push_back( accent );
             }
-            
+
             if( atom.getHasDynamicMarking() )
             {
                 mx::api::MarkData dynamic;
                 dynamic.markType = mx::api::MarkType::pppppp;
-                
-                switch ( atom.getDynamicValue() )
+
+                switch( atom.getDynamicValue() )
                 {
-                    case DynamicValue::NONE:
-                        throw "you're stupid";
+                    case DynamicValue::NONE:throw "you're stupid";
                         break;
-                    case DynamicValue::PP:
-                        dynamic.markType = mx::api::MarkType::pp;
+                    case DynamicValue::PP:dynamic.markType = mx::api::MarkType::pp;
                         break;
-                    case DynamicValue::P:
-                        dynamic.markType = mx::api::MarkType::p;
+                    case DynamicValue::P:dynamic.markType = mx::api::MarkType::p;
                         break;
-                    case DynamicValue::MP:
-                        dynamic.markType = mx::api::MarkType::mp;
+                    case DynamicValue::MP:dynamic.markType = mx::api::MarkType::mp;
                         break;
-                    case DynamicValue::MF:
-                        dynamic.markType = mx::api::MarkType::mf;
+                    case DynamicValue::MF:dynamic.markType = mx::api::MarkType::mf;
                         break;
-                    case DynamicValue::F:
-                        dynamic.markType = mx::api::MarkType::f;
+                    case DynamicValue::F:dynamic.markType = mx::api::MarkType::f;
                         break;
-                    case DynamicValue::FF:
-                        dynamic.markType = mx::api::MarkType::ff;
+                    case DynamicValue::FF:dynamic.markType = mx::api::MarkType::ff;
                         break;
-                    default:
-                        throw "you're stupid";
+                    default:throw "you're stupid";
                         break;
                 }
-                
+
                 theNote.noteAttachmentData.marks.push_back( dynamic );
             }
-            
+
             measure.staves.at( 0 ).voices.at( 0 ).notes.push_back( theNote );
-            
+
             if( ( beatIndex + 1 ) % BEATS_PER_MEASURE == 0 )
             {
                 ++measureIndex;
@@ -1531,8 +1568,8 @@ namespace scriabin
             }
         }
     }
-    
-    
+
+
     mx::api::ScoreData
     Coalescence::createEmptyScore( const std::string& title )
     {
@@ -1556,15 +1593,17 @@ namespace scriabin
         score.partGroups.push_back( grp );
         return score;
     }
-    
-    
+
+
     void
-    Coalescence::addInstrument( mx::api::ScoreData& ioScore,
-                          const std::string& id,
-                          const std::string& name,
-                          const std::string& abbr,
-                          mx::api::SoundID soundID,
-                          const mx::api::ClefData clef  )
+    Coalescence::addInstrument(
+            mx::api::ScoreData& ioScore,
+            const std::string& id,
+            const std::string& name,
+            const std::string& abbr,
+            mx::api::SoundID soundID,
+            const mx::api::ClefData clef
+    )
     {
         ioScore.parts.emplace_back();
         ioScore.parts.back().uniqueId = id;
@@ -1575,7 +1614,7 @@ namespace scriabin
         ioScore.parts.back().displayAbbreviation = ioScore.parts.back().abbreviation;
         ioScore.parts.back().instrumentData.soundID = soundID;
         ioScore.parts.back().instrumentData.soloOrEnsemble = mx::api::SoloOrEnsemble::solo;
-        
+
         ioScore.parts.back().measures.emplace_back();
         ioScore.parts.back().measures.back().staves.emplace_back();
         mx::api::TimeSignatureData tsd;
@@ -1586,8 +1625,8 @@ namespace scriabin
         ioScore.parts.back().measures.back().staves.back().clefs.push_back( clef );
         ioScore.parts.back().measures.back().staves.back().voices[0] = mx::api::VoiceData{};
     }
-    
-    
+
+
     void
     Coalescence::appendMeasures( mx::api::ScoreData& ioScore, int numMeasures )
     {
@@ -1599,7 +1638,7 @@ namespace scriabin
                 mx::api::MeasureData prototype;
                 prototype.timeSignature = lastMeasure.timeSignature;
                 prototype.timeSignature.isImplicit = true;
-                
+
                 for( const auto& staff : lastMeasure.staves )
                 {
                     prototype.staves.emplace_back();
@@ -1608,13 +1647,13 @@ namespace scriabin
                         prototype.staves.back().voices[voicePair.first] = mx::api::VoiceData{};
                     }
                 }
-                
+
                 ioScore.parts.at( partIndex ).measures.push_back( prototype );
             }
         }
     }
-    
-    
+
+
     void
     Coalescence::augmentBeginning( AtomStreams& ioOutMusic )
     {
@@ -1623,17 +1662,17 @@ namespace scriabin
         std::vector<Atom> currentNotes;
         int noteIndex = 0;
         const int lastNote = static_cast<int>( ioOutMusic.at( 0 ).size() ) - 1;
-        
+
         for( ; noteIndex <= lastNote && changeIndices.size() < 8; ++noteIndex )
         {
             currentNotes.clear();
-            
+
             for( const auto& p : ioOutMusic )
             {
                 const auto a = p.second.at( static_cast<size_t>( noteIndex) );
                 currentNotes.push_back( a );
             }
-            
+
             if( previousNotes.empty() )
             {
                 changeIndices.push_back( noteIndex );
@@ -1644,11 +1683,11 @@ namespace scriabin
                 {
                     throw std::runtime_error{ "previousNotes.size() != currentNotes.size()" };
                 }
-                
+
                 auto prevIter = previousNotes.cbegin();
                 auto currIter = currentNotes.cbegin();
                 const auto prevEnd = previousNotes.cend();
-                
+
                 for( ; prevIter != prevEnd; ++prevIter, ++currIter )
                 {
                     if( *prevIter != *currIter )
@@ -1657,20 +1696,22 @@ namespace scriabin
                     }
                 }
             }
-            
+
             previousNotes = currentNotes;
         }
-        
+
         int changeInstance = static_cast<int>( changeIndices.size() );
-        for( auto changeIndexIter = changeIndices.crbegin(); changeIndexIter != changeIndices.crend(); ++changeIndexIter, --changeInstance )
+        for( auto changeIndexIter = changeIndices.crbegin();
+             changeIndexIter != changeIndices.crend();
+             ++changeIndexIter, --changeInstance )
         {
             const auto changeIndex = *changeIndexIter;
             const auto notesToAdd = 18;//;changeInstance * BEATS_PER_MEASURE;
-            
+
             for( auto& p : ioOutMusic )
             {
                 auto insertIter = p.second.cbegin() + static_cast<ptrdiff_t>( changeIndex );
-                
+
                 for( int z = 0; z < notesToAdd; ++z )
                 {
                     insertIter = p.second.insert( insertIter, *insertIter );
