@@ -791,20 +791,20 @@ namespace scriabin
           accent( M1X );
           accent( M2X );
           accent( M3X );
-          accent( M3X );
+          accent( M4X );
         };
 
         state.addCounter( { M1, 24 } );
-        state.getCounterMutable( M1 ).current = 17;
+        state.getCounterMutable( M1 ).length = 17;
 
         state.addCounter( { M2, 24 } );
-        state.getCounterMutable( M2 ).current = 19;
+        state.getCounterMutable( M2 ).length = 19;
 
         state.addCounter( { M3, 24 } );
-        state.getCounterMutable( M3 ).current = 13;
+        state.getCounterMutable( M3 ).length = 13;
 
         state.addCounter( { M4, 24 } );
-        state.getCounterMutable( M4 ).current = 23;
+        state.getCounterMutable( M4 ).length = 23;
 
         const int HOW_LONG = 400;
 
