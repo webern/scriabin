@@ -24,6 +24,7 @@ namespace scriabin
     static constexpr const int TICKS_PER_BEAT =
             static_cast<int>( ( static_cast<double>( TICKS_PER_QUARTER ) * BEAT_TYPE_TO_QUARTER_RATIO ) +
                               0.0000000001 );
+    static constexpr const int PHRASE_LENGTH_NOTE_COUNT = 24;
 
 
     Coalescence::Coalescence( std::string inputFilepath, std::string outputFilepath )
@@ -624,13 +625,14 @@ namespace scriabin
         doSomeAwesomeCoalescing( patternStreams, outMusic, boolGen );
         shortenStreamsToMatchLengthOfShortestStream( outMusic, BEATS_PER_MEASURE );
         reverseStreams( outMusic );
-        writeMusic( originalMusic, outMusic, 32 );
-//        augmentBeginning( outMusic );
+        writeMusic( originalMusic, outMusic, 16 );
+        augmentBeginning( outMusic );
         eliminateTriplePlusAccents( outMusic );
         sneakInAccents( outMusic, boolGen );
         static constexpr const int NUM_MEASURES_AT_BEGINNING = 24;
-        extendTheOpening( outMusic, NUM_MEASURES_AT_BEGINNING );
+//        extendTheOpening( outMusic, NUM_MEASURES_AT_BEGINNING );
 
+        std::cout << "outMusic size: " << outMusic.size() << std::endl;
         doStretto( outMusic, boolGen );
 
         // TODO - write the heat death
@@ -726,15 +728,22 @@ namespace scriabin
     void
     Coalescence::doStretto( AtomStreams& ioMusic, Prob& ioProb )
     {
-        const int STRETTO_START_MEASURE_NUMBER = 699;
-        const int STRETTO_LAST_MEASURE_NUMBER = 1000;
+        const int NOTE_STREAM_SIZE_BEFORE_STRETTO = ioMusic.at( 0 ).size();
+        const int STRETTO_START_MEASURE_NUMBER =
+                ( ( TO_INT( NOTE_STREAM_SIZE_BEFORE_STRETTO ) ) / BEATS_PER_MEASURE ) + 1;
+        std::cout << "STRETTO_START_MEASURE_NUMBER: " << STRETTO_START_MEASURE_NUMBER << std::endl;
+        const int HOW_MANY_PHRASE_REPETITIONS_IN_STRETTO = 150;
+        const int HOW_MANY_NOTES_IN_STRETTOS = PHRASE_LENGTH_NOTE_COUNT * HOW_MANY_PHRASE_REPETITIONS_IN_STRETTO;
+        const int STRETTO_LAST_MEASURE_NUMBER =
+                STRETTO_START_MEASURE_NUMBER + ( HOW_MANY_NOTES_IN_STRETTOS / BEATS_PER_MEASURE ) - 1;
+        std::cout << "STRETTO_LAST_MEASURE_NUMBER: " << STRETTO_LAST_MEASURE_NUMBER << std::endl;
         const int STRETTO_START_MEASURE_INDEX = STRETTO_START_MEASURE_NUMBER - 1;
 //        const int STRETTO_LAST_MEASURE_INDEX = STRETTO_LAST_MEASURE_NUMBER - 1;
 
         StrettoFacts sfacts;
         sfacts.beatsPerMeasure = BEATS_PER_MEASURE;
-        sfacts.phraseLengthMeasures = 4;
-        sfacts.sectionLengthMinMeasures = STRETTO_LAST_MEASURE_NUMBER - STRETTO_START_MEASURE_NUMBER;
+        sfacts.phraseLengthMeasures = 2;
+        sfacts.sectionLengthMinMeasures = -1; // ?? unused? STRETTO_LAST_MEASURE_NUMBER - STRETTO_START_MEASURE_NUMBER;
         sfacts.topNoteIndex = 15;
         StrettoState state{ sfacts };
 
@@ -805,24 +814,23 @@ namespace scriabin
         auto m4primesIter = primes.cbegin();
         const auto primesEnd = primes.cend();
 
-        state.addCounter( { M1, 24 } );
+        state.addCounter( { M1, PHRASE_LENGTH_NOTE_COUNT } );
         state.getCounterMutable( M1 ).length = *m1primesIter;
 //        state.getCounterMutable( M1 ).current = 5;
 
-        state.addCounter( { M2, 24 } );
+        state.addCounter( { M2, PHRASE_LENGTH_NOTE_COUNT } );
         state.getCounterMutable( M2 ).length = *m2primesIter;
 //        state.getCounterMutable( M1 ).current = 7;
 
-        state.addCounter( { M3, 24 } );
+        state.addCounter( { M3, PHRASE_LENGTH_NOTE_COUNT } );
         state.getCounterMutable( M3 ).length = *m3primesIter;
 //        state.getCounterMutable( M1 ).current = 11;
 
-        state.addCounter( { M4, 24 } );
+        state.addCounter( { M4, PHRASE_LENGTH_NOTE_COUNT } );
         state.getCounterMutable( M4 ).length = *m4primesIter;
 //        state.getCounterMutable( M1 ).current = 13;
 
-        const int HOW_LONG = 4000;
-        const int WAIT_TRIGGER_INTERVAL = 25;
+        const int WAIT_TRIGGER_INTERVAL = 27;
 
         const auto setNextPrime = [&]( const std::string& counterName )
         {
@@ -862,7 +870,7 @@ namespace scriabin
         bool isM3Initialized = false;
         bool isM4Initialized = false;
 
-        for( int i = 0; i < HOW_LONG; ++state, ++i )
+        for( int i = 0; i < HOW_MANY_NOTES_IN_STRETTOS; ++state, ++i )
         {
             const auto noteInPhrase = TO_SZ( state.getNoteInPhraseIndex() );
             auto atom1 = proto.at( M1X ).at( noteInPhrase );

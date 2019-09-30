@@ -3,23 +3,26 @@ cmake_minimum_required(VERSION 3.0)
 project(scriabin LANGUAGES CXX VERSION 0.0.1)
 
 set(DEBUG_INFO "scriabin/CMakeLists.txt")
+message(STATUS "${DEBUG_INFO} Line:${CMAKE_CURRENT_LIST_LINE} starting")
+
 set(CORE_LIBRARY_NAME scriabin_core)
 set(MAIN_PROGRAM_NAME scriabin)
 set(TEST_PROGRAM_NAME scriabin_test)
-message(STATUS "${DEBUG_INFO} Line:${CMAKE_CURRENT_LIST_LINE} cmdgen cmake file starting")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0")
+set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -O0")
 
 # Options
 option(ENABLE_TESTS "Enable tests" ON)
 
 # Directories
-set(DIR_EXTERN    "${CMAKE_CURRENT_SOURCE_DIR}/sourcecode/submodules")
-set(DIR_EZXML     "${DIR_EXTERN}/ezxml")
-set(DIR_INCLUDE   "${CMAKE_CURRENT_SOURCE_DIR}/sourcecode")
-set(DIR_MX        "${DIR_EXTERN}/mx")
-set(DIR_SOURCES   "${CMAKE_CURRENT_SOURCE_DIR}/sourcecode/scriabin")
-set(DIR_TEST      "${CMAKE_CURRENT_SOURCE_DIR}/sourcecode/test")
+set(DIR_EXTERN "${CMAKE_CURRENT_SOURCE_DIR}/sourcecode/submodules")
+set(DIR_EZXML "${DIR_EXTERN}/ezxml")
+set(DIR_INCLUDE "${CMAKE_CURRENT_SOURCE_DIR}/sourcecode")
+set(DIR_MX "${DIR_EXTERN}/mx")
+set(DIR_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/sourcecode/scriabin")
+set(DIR_TEST "${CMAKE_CURRENT_SOURCE_DIR}/sourcecode/test")
 set(EZXML_INCLUDE "${DIR_EZXML}/include")
-set(MX_INCLUDE    "${DIR_MX}/Sourcecode/include")
+set(MX_INCLUDE "${DIR_MX}/Sourcecode/include")
 
 message(STATUS "${DEBUG_INFO} Line:${CMAKE_CURRENT_LIST_LINE} DIR_EXTERN    = ${DIR_EXTERN}")
 message(STATUS "${DEBUG_INFO} Line:${CMAKE_CURRENT_LIST_LINE} DIR_EZXML     = ${DIR_EZXML}")
