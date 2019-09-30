@@ -12,11 +12,13 @@
 
 namespace scriabin
 {
-    static constexpr const int BEATS_PER_MEASURE = 6;
-    static constexpr const int BEAT_TYPE_NUMERAL = 8;
+    static constexpr const int BEATS_PER_MEASURE = 12;
+    static constexpr const int TIME_SIGNATURE_TOP_NUMBER = 3;
+    static constexpr const int BEAT_TYPE_NUMERAL = 16;
+    static constexpr const int TIME_SIGNATURE_BOTTOM_NUMBER = 4;
     static constexpr const int QUARTER_NOTE_BEAT_TYPE_NUMERAL = 4;
-    static constexpr const mx::api::DurationName BEAT_TYPE_NAME = mx::api::DurationName::eighth;
-    static constexpr const int TICKS_PER_QUARTER = 2;
+    static constexpr const mx::api::DurationName BEAT_TYPE_NAME = mx::api::DurationName::dur16th;
+    static constexpr const int TICKS_PER_QUARTER = 16;
     static constexpr const double BEAT_TYPE_TO_QUARTER_RATIO =
             static_cast<double>( QUARTER_NOTE_BEAT_TYPE_NUMERAL ) / static_cast<double>( BEAT_TYPE_NUMERAL );
     static constexpr const int TICKS_PER_BEAT =
@@ -1200,8 +1202,8 @@ namespace scriabin
         ioScore.parts.back().measures.emplace_back();
         ioScore.parts.back().measures.back().staves.emplace_back();
         mx::api::TimeSignatureData tsd;
-        tsd.beats = BEATS_PER_MEASURE;
-        tsd.beatType = BEAT_TYPE_NUMERAL;
+        tsd.beats = TIME_SIGNATURE_TOP_NUMBER;
+        tsd.beatType = TIME_SIGNATURE_BOTTOM_NUMBER;
         tsd.isImplicit = false;
         ioScore.parts.back().measures.back().timeSignature = tsd;
         ioScore.parts.back().measures.back().staves.back().clefs.push_back( clef );
