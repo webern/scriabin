@@ -625,7 +625,7 @@ namespace scriabin
         shortenStreamsToMatchLengthOfShortestStream( outMusic, BEATS_PER_MEASURE );
         reverseStreams( outMusic );
         writeMusic( originalMusic, outMusic, 32 );
-        augmentBeginning( outMusic );
+//        augmentBeginning( outMusic );
         eliminateTriplePlusAccents( outMusic );
         sneakInAccents( outMusic, boolGen );
         static constexpr const int NUM_MEASURES_AT_BEGINNING = 24;
