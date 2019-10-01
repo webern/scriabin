@@ -732,13 +732,23 @@ namespace scriabin
         const int STRETTO_START_MEASURE_NUMBER =
                 ( ( TO_INT( NOTE_STREAM_SIZE_BEFORE_STRETTO ) ) / BEATS_PER_MEASURE ) + 1;
         std::cout << "STRETTO_START_MEASURE_NUMBER: " << STRETTO_START_MEASURE_NUMBER << std::endl;
-        const int HOW_MANY_PHRASE_REPETITIONS_IN_STRETTO = 150;
+        const int HOW_MANY_PHRASE_REPETITIONS_IN_STRETTO = 100;
         const int HOW_MANY_NOTES_IN_STRETTOS = PHRASE_LENGTH_NOTE_COUNT * HOW_MANY_PHRASE_REPETITIONS_IN_STRETTO;
         const int STRETTO_LAST_MEASURE_NUMBER =
                 STRETTO_START_MEASURE_NUMBER + ( HOW_MANY_NOTES_IN_STRETTOS / BEATS_PER_MEASURE ) - 1;
         std::cout << "STRETTO_LAST_MEASURE_NUMBER: " << STRETTO_LAST_MEASURE_NUMBER << std::endl;
         const int STRETTO_START_MEASURE_INDEX = STRETTO_START_MEASURE_NUMBER - 1;
 //        const int STRETTO_LAST_MEASURE_INDEX = STRETTO_LAST_MEASURE_NUMBER - 1;
+
+        const auto NUMBER_OF_REST_REDUCTION_PHRASES = 30;
+        const auto NUMBER_OF_REST_FILLED_PHRASES = 10;
+        const auto NUMBER_OF_NON_REST_AFFECTED_PHRASES =
+                HOW_MANY_PHRASE_REPETITIONS_IN_STRETTO -
+                ( NUMBER_OF_REST_REDUCTION_PHRASES + NUMBER_OF_REST_FILLED_PHRASES );
+        const auto FIRST_ATOM_AFFECTED_BY_REST_REDUCTION =
+                NUMBER_OF_NON_REST_AFFECTED_PHRASES * PHRASE_LENGTH_NOTE_COUNT;
+        const double REST_PROBABILITY_INCREASE_PER_ATOM =
+                100.0 / static_cast<double>(NUMBER_OF_REST_REDUCTION_PHRASES * PHRASE_LENGTH_NOTE_COUNT);
 
         StrettoFacts sfacts;
         sfacts.beatsPerMeasure = BEATS_PER_MEASURE;
@@ -870,6 +880,25 @@ namespace scriabin
         bool isM3Initialized = false;
         bool isM4Initialized = false;
 
+        const auto wasPreviousNoteAccented = [&]( int trackIndex )
+        {
+            auto backIter = stretto.at( trackIndex ).crbegin();
+            ++backIter;
+            if( backIter == stretto.at( trackIndex ).crend() )
+            {
+                return true;
+            }
+
+            if( backIter->getIsAccented() )
+            {
+                return true;
+            }
+
+            return false;
+        };
+
+        double restProbability = 0.0;
+
         for( int i = 0; i < HOW_MANY_NOTES_IN_STRETTOS; ++state, ++i )
         {
             const auto noteInPhrase = TO_SZ( state.getNoteInPhraseIndex() );
@@ -881,6 +910,10 @@ namespace scriabin
             stretto.at( M2X ).push_back( atom2 );
             stretto.at( M3X ).push_back( atom3 );
             stretto.at( M4X ).push_back( atom4 );
+            bool isM1Accevted = false;
+            bool isM2Accented = false;
+            bool isM3Accented = false;
+            bool isM4Accented = false;
 
             // initialize marimbas to start at different times
             if( i == WAIT_TRIGGER_INTERVAL * 1 )
@@ -910,36 +943,80 @@ namespace scriabin
             if( state.getIsFirstNoteOfPhrase() )
             {
                 accentAll();
+                isM1Accevted = true;
+                isM2Accented = true;
+                isM3Accented = true;
+                isM4Accented = true;
             }
             else if( state.getNoteInPhraseIndex() == sfacts.topNoteIndex )
             {
                 accentAll();
+                isM1Accevted = true;
+                isM2Accented = true;
+                isM3Accented = true;
+                isM4Accented = true;
             }
 
             if( state.getIsCounterZero( M1 ) && isM1Initialized )
             {
                 accent( M1X );
                 setNextPrime( M1 );
+                isM1Accevted = true;
             }
 
             if( state.getIsCounterZero( M2 ) && isM2Initialized )
             {
                 accent( M2X );
                 setNextPrime( M2 );
+                isM2Accented = true;
             }
 
             if( state.getIsCounterZero( M3 ) && isM3Initialized )
             {
                 accent( M3X );
                 setNextPrime( M3 );
+                isM3Accented = true;
             }
 
             if( state.getIsCounterZero( M4 ) && isM4Initialized )
             {
                 accent( M4X );
                 setNextPrime( M4 );
+                isM4Accented = true;
             }
-        }
+
+            // apply rests if it's time to do so
+            if( i >= FIRST_ATOM_AFFECTED_BY_REST_REDUCTION )
+            {
+                const auto prob = [&]( bool wasPreviousNoteAccented )
+                {
+                    if( wasPreviousNoteAccented )
+                    {
+                        return static_cast<int>( 3.0 * restProbability );
+                    }
+
+                    return static_cast<int>(restProbability);
+                };
+
+                const auto applyRestByChance = [&]( int trackIndex )
+                {
+                    if( ioProb.get( prob( wasPreviousNoteAccented( trackIndex ) ) ) )
+                    {
+                        auto back = stretto.at( trackIndex ).rbegin();
+                        back->setIsAccented( false );
+                        back->setRest();
+                    }
+
+                };
+
+                applyRestByChance( M1X );
+                applyRestByChance( M2X );
+                applyRestByChance( M3X );
+                applyRestByChance( M4X );
+                restProbability += REST_PROBABILITY_INCREASE_PER_ATOM;
+            }
+
+        } // end stretto loop
 
         // write stretto to ioMusic
 
