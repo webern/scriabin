@@ -998,21 +998,20 @@ namespace scriabin
                     return static_cast<int>(restProbability);
                 };
 
-                const auto applyRestByChance = [&]( int trackIndex )
+                const auto applyRestByChance = [&]( int trackIndex, bool isCurrentAccented )
                 {
-                    if( ioProb.get( prob( wasPreviousNoteAccented( trackIndex ) ) ) )
+                    if( !isCurrentAccented && ioProb.get( prob( wasPreviousNoteAccented( trackIndex ) ) ) )
                     {
                         auto back = stretto.at( trackIndex ).rbegin();
                         back->setIsAccented( false );
                         back->setRest();
                     }
-
                 };
 
-                applyRestByChance( M1X );
-                applyRestByChance( M2X );
-                applyRestByChance( M3X );
-                applyRestByChance( M4X );
+                applyRestByChance( M1X, isM1Accevted );
+                applyRestByChance( M2X, isM2Accented );
+                applyRestByChance( M3X, isM3Accented );
+                applyRestByChance( M4X, isM4Accented );
                 restProbability += REST_PROBABILITY_INCREASE_PER_ATOM;
             }
 
