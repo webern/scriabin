@@ -1,3 +1,6 @@
+//#define GENERATE_LOCKDOWN_TESTS
+#ifdef GENERATE_LOCKDOWN_TESTS
+
 #include "catch.hpp"
 #include "scriabin/etude1.h"
 #include "SCRIABIN_PATH.h"
@@ -6,7 +9,7 @@
 #include "scriabin/Coalescence.h"
 #include "scriabin/Atom.h"
 
-using namespace zeus;
+//using namespace zeus;
 
 TEST_CASE( "coalescence", "Comp" )
 {
@@ -133,9 +136,9 @@ TEST_CASE( "coalescence", "Comp" )
         ss << "    CHECK( atom.getMidiNote() == expectedMidiNumber );" << std::endl;
         ss << "    CHECK( isAccented( mxNote ) == isAccentExpected );" << std::endl;
 
-        // uncomment to generate tests
-        // std::cout << ss.str() << std::endl;
+        std::cout << ss.str() << std::endl;
     } // end test generation loop
-
-
 }
+
+
+#endif
