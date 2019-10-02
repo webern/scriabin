@@ -1,8 +1,8 @@
 #include "catch.hpp"
-#include "PEN_PATH.h"
-#include "pen/Prob.h"
+#include "SCRIABIN_PATH.h"
+#include "scriabin/Prob.h"
 
-using namespace pen;
+using namespace scriabin;
 
 TEST_CASE( "Prob test001", "Prob" )
 {

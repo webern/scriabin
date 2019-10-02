@@ -1,5 +1,5 @@
 #include "catch.hpp"
-#include "pen/CommandLineParser.h"
+#include "scriabin/CommandLineParser.h"
 
 using namespace zeus;
 

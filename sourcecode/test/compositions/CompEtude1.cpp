@@ -1,6 +1,6 @@
 #include "catch.hpp"
-#include "pen/etude1.h"
-#include "PEN_PATH.h"
+#include "scriabin/etude1.h"
+#include "SCRIABIN_PATH.h"
 #include "mx/api/DocumentManager.h"
 #include "mx/api/ScoreData.h"
 
@@ -8,8 +8,8 @@ using namespace zeus;
 
 TEST_CASE( "etude1", "Comp" )
 {
-    const auto& iConfig = pen::INSTRUMENT_CONFIG_FILEPATH();
-    const auto& oDir = pen::MUSIC_OUTPUT_FILES_DIRECTORY();
+    const auto& iConfig = scriabin::INSTRUMENT_CONFIG_FILEPATH();
+    const auto& oDir = scriabin::MUSIC_OUTPUT_FILES_DIRECTORY();
     const std::string oPath = oDir + std::string{ "etude1.actual.xml" };
     constexpr const int argc = 5;
     const char * argv[argc] =
@@ -27,7 +27,7 @@ TEST_CASE( "etude1", "Comp" )
     const auto actualScore = dmgr.getData( outDocId );
     dmgr.destroyDocument( outDocId );
     
-    const auto inDocId = dmgr.createFromFile( pen::TEST_FILES_DIRECTORY() + std::string{ "etude1.expected.xml" } );
+    const auto inDocId = dmgr.createFromFile( scriabin::TEST_FILES_DIRECTORY() + std::string{ "etude1.expected.xml" } );
     const auto expectedScore = dmgr.getData( inDocId );
     dmgr.destroyDocument( inDocId );
     

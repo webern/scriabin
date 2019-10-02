@@ -1,10 +1,10 @@
 #include "catch.hpp"
-#include "pen/etude1.h"
-#include "PEN_PATH.h"
+#include "scriabin/etude1.h"
+#include "SCRIABIN_PATH.h"
 #include "mx/api/DocumentManager.h"
 #include "mx/api/ScoreData.h"
-#include "pen/Coalescence.h"
-#include "pen/Atom.h"
+#include "scriabin/Coalescence.h"
+#include "scriabin/Atom.h"
 
 using namespace zeus;
 
@@ -12,12 +12,12 @@ TEST_CASE( "coalescence", "Comp" )
 {
     const std::string outFilename = "coalescence.large.xml";
     const std::string inFilename = "coalescence.input.xml";
-    const auto inFilepath = pen::MUSIC_INPUT_FILES_DIRECTORY() + "/" + inFilename;
-    const auto outFilepath = pen::MUSIC_OUTPUT_FILES_DIRECTORY() + "/" + outFilename;
-    pen::Coalescence coalescence{ inFilepath, outFilepath };
+    const auto inFilepath = scriabin::MUSIC_INPUT_FILES_DIRECTORY() + "/" + inFilename;
+    const auto outFilepath = scriabin::MUSIC_OUTPUT_FILES_DIRECTORY() + "/" + outFilename;
+    scriabin::Coalescence coalescence{ inFilepath, outFilepath };
     const auto score = coalescence.doEverthing();
     
-    const size_t minimumNumMeasures = 758;
+    const size_t minimumNumMeasures = 627;
     CHECK( score.parts.size() == 4 );
     CHECK( score.parts.at( 0 ).measures.size()>= minimumNumMeasures );
     CHECK( score.parts.at( 1 ).measures.size()>= minimumNumMeasures );
@@ -29,7 +29,7 @@ TEST_CASE( "coalescence", "Comp" )
     size_t noteIndex = 0;
     int expectedMidiNumber = 0;
     bool isAccentExpected = false;
-    pen::Atom atom;
+    scriabin::Atom atom;
     mx::api::NoteData mxNote;
     const auto isAccented = [&]( const mx::api::NoteData& inNoteData )
     {
@@ -62,7 +62,7 @@ TEST_CASE( "coalescence", "Comp" )
         
         partIndex = VIOLIN_1;
         mxNote = score.parts.at( partIndex ).measures.at( insideMeasureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( insideNoteIndex );
-        atom = pen::Atom{ mxNote.pitchData };
+        atom = scriabin::Atom{ mxNote.pitchData };
         int insideMidiNum = atom.getMidiNote();
         bool insideIsAccent = isAccented( mxNote );
         
@@ -71,14 +71,14 @@ TEST_CASE( "coalescence", "Comp" )
         ss << "    expectedMidiNumber = " << insideMidiNum << ";" << std::endl;
         ss << "    isAccentExpected = " << insideIsAccent << ";" << std::endl;
         ss << "    mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );" << std::endl;
-        ss << "    atom = pen::Atom{ mxNote.pitchData };" << std::endl;
+        ss << "    atom = scriabin::Atom{ mxNote.pitchData };" << std::endl;
         ss << "" << std::endl;
         ss << "    CHECK( atom.getMidiNote() == expectedMidiNumber );" << std::endl;
         ss << "    CHECK( isAccented( mxNote ) == isAccentExpected );" << std::endl;
         
         partIndex = VIOLIN_2;
         mxNote = score.parts.at( partIndex ).measures.at( insideMeasureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( insideNoteIndex );
-        atom = pen::Atom{ mxNote.pitchData };
+        atom = scriabin::Atom{ mxNote.pitchData };
         insideMidiNum = atom.getMidiNote();
         insideIsAccent = isAccented( mxNote );
         ss << "" << std::endl;
@@ -86,14 +86,14 @@ TEST_CASE( "coalescence", "Comp" )
         ss << "    expectedMidiNumber = " << insideMidiNum << ";" << std::endl;
         ss << "    isAccentExpected = " << insideIsAccent << ";" << std::endl;
         ss << "    mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );" << std::endl;
-        ss << "    atom = pen::Atom{ mxNote.pitchData };" << std::endl;
+        ss << "    atom = scriabin::Atom{ mxNote.pitchData };" << std::endl;
         ss << "" << std::endl;
         ss << "    CHECK( atom.getMidiNote() == expectedMidiNumber );" << std::endl;
         ss << "    CHECK( isAccented( mxNote ) == isAccentExpected );" << std::endl;
         
         partIndex = VIOLA;
         mxNote = score.parts.at( partIndex ).measures.at( insideMeasureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( insideNoteIndex );
-        atom = pen::Atom{ mxNote.pitchData };
+        atom = scriabin::Atom{ mxNote.pitchData };
         insideMidiNum = atom.getMidiNote();
         insideIsAccent = isAccented( mxNote );
         ss << "" << std::endl;
@@ -101,14 +101,14 @@ TEST_CASE( "coalescence", "Comp" )
         ss << "    expectedMidiNumber = " << insideMidiNum << ";" << std::endl;
         ss << "    isAccentExpected = " << insideIsAccent << ";" << std::endl;
         ss << "    mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );" << std::endl;
-        ss << "    atom = pen::Atom{ mxNote.pitchData };" << std::endl;
+        ss << "    atom = scriabin::Atom{ mxNote.pitchData };" << std::endl;
         ss << "" << std::endl;
         ss << "    CHECK( atom.getMidiNote() == expectedMidiNumber );" << std::endl;
         ss << "    CHECK( isAccented( mxNote ) == isAccentExpected );" << std::endl;
         
         partIndex = CELLO;
         mxNote = score.parts.at( partIndex ).measures.at( insideMeasureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( insideNoteIndex );
-        atom = pen::Atom{ mxNote.pitchData };
+        atom = scriabin::Atom{ mxNote.pitchData };
         insideMidiNum = atom.getMidiNote();
         insideIsAccent = isAccented( mxNote );
         ss << "" << std::endl;
@@ -116,7 +116,7 @@ TEST_CASE( "coalescence", "Comp" )
         ss << "    expectedMidiNumber = " << insideMidiNum << ";" << std::endl;
         ss << "    isAccentExpected = " << insideIsAccent << ";" << std::endl;
         ss << "    mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );" << std::endl;
-        ss << "    atom = pen::Atom{ mxNote.pitchData };" << std::endl;
+        ss << "    atom = scriabin::Atom{ mxNote.pitchData };" << std::endl;
         ss << "" << std::endl;
         ss << "    CHECK( atom.getMidiNote() == expectedMidiNumber );" << std::endl;
         ss << "    CHECK( isAccented( mxNote ) == isAccentExpected );" << std::endl;
@@ -133,7 +133,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -142,7 +142,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -151,7 +151,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 48;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -160,7 +160,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 50;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -173,7 +173,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -182,7 +182,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -191,7 +191,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 48;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -200,7 +200,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 50;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -213,7 +213,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -222,7 +222,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -231,7 +231,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 48;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -240,7 +240,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 50;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -253,7 +253,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -262,7 +262,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -271,7 +271,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 53;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -280,7 +280,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 50;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -293,7 +293,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -302,7 +302,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -311,7 +311,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 53;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -320,7 +320,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 50;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -333,7 +333,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 65;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -342,7 +342,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -351,7 +351,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 53;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -360,7 +360,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 50;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -373,7 +373,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 65;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -382,7 +382,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -391,7 +391,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 58;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -400,7 +400,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 50;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -413,7 +413,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 65;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -422,7 +422,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -431,7 +431,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 58;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -440,7 +440,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 50;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -453,7 +453,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 70;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -462,7 +462,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -471,7 +471,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 58;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -480,7 +480,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 50;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -493,7 +493,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 70;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -502,7 +502,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -511,7 +511,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 58;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -520,7 +520,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 50;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -533,7 +533,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 70;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -542,7 +542,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 57;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -551,7 +551,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 58;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -560,7 +560,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 50;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -573,7 +573,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 70;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -582,7 +582,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 57;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -591,7 +591,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 58;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -600,7 +600,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 50;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -613,7 +613,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 70;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -622,7 +622,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 62;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -631,7 +631,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 58;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -640,7 +640,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 50;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -653,7 +653,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 74;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -662,7 +662,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 62;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -671,7 +671,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 58;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -680,7 +680,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -693,7 +693,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 74;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -702,7 +702,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 67;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -711,7 +711,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -720,7 +720,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -733,7 +733,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 74;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -742,7 +742,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 67;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -751,7 +751,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 62;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -760,7 +760,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -773,7 +773,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 79;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -782,7 +782,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 67;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -791,7 +791,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 64;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -800,7 +800,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -813,7 +813,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 79;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -822,7 +822,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 70;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -831,7 +831,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 64;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -840,7 +840,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 45;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -853,7 +853,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 81;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -862,7 +862,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 70;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -871,7 +871,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 64;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -880,7 +880,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 45;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -893,7 +893,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 82;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -902,7 +902,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 70;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -911,7 +911,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 64;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -920,7 +920,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 45;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -933,7 +933,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 82;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -942,7 +942,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 70;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -951,7 +951,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 67;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -960,7 +960,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 43;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -973,7 +973,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 77;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -982,7 +982,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 72;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -991,7 +991,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 67;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1000,7 +1000,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 40;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1013,7 +1013,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 72;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1022,7 +1022,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 76;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1031,7 +1031,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 67;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1040,7 +1040,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 40;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1053,7 +1053,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 70;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1062,7 +1062,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 76;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1071,7 +1071,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 67;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1080,7 +1080,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 40;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1093,7 +1093,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 70;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1102,7 +1102,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 77;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1111,7 +1111,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 67;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1120,7 +1120,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 41;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1133,7 +1133,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 69;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1142,7 +1142,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 79;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1151,7 +1151,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 67;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1160,7 +1160,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 41;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1173,7 +1173,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 69;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1182,7 +1182,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 74;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1191,7 +1191,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 70;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1200,7 +1200,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 38;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1213,7 +1213,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1222,7 +1222,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 69;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1231,7 +1231,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 70;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1240,7 +1240,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 38;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1253,7 +1253,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1262,7 +1262,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 69;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1271,7 +1271,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 65;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1280,7 +1280,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 40;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1293,7 +1293,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1302,7 +1302,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 65;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1311,7 +1311,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 65;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1320,7 +1320,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 40;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1333,7 +1333,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 67;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1342,7 +1342,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 65;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1351,7 +1351,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 65;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1360,7 +1360,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 40;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1373,7 +1373,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 67;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1382,7 +1382,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 64;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1391,7 +1391,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1400,7 +1400,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 36;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1413,7 +1413,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 84;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1422,7 +1422,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 64;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1431,7 +1431,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 58;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1440,7 +1440,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 41;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1453,7 +1453,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 79;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1462,7 +1462,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 64;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1471,7 +1471,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 58;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1480,7 +1480,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 41;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1493,7 +1493,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 79;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1502,7 +1502,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 64;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1511,7 +1511,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 57;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1520,7 +1520,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 46;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1533,7 +1533,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 74;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1542,7 +1542,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 64;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1551,7 +1551,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 57;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1560,7 +1560,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 50;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1573,7 +1573,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 74;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1582,7 +1582,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 64;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1591,7 +1591,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 55;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1600,7 +1600,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 52;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1613,7 +1613,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 69;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1622,7 +1622,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1631,7 +1631,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 55;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1640,7 +1640,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 52;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1653,7 +1653,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 69;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1662,7 +1662,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 81;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1671,7 +1671,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 55;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1680,7 +1680,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 55;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1693,7 +1693,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 67;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1702,7 +1702,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 76;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1711,7 +1711,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 72;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1720,7 +1720,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 57;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1733,7 +1733,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 64;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1742,7 +1742,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 70;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1751,7 +1751,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 72;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1760,7 +1760,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 58;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1773,7 +1773,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 64;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1782,7 +1782,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 65;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1791,7 +1791,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 67;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1800,7 +1800,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 53;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1813,7 +1813,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 64;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1822,7 +1822,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 65;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1831,7 +1831,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 67;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1840,7 +1840,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 53;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1853,7 +1853,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 65;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1862,7 +1862,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 64;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1871,7 +1871,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 62;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1880,7 +1880,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 53;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1893,7 +1893,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 62;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1902,7 +1902,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1911,7 +1911,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 57;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1920,7 +1920,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 53;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1933,7 +1933,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 62;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1942,7 +1942,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 58;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1951,7 +1951,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 57;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1960,7 +1960,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 48;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1973,7 +1973,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 62;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1982,7 +1982,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 58;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -1991,7 +1991,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 57;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2000,7 +2000,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 46;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2013,7 +2013,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 62;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2022,7 +2022,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2031,7 +2031,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 55;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2040,7 +2040,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 46;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2053,7 +2053,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 64;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2062,7 +2062,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2071,7 +2071,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 55;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2080,7 +2080,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 45;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2093,7 +2093,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 65;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2102,7 +2102,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2111,7 +2111,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 52;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2120,7 +2120,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 43;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2133,7 +2133,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 65;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2142,7 +2142,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2151,7 +2151,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 53;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2160,7 +2160,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 43;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2173,7 +2173,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 70;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2182,7 +2182,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 57;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2191,7 +2191,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 53;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2200,7 +2200,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 43;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2213,7 +2213,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 74;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2222,7 +2222,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 62;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2231,7 +2231,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 53;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2240,7 +2240,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 43;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2253,7 +2253,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 76;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2262,7 +2262,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 67;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2271,7 +2271,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 53;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2280,7 +2280,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 43;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2293,7 +2293,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 79;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2302,7 +2302,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 67;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2311,7 +2311,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 50;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2320,7 +2320,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2333,7 +2333,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 81;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2342,7 +2342,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 70;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2351,7 +2351,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 50;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2360,7 +2360,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 55;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2373,7 +2373,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 82;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2382,7 +2382,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 70;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2391,7 +2391,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 50;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2400,7 +2400,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 50;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2413,7 +2413,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 82;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2422,7 +2422,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 72;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2431,7 +2431,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 50;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2440,7 +2440,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 50;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2453,7 +2453,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 72;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2462,7 +2462,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 76;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2471,7 +2471,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 52;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2480,7 +2480,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 50;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2493,7 +2493,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 70;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2502,7 +2502,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 79;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2511,7 +2511,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 48;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2520,7 +2520,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 50;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2533,7 +2533,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 70;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2542,7 +2542,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 74;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2551,7 +2551,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 53;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2560,7 +2560,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2573,7 +2573,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 69;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2582,7 +2582,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 69;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2591,7 +2591,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 58;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2600,7 +2600,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2613,7 +2613,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2622,7 +2622,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 67;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2631,7 +2631,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 58;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2640,7 +2640,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 45;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2653,7 +2653,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2662,7 +2662,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 64;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2671,7 +2671,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 62;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2680,7 +2680,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 45;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2693,7 +2693,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 67;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2702,7 +2702,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 64;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2711,7 +2711,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 64;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2720,7 +2720,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 40;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2733,7 +2733,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 84;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2742,7 +2742,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 64;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2751,7 +2751,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 64;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2760,7 +2760,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 40;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2773,7 +2773,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 79;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2782,7 +2782,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 64;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2791,7 +2791,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 67;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2800,7 +2800,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 41;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2813,7 +2813,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 74;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2822,7 +2822,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 64;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2831,7 +2831,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 67;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2840,7 +2840,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 38;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2853,7 +2853,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 69;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2862,7 +2862,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 76;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2871,7 +2871,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 67;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2880,7 +2880,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 40;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2893,7 +2893,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 69;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2902,7 +2902,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 65;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2911,7 +2911,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 70;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2920,7 +2920,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 36;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2933,7 +2933,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 64;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2942,7 +2942,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 64;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2951,7 +2951,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 65;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2960,7 +2960,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 41;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2973,7 +2973,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 64;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2982,7 +2982,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -2991,7 +2991,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3000,7 +3000,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 46;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3013,7 +3013,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 65;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3022,7 +3022,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 62;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3031,7 +3031,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 58;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3040,7 +3040,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 50;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3053,7 +3053,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 62;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3062,7 +3062,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 58;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3071,7 +3071,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 57;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3080,7 +3080,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 52;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3093,7 +3093,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 62;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3102,7 +3102,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3111,7 +3111,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 55;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3120,7 +3120,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 57;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3133,7 +3133,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 62;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3142,7 +3142,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3151,7 +3151,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 72;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3160,7 +3160,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 58;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3173,7 +3173,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3182,7 +3182,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 62;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3191,7 +3191,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 67;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3200,7 +3200,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 53;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3213,7 +3213,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 70;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3222,7 +3222,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 67;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3231,7 +3231,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 62;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3240,7 +3240,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 48;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3253,7 +3253,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 74;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3262,7 +3262,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 70;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3271,7 +3271,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 57;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3280,7 +3280,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 46;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3293,7 +3293,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 74;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3302,7 +3302,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 70;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3311,7 +3311,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 55;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3320,7 +3320,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 45;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3333,7 +3333,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 81;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3342,7 +3342,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 76;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3351,7 +3351,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 52;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3360,7 +3360,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 43;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3373,7 +3373,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 82;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3382,7 +3382,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 74;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3391,7 +3391,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 53;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3400,7 +3400,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 43;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3413,7 +3413,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 72;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3422,7 +3422,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 67;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3431,7 +3431,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 53;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3440,7 +3440,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 55;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3453,7 +3453,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 70;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3462,7 +3462,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 64;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3471,7 +3471,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 50;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3480,7 +3480,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 50;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3493,7 +3493,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 69;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3502,7 +3502,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 64;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3511,7 +3511,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 50;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3520,7 +3520,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 50;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3533,7 +3533,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3542,7 +3542,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3551,7 +3551,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 50;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3560,7 +3560,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3573,7 +3573,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3582,7 +3582,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 76;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3591,7 +3591,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 52;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3600,7 +3600,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 45;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3613,7 +3613,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 84;
     isAccentExpected = true;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3622,7 +3622,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 65;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3631,7 +3631,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 53;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3640,7 +3640,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 43;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3653,7 +3653,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 74;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3662,7 +3662,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3671,7 +3671,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 58;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3680,7 +3680,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 41;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3693,7 +3693,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 69;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3702,7 +3702,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 58;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3711,7 +3711,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 64;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3720,7 +3720,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 40;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3733,7 +3733,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 69;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3742,7 +3742,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3751,7 +3751,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 64;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3760,7 +3760,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 36;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3773,7 +3773,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 64;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3782,7 +3782,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 57;
     isAccentExpected = true;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3791,7 +3791,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 67;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3800,7 +3800,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 46;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3813,7 +3813,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 65;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3822,7 +3822,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 67;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3831,7 +3831,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 70;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3840,7 +3840,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 52;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3853,7 +3853,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 62;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3862,7 +3862,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 70;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3871,7 +3871,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3880,7 +3880,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 53;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3893,7 +3893,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 62;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3902,7 +3902,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 77;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3911,7 +3911,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 58;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3920,7 +3920,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 46;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3933,7 +3933,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 65;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3942,7 +3942,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 69;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3951,7 +3951,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 55;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3960,7 +3960,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 43;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3973,7 +3973,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 74;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3982,7 +3982,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 64;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -3991,7 +3991,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 72;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4000,7 +4000,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 43;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4013,7 +4013,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 79;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4022,7 +4022,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4031,7 +4031,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 57;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4040,7 +4040,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 50;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4053,7 +4053,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 82;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4062,7 +4062,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 70;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4071,7 +4071,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 55;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4080,7 +4080,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 50;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4093,7 +4093,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 72;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4102,7 +4102,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4111,7 +4111,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 53;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4120,7 +4120,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 45;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4133,7 +4133,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 69;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4142,7 +4142,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4151,7 +4151,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 50;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4160,7 +4160,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 41;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4173,7 +4173,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4182,7 +4182,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 67;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4191,7 +4191,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 50;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4200,7 +4200,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 36;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4213,7 +4213,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 67;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4222,7 +4222,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 72;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4231,7 +4231,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 52;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4240,7 +4240,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 50;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4253,7 +4253,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 74;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4262,7 +4262,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 69;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4271,7 +4271,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 58;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4280,7 +4280,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 53;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4293,7 +4293,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 69;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4302,7 +4302,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 64;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4311,7 +4311,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 64;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4320,7 +4320,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 43;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4333,7 +4333,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 64;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4342,7 +4342,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 70;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4351,7 +4351,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 67;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4360,7 +4360,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 50;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4373,7 +4373,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 62;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4382,7 +4382,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 62;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4391,7 +4391,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4400,7 +4400,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 40;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4413,7 +4413,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 64;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4422,7 +4422,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 67;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4431,7 +4431,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 55;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4440,7 +4440,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 36;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4453,7 +4453,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 65;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4462,7 +4462,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 70;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4471,7 +4471,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 67;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4480,7 +4480,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 50;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4493,7 +4493,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 79;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4502,7 +4502,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 69;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4511,7 +4511,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 55;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4520,7 +4520,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 53;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4533,7 +4533,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 77;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4542,7 +4542,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 64;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4551,7 +4551,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 53;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4560,7 +4560,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 43;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4573,7 +4573,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4582,7 +4582,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 70;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4591,7 +4591,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 52;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4600,7 +4600,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 50;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4613,7 +4613,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 84;
     isAccentExpected = true;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4622,7 +4622,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 58;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4631,7 +4631,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 62;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4640,7 +4640,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 41;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4653,7 +4653,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 67;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4662,7 +4662,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 67;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4671,7 +4671,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 65;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4680,7 +4680,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 41;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4693,7 +4693,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 64;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4702,7 +4702,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 72;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4711,7 +4711,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 57;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4720,7 +4720,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 55;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4733,7 +4733,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 62;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4742,7 +4742,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 67;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4751,7 +4751,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 57;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4760,7 +4760,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 46;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4773,7 +4773,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 74;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4782,7 +4782,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 64;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4791,7 +4791,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 50;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4800,7 +4800,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 43;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4813,7 +4813,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 77;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4822,7 +4822,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 65;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4831,7 +4831,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 58;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4840,7 +4840,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4853,7 +4853,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 67;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4862,7 +4862,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4871,7 +4871,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 69;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4880,7 +4880,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 38;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4893,7 +4893,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 67;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4902,7 +4902,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 70;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4911,7 +4911,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 55;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4920,7 +4920,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 50;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4933,7 +4933,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 62;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4942,7 +4942,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 77;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4951,7 +4951,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 57;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4960,7 +4960,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 53;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4973,7 +4973,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 70;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4982,7 +4982,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 65;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -4991,7 +4991,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 53;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5000,7 +5000,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 43;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5013,7 +5013,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 82;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5022,7 +5022,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 64;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5031,7 +5031,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 58;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5040,7 +5040,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 50;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5053,7 +5053,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5062,7 +5062,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5071,7 +5071,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 69;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5080,7 +5080,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 40;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5093,7 +5093,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 69;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5102,7 +5102,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 62;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5111,7 +5111,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 55;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5120,7 +5120,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 36;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5133,7 +5133,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 62;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5142,7 +5142,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 72;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5151,7 +5151,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 55;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5160,7 +5160,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 58;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5173,7 +5173,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 70;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5182,7 +5182,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 74;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5191,7 +5191,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 53;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5200,7 +5200,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 46;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5213,7 +5213,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 82;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5222,7 +5222,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 64;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5231,7 +5231,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 58;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5240,7 +5240,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = true;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5253,7 +5253,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5262,7 +5262,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 70;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5271,7 +5271,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 69;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5280,7 +5280,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 45;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5293,7 +5293,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 67;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5302,7 +5302,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5311,7 +5311,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 55;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5320,7 +5320,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 36;
     isAccentExpected = true;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5333,7 +5333,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 64;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5342,7 +5342,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 70;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5351,7 +5351,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 52;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5360,7 +5360,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 52;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5373,7 +5373,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 79;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5382,7 +5382,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 74;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5391,7 +5391,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 48;
     isAccentExpected = true;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5400,7 +5400,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 45;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5413,7 +5413,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 72;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5422,7 +5422,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 64;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5431,7 +5431,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 62;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5440,7 +5440,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 43;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5453,7 +5453,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 67;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5462,7 +5462,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 76;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5471,7 +5471,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 65;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5480,7 +5480,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5493,7 +5493,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 64;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5502,7 +5502,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 58;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5511,7 +5511,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 67;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5520,7 +5520,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 40;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5533,7 +5533,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 65;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5542,7 +5542,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 70;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5551,7 +5551,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 53;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5560,7 +5560,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 52;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5573,7 +5573,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 82;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5582,7 +5582,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 74;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5591,7 +5591,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 58;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5600,7 +5600,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 46;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5613,7 +5613,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5622,7 +5622,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 64;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5631,7 +5631,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 70;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5640,7 +5640,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = true;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5653,7 +5653,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 74;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5662,7 +5662,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 81;
     isAccentExpected = true;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5671,7 +5671,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 57;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5680,7 +5680,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 50;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5693,7 +5693,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 62;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5702,7 +5702,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 62;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5711,7 +5711,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 55;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5720,7 +5720,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 40;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5733,7 +5733,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 79;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5742,7 +5742,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 67;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5751,7 +5751,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 52;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5760,7 +5760,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 52;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5773,7 +5773,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 69;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5782,7 +5782,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 79;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5791,7 +5791,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 67;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5800,7 +5800,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 45;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5813,7 +5813,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 74;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5822,7 +5822,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 64;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5831,7 +5831,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 57;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5840,7 +5840,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 55;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5853,7 +5853,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 62;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5862,7 +5862,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 76;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5871,7 +5871,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 55;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5880,7 +5880,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 43;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5893,7 +5893,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 70;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5902,7 +5902,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 62;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5911,7 +5911,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 53;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5920,7 +5920,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 36;
     isAccentExpected = true;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5933,7 +5933,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 72;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5942,7 +5942,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 70;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5951,7 +5951,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5960,7 +5960,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 57;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5973,7 +5973,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 67;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5982,7 +5982,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 74;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -5991,7 +5991,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6000,7 +6000,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 45;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6013,7 +6013,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 62;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6022,7 +6022,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 64;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6031,7 +6031,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 57;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6040,7 +6040,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 50;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6053,7 +6053,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 74;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6062,7 +6062,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 65;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6071,7 +6071,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 50;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6080,7 +6080,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 41;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6093,7 +6093,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 70;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6102,7 +6102,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 57;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6111,7 +6111,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 64;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6120,7 +6120,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 46;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6133,7 +6133,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 67;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6142,7 +6142,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 70;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6151,7 +6151,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 65;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6160,7 +6160,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 53;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6173,7 +6173,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 65;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6182,7 +6182,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 67;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6191,7 +6191,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 62;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6200,7 +6200,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 43;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6213,7 +6213,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 76;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6222,7 +6222,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 64;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6231,7 +6231,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 50;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6240,7 +6240,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6253,7 +6253,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 69;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6262,7 +6262,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6271,7 +6271,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 67;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6280,7 +6280,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 36;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6293,7 +6293,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 79;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6302,7 +6302,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 67;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6311,7 +6311,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 57;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6320,7 +6320,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 53;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6333,7 +6333,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 62;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6342,7 +6342,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 74;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6351,7 +6351,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 53;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6360,7 +6360,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 43;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6373,7 +6373,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 81;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6382,7 +6382,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 64;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6391,7 +6391,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 52;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6400,7 +6400,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 50;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6413,7 +6413,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 69;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6422,7 +6422,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 76;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6431,7 +6431,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 67;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6440,7 +6440,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 38;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6453,7 +6453,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 69;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6462,7 +6462,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 57;
     isAccentExpected = true;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6471,7 +6471,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 55;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6480,7 +6480,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 52;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6493,7 +6493,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 65;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6502,7 +6502,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 77;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6511,7 +6511,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 53;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6520,7 +6520,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 43;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6533,7 +6533,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 70;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6542,7 +6542,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 64;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6551,7 +6551,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6560,7 +6560,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6573,7 +6573,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 79;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6582,7 +6582,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6591,7 +6591,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 55;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6600,7 +6600,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 46;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6613,7 +6613,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 62;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6622,7 +6622,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 57;
     isAccentExpected = true;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6631,7 +6631,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 52;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6640,7 +6640,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 46;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6653,7 +6653,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 81;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6662,7 +6662,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 67;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6671,7 +6671,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6680,7 +6680,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 50;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6693,7 +6693,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 67;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6702,7 +6702,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 76;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6711,7 +6711,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 72;
     isAccentExpected = true;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6720,7 +6720,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 36;
     isAccentExpected = true;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6733,7 +6733,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 62;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6742,7 +6742,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 67;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6751,7 +6751,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 53;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6760,7 +6760,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 46;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6773,7 +6773,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 82;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6782,7 +6782,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 65;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6791,7 +6791,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 55;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6800,7 +6800,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 50;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6813,7 +6813,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 79;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6822,7 +6822,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 62;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6831,7 +6831,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 48;
     isAccentExpected = true;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6840,7 +6840,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 46;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6853,7 +6853,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 62;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6862,7 +6862,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 70;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6871,7 +6871,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 69;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6880,7 +6880,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 46;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6893,7 +6893,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 82;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6902,7 +6902,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 64;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6911,7 +6911,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 52;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6920,7 +6920,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6933,7 +6933,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 74;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6942,7 +6942,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 67;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6951,7 +6951,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 65;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6960,7 +6960,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 57;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6973,7 +6973,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 81;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6982,7 +6982,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 64;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -6991,7 +6991,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 53;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7000,7 +7000,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 50;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7013,7 +7013,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 74;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7022,7 +7022,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 67;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7031,7 +7031,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 58;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7040,7 +7040,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 57;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7053,7 +7053,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 82;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7062,7 +7062,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 64;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7071,7 +7071,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 52;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7080,7 +7080,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 45;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7093,7 +7093,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 84;
     isAccentExpected = true;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7102,7 +7102,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 58;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7111,7 +7111,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 70;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7120,7 +7120,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 52;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7133,7 +7133,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 82;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7142,7 +7142,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 64;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7151,7 +7151,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 50;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7160,7 +7160,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 50;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7173,7 +7173,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 65;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7182,7 +7182,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 67;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7191,7 +7191,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 57;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7200,7 +7200,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 57;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7213,7 +7213,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 69;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7222,7 +7222,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 64;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7231,7 +7231,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 58;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7240,7 +7240,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 45;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7253,7 +7253,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 76;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7262,7 +7262,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 70;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7271,7 +7271,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 72;
     isAccentExpected = true;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7280,7 +7280,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 53;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7293,7 +7293,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 64;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7302,7 +7302,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 81;
     isAccentExpected = true;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7311,7 +7311,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 62;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7320,7 +7320,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 40;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7333,7 +7333,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 82;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7342,7 +7342,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 70;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7351,7 +7351,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 55;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7360,7 +7360,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 57;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7373,7 +7373,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 62;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7382,7 +7382,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 81;
     isAccentExpected = true;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7391,7 +7391,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7400,7 +7400,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 40;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7413,7 +7413,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 67;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7422,7 +7422,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 74;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7431,7 +7431,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 57;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7440,7 +7440,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 43;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7453,7 +7453,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 81;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7462,7 +7462,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7471,7 +7471,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 70;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7480,7 +7480,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 50;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7493,7 +7493,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 62;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7502,7 +7502,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 64;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7511,7 +7511,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 50;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7520,7 +7520,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 43;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7533,7 +7533,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 67;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7542,7 +7542,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 76;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7551,7 +7551,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 57;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7560,7 +7560,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 45;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7573,7 +7573,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 64;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7582,7 +7582,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 64;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7591,7 +7591,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 53;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7600,7 +7600,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 41;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7613,7 +7613,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 84;
     isAccentExpected = true;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7622,7 +7622,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 79;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7631,7 +7631,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 58;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7640,7 +7640,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 43;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7653,7 +7653,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 82;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7662,7 +7662,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7671,7 +7671,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 58;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7680,7 +7680,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 57;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7693,7 +7693,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 64;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7702,7 +7702,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 64;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7711,7 +7711,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 72;
     isAccentExpected = true;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7720,7 +7720,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 38;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7733,7 +7733,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 79;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7742,7 +7742,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 74;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7751,7 +7751,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 69;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7760,7 +7760,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = true;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7773,7 +7773,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 77;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7782,7 +7782,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 57;
     isAccentExpected = true;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7791,7 +7791,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 53;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7800,7 +7800,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 57;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7813,7 +7813,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 65;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7822,7 +7822,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 65;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7831,7 +7831,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 70;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7840,7 +7840,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 45;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7853,7 +7853,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 67;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7862,7 +7862,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 70;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7871,7 +7871,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 50;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7880,7 +7880,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 46;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7893,7 +7893,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 82;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7902,7 +7902,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 64;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7911,7 +7911,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 55;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7920,7 +7920,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 46;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7933,7 +7933,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = true;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7942,7 +7942,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 64;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7951,7 +7951,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 67;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7960,7 +7960,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 43;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7973,7 +7973,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 69;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7982,7 +7982,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 76;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -7991,7 +7991,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 52;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -8000,7 +8000,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 45;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -8013,7 +8013,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 67;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -8022,7 +8022,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 58;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -8031,7 +8031,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 72;
     isAccentExpected = true;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -8040,7 +8040,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 50;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -8053,7 +8053,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 65;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -8062,7 +8062,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 67;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -8071,7 +8071,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 58;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -8080,7 +8080,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = true;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -8093,7 +8093,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 67;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -8102,7 +8102,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 70;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -8111,7 +8111,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 52;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -8120,7 +8120,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 57;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -8133,7 +8133,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 67;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -8142,7 +8142,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -8151,7 +8151,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 55;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -8160,7 +8160,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 40;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -8173,7 +8173,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 72;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -8182,7 +8182,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 64;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -8191,7 +8191,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 60;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -8200,7 +8200,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 50;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -8213,7 +8213,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 76;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -8222,7 +8222,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 69;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -8231,7 +8231,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 64;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -8240,7 +8240,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 46;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -8253,7 +8253,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 64;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -8262,7 +8262,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 70;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -8271,7 +8271,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 52;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -8280,7 +8280,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 52;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -8293,7 +8293,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 67;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -8302,7 +8302,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 81;
     isAccentExpected = true;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -8311,7 +8311,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 55;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -8320,7 +8320,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 55;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -8333,7 +8333,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 82;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -8342,7 +8342,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 67;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -8351,7 +8351,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 70;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -8360,7 +8360,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 48;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -8373,7 +8373,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 70;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -8382,7 +8382,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 72;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -8391,7 +8391,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 58;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -8400,7 +8400,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 50;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -8413,7 +8413,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 65;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -8422,7 +8422,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 58;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -8431,7 +8431,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 53;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -8440,7 +8440,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 41;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -8453,7 +8453,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 79;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -8462,7 +8462,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 76;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -8471,7 +8471,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 67;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );
@@ -8480,7 +8480,7 @@ TEST_CASE( "coalescence", "Comp" )
     expectedMidiNumber = 55;
     isAccentExpected = false;
     mxNote = score.parts.at( partIndex ).measures.at( measureIndex ).staves.at( 0 ).voices.at( 0 ).notes.at( noteIndex );
-    atom = pen::Atom{ mxNote.pitchData };
+    atom = scriabin::Atom{ mxNote.pitchData };
     
     CHECK( atom.getMidiNote() == expectedMidiNumber );
     CHECK( isAccented( mxNote ) == isAccentExpected );

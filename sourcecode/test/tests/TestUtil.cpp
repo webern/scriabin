@@ -1,7 +1,7 @@
 #include "catch.hpp"
-#include "pen/util.h"
+#include "scriabin/util.h"
 
-using namespace pen;
+using namespace scriabin;
 
 TEST_CASE( "util test001", "util" )
 {

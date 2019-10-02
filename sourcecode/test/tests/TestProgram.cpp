@@ -1,13 +1,13 @@
 #include "catch.hpp"
-#include "pen/Program.h"
-#include "PEN_PATH.h"
+#include "scriabin/Program.h"
+#include "SCRIABIN_PATH.h"
 
 using namespace zeus;
 
 TEST_CASE( "Program test001", "Program" )
 {
     const std::string opath = "/my/path.xml";
-    const std::string ipath = pen::INSTRUMENT_CONFIG_FILEPATH();
+    const std::string ipath = scriabin::INSTRUMENT_CONFIG_FILEPATH();
     
     constexpr const int argc = 5;
     const char* argv[argc] = {
@@ -18,7 +18,7 @@ TEST_CASE( "Program test001", "Program" )
         ipath.c_str(),
     };
     
-    pen::Program program{ argc, argv };
+    scriabin::Program program{ argc, argv };
     CHECK( program.isOutfileSpecified );
     CHECK( opath == program.outfilePath.c_str() );
     CHECK( program.isInstrumentConfigSpecified );
