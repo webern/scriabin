@@ -11,7 +11,7 @@
 
 //using namespace zeus;
 
-TEST_CASE( "coalescence", "Comp" )
+TEST_CASE( "coalescence lock generator" )
 {
     const std::string outFilename = "coalescence.large.xml";
     const std::string inFilename = "coalescence.input.xml";
