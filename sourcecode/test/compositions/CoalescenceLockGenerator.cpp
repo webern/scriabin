@@ -54,9 +54,9 @@ TEST_CASE( "coalescence", "Comp" )
     constexpr const int VIOLA = 2;
     constexpr const int CELLO = 3;
 
-    for( int m = 0, n = 0; m < 626; m += 3, ++n )
+    for( int m = 0, n = 0; m < expectedNumMeasures; m += 3, ++n )
     {
-        n = n % 6;
+        n = n % 12;
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         int insideMeasureIndex = m;
         int insideNoteIndex = n;
